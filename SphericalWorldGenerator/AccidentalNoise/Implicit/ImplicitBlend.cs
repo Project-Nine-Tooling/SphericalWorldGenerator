@@ -1,15 +1,12 @@
-﻿using SphericalWorldGenerator;
-using System;
-
-namespace AccidentalNoise
+﻿namespace AccidentalNoise.Implicit
 {
     public sealed class ImplicitBlend : ImplicitModuleBase
     {
-        public ImplicitBlend(ImplicitModuleBase source, Double low, Double high)
+        public ImplicitBlend(ImplicitModuleBase source, double low, double high)
         {
-            this.Source = source;
-            this.Low = new ImplicitConstant(low);
-            this.High = new ImplicitConstant(high);
+            Source = source;
+            Low = new ImplicitConstant(low);
+            High = new ImplicitConstant(high);
         }
 
         public ImplicitModuleBase Source { get; set; }
@@ -18,35 +15,35 @@ namespace AccidentalNoise
 
         public ImplicitModuleBase High { get; set; }
 
-        public override Double Get(Double x, Double y)
+        public override double Get(double x, double y)
         {
-            double v1 = this.Low.Get(x, y);
-            double v2 = this.High.Get(x, y);
-            double blend = (this.Source.Get(x, y) + 1.0) * 0.5;
+            double v1 = Low.Get(x, y);
+            double v2 = High.Get(x, y);
+            double blend = (Source.Get(x, y) + 1.0) * 0.5;
             return MathHelper.Lerp(blend, v1, v2);
         }
 
-        public override Double Get(Double x, Double y, Double z)
+        public override double Get(double x, double y, double z)
         {
-            double v1 = this.Low.Get(x, y, z);
-            double v2 = this.High.Get(x, y, z);
-            double blend = this.Source.Get(x, y, z);
+            double v1 = Low.Get(x, y, z);
+            double v2 = High.Get(x, y, z);
+            double blend = Source.Get(x, y, z);
 			return MathHelper.Lerp(blend, v1, v2);
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w)
+        public override double Get(double x, double y, double z, double w)
         {
-            double v1 = this.Low.Get(x, y, z, w);
-            double v2 = this.High.Get(x, y, z, w);
-            double blend = this.Source.Get(x, y, z, w);
+            double v1 = Low.Get(x, y, z, w);
+            double v2 = High.Get(x, y, z, w);
+            double blend = Source.Get(x, y, z, w);
 			return MathHelper.Lerp(blend, v1, v2);
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        public override double Get(double x, double y, double z, double w, double u, double v)
         {
-            double v1 = this.Low.Get(x, y, z, w, u, v);
-            double v2 = this.High.Get(x, y, z, w, u, v);
-            double blend = this.Source.Get(x, y, z, w, u, v);
+            double v1 = Low.Get(x, y, z, w, u, v);
+            double v2 = High.Get(x, y, z, w, u, v);
+            double blend = Source.Get(x, y, z, w, u, v);
 			return MathHelper.Lerp(blend, v1, v2);
         }
     }

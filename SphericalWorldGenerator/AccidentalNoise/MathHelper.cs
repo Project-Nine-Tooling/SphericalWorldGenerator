@@ -1,4 +1,4 @@
-﻿namespace SphericalWorldGenerator
+﻿namespace AccidentalNoise
 {
     public static class MathHelper
     {

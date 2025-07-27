@@ -1,34 +1,34 @@
 ﻿using System;
 
-namespace AccidentalNoise
+namespace AccidentalNoise.Implicit
 {
     public sealed class ImplicitLog : ImplicitModuleBase
     {
         public ImplicitLog(ImplicitModuleBase source)
         {
-            this.Source = source;
+            Source = source;
         }
         
         public ImplicitModuleBase Source { set; get; }
 
-        public override Double Get(Double x, Double y)
+        public override double Get(double x, double y)
         {
-            return Math.Log(this.Source.Get(x, y));
+            return Math.Log(Source.Get(x, y));
         }
 
-        public override Double Get(Double x, Double y, Double z)
+        public override double Get(double x, double y, double z)
         {
-            return Math.Log(this.Source.Get(x, y, z));
+            return Math.Log(Source.Get(x, y, z));
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w)
+        public override double Get(double x, double y, double z, double w)
         {
-            return Math.Log(this.Source.Get(x, y, z, w));
+            return Math.Log(Source.Get(x, y, z, w));
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        public override double Get(double x, double y, double z, double w, double u, double v)
         {
-            return Math.Log(this.Source.Get(x, y, z, w, u, v));
+            return Math.Log(Source.Get(x, y, z, w, u, v));
         }
     }
 }

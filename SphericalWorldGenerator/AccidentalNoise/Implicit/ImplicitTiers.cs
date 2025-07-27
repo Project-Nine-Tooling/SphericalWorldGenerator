@@ -1,76 +1,75 @@
-﻿using SphericalWorldGenerator;
-using System;
+﻿using System;
 
-namespace AccidentalNoise
+namespace AccidentalNoise.Implicit
 {
     public sealed class ImplicitTiers : ImplicitModuleBase
     {
-        public ImplicitTiers(ImplicitModuleBase source, Int32 tiers, Boolean smooth)
+        public ImplicitTiers(ImplicitModuleBase source, int tiers, bool smooth)
         {
-            this.Source = source;
-            this.Tiers = tiers;
-            this.Smooth = smooth;
+            Source = source;
+            Tiers = tiers;
+            Smooth = smooth;
         }
 
         public ImplicitModuleBase Source { get; set; }
 
-        public Int32 Tiers { get; set; }
+        public int Tiers { get; set; }
 
-        public Boolean Smooth { get; set; }
+        public bool Smooth { get; set; }
 
-        public override Double Get(Double x, Double y)
+        public override double Get(double x, double y)
         {
             int numsteps = Tiers;
-            if (this.Smooth) --numsteps;
+            if (Smooth) --numsteps;
             double val = Source.Get(x, y);
             var tb = Math.Floor(val * numsteps);
             var tt = tb + 1.0;
             var t = val * numsteps - tb;
             tb /= numsteps;
             tt /= numsteps;
-            double u = (this.Smooth ? MathHelper.QuinticBlend(t) : 0.0);
+            double u = Smooth ? MathHelper.QuinticBlend(t) : 0.0;
             return tb + u * (tt - tb);
         }
 
-        public override Double Get(Double x, Double y, Double z)
+        public override double Get(double x, double y, double z)
         {
             int numsteps = Tiers;
-            if (this.Smooth) --numsteps;
+            if (Smooth) --numsteps;
             double val = Source.Get(x, y, z);
             var tb = Math.Floor(val * numsteps);
             var tt = tb + 1.0;
             var t = val * numsteps - tb;
             tb /= numsteps;
             tt /= numsteps;
-            double u = (this.Smooth ? MathHelper.QuinticBlend(t) : 0.0);
+            double u = Smooth ? MathHelper.QuinticBlend(t) : 0.0;
             return tb + u * (tt - tb);
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w)
+        public override double Get(double x, double y, double z, double w)
         {
             int numsteps = Tiers;
-            if (this.Smooth) --numsteps;
+            if (Smooth) --numsteps;
             double val = Source.Get(x, y, z, w);
             var tb = Math.Floor(val * numsteps);
             var tt = tb + 1.0;
             var t = val * numsteps - tb;
             tb /= numsteps;
             tt /= numsteps;
-            double u = (this.Smooth ? MathHelper.QuinticBlend(t) : 0.0);
+            double u = Smooth ? MathHelper.QuinticBlend(t) : 0.0;
             return tb + u * (tt - tb);
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        public override double Get(double x, double y, double z, double w, double u, double v)
         {
             int numsteps = Tiers;
-            if (this.Smooth) --numsteps;
+            if (Smooth) --numsteps;
             double val = Source.Get(x, y, z, w, u, v);
             var tb = Math.Floor(val * numsteps);
             var tt = tb + 1.0;
             var t = val * numsteps - tb;
             tb /= numsteps;
             tt /= numsteps;
-            double s = (this.Smooth ? MathHelper.QuinticBlend(t) : 0.0);
+            double s = Smooth ? MathHelper.QuinticBlend(t) : 0.0;
             return tb + s * (tt - tb);
         }
     }

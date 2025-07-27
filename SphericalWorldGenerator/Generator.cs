@@ -1,3 +1,4 @@
+using AccidentalNoise;
 using SphericalWorldGenerator.Gameplay;
 using SphericalWorldGenerator.Maths;
 using SphericalWorldGenerator.Media;
@@ -12,71 +13,46 @@ namespace SphericalWorldGenerator
         // Adjustable variables for Unity Inspector
         #region Generator Values
         protected int Width = 512;
-
         protected int Height = 512;
         #endregion
 
         #region Height Map
         protected int TerrainOctaves = 6;
-
         protected double TerrainFrequency = 1.25;
-
         protected float DeepWater = 0.2f;
-
         protected float ShallowWater = 0.4f;
-
         protected float Sand = 0.5f;
-
         protected float Grass = 0.7f;
-
         protected float Forest = 0.8f;
-
         protected float Rock = 0.9f;
         #endregion
 
         #region Heat Map
         protected int HeatOctaves = 4;
-
         protected double HeatFrequency = 3.0;
-
         protected float ColdestValue = 0.05f;
-
         protected float ColderValue = 0.18f;
-
         protected float ColdValue = 0.4f;
-
         protected float WarmValue = 0.6f;
-
         protected float WarmerValue = 0.8f;
         #endregion
 
         #region Moisture Map
         protected int MoistureOctaves = 4;
-
         protected double MoistureFrequency = 3.0;
-
         protected float DryerValue = 0.27f;
-
         protected float DryValue = 0.4f;
-
         protected float WetValue = 0.6f;
-
         protected float WetterValue = 0.8f;
-
         protected float WettestValue = 0.9f;
         #endregion
 
         #region Rivers
         protected int RiverCount = 40;
-
         protected float MinRiverHeight = 0.6f;
-
         protected int MaxRiverAttempts = 1000;
-
         protected int MinRiverTurns = 18;
-
         protected int MinRiverLength = 20;
-
         protected int MaxRiverIntersections = 2;
         #endregion
 
@@ -88,42 +64,36 @@ namespace SphericalWorldGenerator
 
         protected Tile[,] Tiles;
 
-        protected List<TileGroup> Waters = new();
-        protected List<TileGroup> Lands = new();
+        protected List<TileGroup> Waters = [];
+        protected List<TileGroup> Lands = [];
 
-        protected List<River> Rivers = new();
-        protected List<RiverGroup> RiverGroups = new();
+        protected List<River> Rivers = [];
+        protected List<RiverGroup> RiverGroups = [];
 
+        #region Outputs
         // Our texture output gameobject
         protected MeshRenderer HeightMapRenderer;
         protected MeshRenderer HeatMapRenderer;
         protected MeshRenderer MoistureMapRenderer;
         protected MeshRenderer BiomeMapRenderer;
+        #endregion
 
         protected BiomeType[,] BiomeTable = new BiomeType[6, 6] {   
-		//COLDEST        //COLDER          //COLD                  //HOT                          //HOTTER                       //HOTTEST
-		{ BiomeType.Ice, BiomeType.Tundra, BiomeType.Grassland,    BiomeType.Desert,              BiomeType.Desert,              BiomeType.Desert },              //DRYEST
-		{ BiomeType.Ice, BiomeType.Tundra, BiomeType.Grassland,    BiomeType.Desert,              BiomeType.Desert,              BiomeType.Desert },              //DRYER
-		{ BiomeType.Ice, BiomeType.Tundra, BiomeType.Woodland,     BiomeType.Woodland,            BiomeType.Savanna,             BiomeType.Savanna },             //DRY
-		{ BiomeType.Ice, BiomeType.Tundra, BiomeType.BorealForest, BiomeType.Woodland,            BiomeType.Savanna,             BiomeType.Savanna },             //WET
-		{ BiomeType.Ice, BiomeType.Tundra, BiomeType.BorealForest, BiomeType.SeasonalForest,      BiomeType.TropicalRainforest,  BiomeType.TropicalRainforest },  //WETTER
-		{ BiomeType.Ice, BiomeType.Tundra, BiomeType.BorealForest, BiomeType.TemperateRainforest, BiomeType.TropicalRainforest,  BiomeType.TropicalRainforest }   //WETTEST
-	};
+		    //COLDEST        //COLDER          //COLD                  //HOT                          //HOTTER                       //HOTTEST
+		    { BiomeType.Ice, BiomeType.Tundra, BiomeType.Grassland,    BiomeType.Desert,              BiomeType.Desert,              BiomeType.Desert },              //DRYEST
+		    { BiomeType.Ice, BiomeType.Tundra, BiomeType.Grassland,    BiomeType.Desert,              BiomeType.Desert,              BiomeType.Desert },              //DRYER
+		    { BiomeType.Ice, BiomeType.Tundra, BiomeType.Woodland,     BiomeType.Woodland,            BiomeType.Savanna,             BiomeType.Savanna },             //DRY
+		    { BiomeType.Ice, BiomeType.Tundra, BiomeType.BorealForest, BiomeType.Woodland,            BiomeType.Savanna,             BiomeType.Savanna },             //WET
+		    { BiomeType.Ice, BiomeType.Tundra, BiomeType.BorealForest, BiomeType.SeasonalForest,      BiomeType.TropicalRainforest,  BiomeType.TropicalRainforest },  //WETTER
+		    { BiomeType.Ice, BiomeType.Tundra, BiomeType.BorealForest, BiomeType.TemperateRainforest, BiomeType.TropicalRainforest,  BiomeType.TropicalRainforest }   //WETTEST
+	    };
 
+        #region Framework
         void Start()
         {
             Instantiate();
             Generate();
         }
-
-        protected abstract void Initialize();
-        protected abstract void GetData();
-
-        protected abstract Tile GetTop(Tile tile);
-        protected abstract Tile GetBottom(Tile tile);
-        protected abstract Tile GetLeft(Tile tile);
-        protected abstract Tile GetRight(Tile tile);
-
         protected virtual void Instantiate()
         {
             Seed = Random.Range(0, int.MaxValue);
@@ -135,6 +105,26 @@ namespace SphericalWorldGenerator
             //BiomeMapRenderer = transform.Find("BiomeTexture").GetComponent<MeshRenderer>();
 
             Initialize();
+        }
+        protected abstract void Initialize();
+        protected abstract void GetData();
+        #endregion
+
+        #region Methods
+        protected abstract Tile GetTop(Tile tile);
+        protected abstract Tile GetBottom(Tile tile);
+        protected abstract Tile GetLeft(Tile tile);
+        protected abstract Tile GetRight(Tile tile);
+        public BiomeType GetBiomeType(Tile tile)
+        {
+            return BiomeTable[(int)tile.MoistureType, (int)tile.HeatType];
+        }
+        public float GetHeightValue(Tile tile)
+        {
+            if (tile == null)
+                return int.MaxValue;
+            else
+                return tile.HeightValue;
         }
 
         protected virtual void Generate()
@@ -160,7 +150,9 @@ namespace SphericalWorldGenerator
             //MoistureMapRenderer.materials[0].mainTexture = TextureGenerator.GetMoistureMapTexture(Width, Height, Tiles);
             //BiomeMapRenderer.materials[0].mainTexture = TextureGenerator.GetBiomeMapTexture(Width, Height, Tiles, ColdestValue, ColderValue, ColdValue);
         }
+        #endregion
 
+        #region Gameplay
         void Update()
         {
             // Refresh with inspector values
@@ -171,7 +163,9 @@ namespace SphericalWorldGenerator
                 Generate();
             }
         }
+        #endregion
 
+        #region Routines
         private void UpdateBiomeBitmask()
         {
             for (int x = 0; x < Width; x++)
@@ -182,27 +176,20 @@ namespace SphericalWorldGenerator
                 }
             }
         }
-
-        public BiomeType GetBiomeType(Tile tile)
-        {
-            return BiomeTable[(int)tile.MoistureType, (int)tile.HeatType];
-        }
-
         private void GenerateBiomeMap()
         {
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-
-                    if (!Tiles[x, y].Collidable) continue;
+                    if (!Tiles[x, y].Collidable) 
+                        continue;
 
                     Tile t = Tiles[x, y];
                     t.BiomeType = GetBiomeType(t);
                 }
             }
         }
-
         private void AddMoisture(Tile t, int radius)
         {
             int startx = MathHelper.Mod(t.X - radius, Width);
@@ -212,7 +199,6 @@ namespace SphericalWorldGenerator
 
             while (curr > 0)
             {
-
                 int x1 = MathHelper.Mod(t.X - curr, Width);
                 int x2 = MathHelper.Mod(t.X + curr, Width);
                 int y = t.Y;
@@ -230,7 +216,6 @@ namespace SphericalWorldGenerator
                 curr--;
             }
         }
-
         private void AddMoisture(Tile t, float amount)
         {
             MoistureData.Data[t.X, t.Y] += amount;
@@ -238,7 +223,7 @@ namespace SphericalWorldGenerator
             if (t.MoistureValue > 1)
                 t.MoistureValue = 1;
 
-            //set moisture type
+            // Set moisture type
             if (t.MoistureValue < DryerValue) t.MoistureType = MoistureType.Dryest;
             else if (t.MoistureValue < DryValue) t.MoistureType = MoistureType.Dryer;
             else if (t.MoistureValue < WetValue) t.MoistureType = MoistureType.Dry;
@@ -246,32 +231,26 @@ namespace SphericalWorldGenerator
             else if (t.MoistureValue < WettestValue) t.MoistureType = MoistureType.Wetter;
             else t.MoistureType = MoistureType.Wettest;
         }
-
         private void AdjustMoistureMap()
         {
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-
                     Tile t = Tiles[x, y];
                     if (t.HeightType == HeightType.River)
-                    {
                         AddMoisture(t, (int)60);
-                    }
                 }
             }
         }
-
         private void DigRiverGroups()
         {
             for (int i = 0; i < RiverGroups.Count; i++)
             {
-
                 RiverGroup group = RiverGroups[i];
                 River longest = null;
 
-                //Find longest river in this group
+                // Find longest river in this group
                 for (int j = 0; j < group.Rivers.Count; j++)
                 {
                     River river = group.Rivers[j];
@@ -283,7 +262,7 @@ namespace SphericalWorldGenerator
 
                 if (longest != null)
                 {
-                    //Dig out longest path first
+                    // Dig out longest path first
                     DigRiver(longest);
 
                     for (int j = 0; j < group.Rivers.Count; j++)
@@ -297,10 +276,9 @@ namespace SphericalWorldGenerator
                 }
             }
         }
-
         private void BuildRiverGroups()
         {
-            //loop each tile, checking if it belongs to multiple rivers
+            // Loop each tile, checking if it belongs to multiple rivers
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
@@ -354,20 +332,11 @@ namespace SphericalWorldGenerator
                 }
             }
         }
-
-        public float GetHeightValue(Tile tile)
-        {
-            if (tile == null)
-                return int.MaxValue;
-            else
-                return tile.HeightValue;
-        }
-
         private void GenerateRivers()
         {
             int attempts = 0;
             int rivercount = RiverCount;
-            Rivers = new List<River>();
+            Rivers = [];
 
             // Generate some rivers
             while (rivercount > 0 && attempts < MaxRiverAttempts)
@@ -414,8 +383,9 @@ namespace SphericalWorldGenerator
                 attempts++;
             }
         }
-
-        // Dig river based on a parent river vein
+        /// <summary>
+        /// Dig river based on a parent river vein
+        /// </summary>
         private void DigRiver(River river, River parent)
         {
             int intersectionID = 0;
@@ -520,29 +490,18 @@ namespace SphericalWorldGenerator
             // dig out the river
             for (int i = river.Tiles.Count - 1; i >= 0; i--)
             {
-
                 Tile t = river.Tiles[i];
 
                 if (counter < count1)
-                {
                     t.DigRiver(river, 4);
-                }
                 else if (counter < count2)
-                {
                     t.DigRiver(river, 3);
-                }
                 else if (counter < count3)
-                {
                     t.DigRiver(river, 2);
-                }
                 else if (counter < count4)
-                {
                     t.DigRiver(river, 1);
-                }
                 else
-                {
                     t.DigRiver(river, 0);
-                }
                 counter++;
             }
         }
@@ -607,41 +566,33 @@ namespace SphericalWorldGenerator
                 Tile t = river.Tiles[i];
 
                 if (counter < count1)
-                {
                     t.DigRiver(river, 4);
-                }
                 else if (counter < count2)
-                {
                     t.DigRiver(river, 3);
-                }
                 else if (counter < count3)
-                {
                     t.DigRiver(river, 2);
-                }
                 else if (counter < count4)
-                {
                     t.DigRiver(river, 1);
-                }
                 else
-                {
                     t.DigRiver(river, 0);
-                }
                 counter++;
             }
         }
+        #endregion
 
+        #region Helpers
         private void FindPathToWater(Tile tile, Direction direction, ref River river)
         {
             if (tile.Rivers.Contains(river))
                 return;
 
-            // check if there is already a river on this tile
+            // Check if there is already a river on this tile
             if (tile.Rivers.Count > 0)
                 river.Intersections++;
 
             river.AddTile(tile);
 
-            // get neighbors
+            // Get neighbors
             Tile left = GetLeft(tile);
             Tile right = GetRight(tile);
             Tile top = GetTop(tile);
@@ -652,7 +603,7 @@ namespace SphericalWorldGenerator
             float topValue = int.MaxValue;
             float bottomValue = int.MaxValue;
 
-            // query height values of neighbors
+            // Query height values of neighbors
             if (left != null && left.GetRiverNeighborCount(river) < 2 && !river.Tiles.Contains(left))
                 leftValue = left.HeightValue;
             if (right != null && right.GetRiverNeighborCount(river) < 2 && !river.Tiles.Contains(right))
@@ -662,7 +613,7 @@ namespace SphericalWorldGenerator
             if (bottom != null && bottom.GetRiverNeighborCount(river) < 2 && !river.Tiles.Contains(bottom))
                 bottomValue = bottom.HeightValue;
 
-            // if neighbor is existing river that is not this one, flow into it
+            // If neighbor is existing river that is not this one, flow into it
             if (bottom != null && bottom.Rivers.Count == 0 && !bottom.Collidable)
                 bottomValue = 0;
             if (top != null && top.Rivers.Count == 0 && !top.Collidable)
@@ -672,7 +623,7 @@ namespace SphericalWorldGenerator
             if (right != null && right.Rivers.Count == 0 && !right.Collidable)
                 rightValue = 0;
 
-            // override flow direction if a tile is significantly lower
+            // Override flow direction if a tile is significantly lower
             if (direction == Direction.Left)
                 if (Mathf.Abs(rightValue - leftValue) < 0.1f)
                     rightValue = int.MaxValue;
@@ -686,14 +637,14 @@ namespace SphericalWorldGenerator
                 if (Mathf.Abs(topValue - bottomValue) < 0.1f)
                     topValue = int.MaxValue;
 
-            // find mininum
+            // Find mininum
             float min = Mathf.Min(Mathf.Min(Mathf.Min(leftValue, rightValue), topValue), bottomValue);
 
-            // if no minimum found - exit
+            // If no minimum found - exit
             if (min == int.MaxValue)
                 return;
 
-            //Move to next neighbor
+            // Move to next neighbor
             if (min == leftValue)
             {
                 if (left != null && left.Collidable)
@@ -743,8 +694,9 @@ namespace SphericalWorldGenerator
                 }
             }
         }
-
-        // Build a Tile array from our data
+        /// <summary>
+        /// Build a Tile array from our data
+        /// </summary>
         private void LoadTiles()
         {
             Tiles = new Tile[Width, Height];
@@ -753,15 +705,16 @@ namespace SphericalWorldGenerator
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    Tile t = new();
-                    t.X = x;
-                    t.Y = y;
+                    Tile t = new()
+                    {
+                        X = x,
+                        Y = y
+                    };
 
                     //set heightmap value
                     float heightValue = HeightData.Data[x, y];
                     heightValue = (heightValue - HeightData.Min) / (HeightData.Max - HeightData.Min);
                     t.HeightValue = heightValue;
-
 
                     if (heightValue < DeepWater)
                     {
@@ -799,26 +752,17 @@ namespace SphericalWorldGenerator
                         t.Collidable = true;
                     }
 
-
-                    //adjust moisture based on height
+                    // Adjust moisture based on height
                     if (t.HeightType == HeightType.DeepWater)
-                    {
                         MoistureData.Data[t.X, t.Y] += 8f * t.HeightValue;
-                    }
                     else if (t.HeightType == HeightType.ShallowWater)
-                    {
                         MoistureData.Data[t.X, t.Y] += 3f * t.HeightValue;
-                    }
                     else if (t.HeightType == HeightType.Shore)
-                    {
                         MoistureData.Data[t.X, t.Y] += 1f * t.HeightValue;
-                    }
                     else if (t.HeightType == HeightType.Sand)
-                    {
                         MoistureData.Data[t.X, t.Y] += 0.2f * t.HeightValue;
-                    }
 
-                    //Moisture Map Analyze	
+                    // Moisture Map Analyze	
                     float moistureValue = MoistureData.Data[x, y];
                     moistureValue = (moistureValue - MoistureData.Min) / (MoistureData.Max - MoistureData.Min);
                     t.MoistureValue = moistureValue;
@@ -831,31 +775,22 @@ namespace SphericalWorldGenerator
                     else if (moistureValue < WettestValue) t.MoistureType = MoistureType.Wetter;
                     else t.MoistureType = MoistureType.Wettest;
 
-
                     // Adjust Heat Map based on Height - Higher == colder
                     if (t.HeightType == HeightType.Forest)
-                    {
                         HeatData.Data[t.X, t.Y] -= 0.1f * t.HeightValue;
-                    }
                     else if (t.HeightType == HeightType.Rock)
-                    {
                         HeatData.Data[t.X, t.Y] -= 0.25f * t.HeightValue;
-                    }
                     else if (t.HeightType == HeightType.Snow)
-                    {
                         HeatData.Data[t.X, t.Y] -= 0.4f * t.HeightValue;
-                    }
                     else
-                    {
                         HeatData.Data[t.X, t.Y] += 0.01f * t.HeightValue;
-                    }
 
                     // Set heat value
                     float heatValue = HeatData.Data[x, y];
                     heatValue = (heatValue - HeatData.Min) / (HeatData.Max - HeatData.Min);
                     t.HeatValue = heatValue;
 
-                    // set heat type
+                    // Set heat type
                     if (heatValue < ColdestValue) t.HeatType = HeatType.Coldest;
                     else if (heatValue < ColderValue) t.HeatType = HeatType.Colder;
                     else if (heatValue < ColdValue) t.HeatType = HeatType.Cold;
@@ -879,7 +814,6 @@ namespace SphericalWorldGenerator
                 }
             }
         }
-
         private void UpdateNeighbors()
         {
             for (int x = 0; x < Width; x++)
@@ -895,18 +829,12 @@ namespace SphericalWorldGenerator
                 }
             }
         }
-
         private void UpdateBitmasks()
         {
             for (int x = 0; x < Width; x++)
-            {
                 for (int y = 0; y < Height; y++)
-                {
                     Tiles[x, y].UpdateBitmask();
-                }
-            }
         }
-
         private void FloodFill()
         {
             // Use a stack instead of recursion
@@ -955,7 +883,6 @@ namespace SphericalWorldGenerator
                 }
             }
         }
-
         private void FloodFill(Tile tile, ref TileGroup tiles, ref Stack<Tile> stack)
         {
             // Validate
@@ -986,7 +913,6 @@ namespace SphericalWorldGenerator
             if (t != null && !t.FloodFilled && tile.Collidable == t.Collidable)
                 stack.Push(t);
         }
-
+        #endregion
     }
-
 }

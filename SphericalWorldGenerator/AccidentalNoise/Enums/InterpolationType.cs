@@ -1,4 +1,4 @@
-namespace AccidentalNoise
+namespace AccidentalNoise.Enums
 {
     public enum InterpolationType
     {

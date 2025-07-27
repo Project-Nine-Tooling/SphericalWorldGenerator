@@ -1,7 +1,7 @@
-﻿using SphericalWorldGenerator;
+﻿using AccidentalNoise.Enums;
 using System;
 
-namespace AccidentalNoise
+namespace AccidentalNoise.Implicit
 {
     public sealed class ImplicitFractal : ImplicitModuleBase
     {
@@ -9,153 +9,153 @@ namespace AccidentalNoise
 
         private readonly ImplicitModuleBase[] sources = new ImplicitModuleBase[Noise.MAX_SOURCES];
 
-        private readonly Double[] expArray = new Double[Noise.MAX_SOURCES];
+        private readonly double[] expArray = new double[Noise.MAX_SOURCES];
 
-        private readonly Double[,] correct = new Double[Noise.MAX_SOURCES, 2];
+        private readonly double[,] correct = new double[Noise.MAX_SOURCES, 2];
 
-        private Int32 seed;
+        private int seed;
 
         private FractalType type;
 
-        private Int32 octaves;
+        private int octaves;
 
-        public ImplicitFractal(FractalType fractalType, BasisType basisType, InterpolationType interpolationType, Int32 octaves, double frequency, Int32 seed)
+        public ImplicitFractal(FractalType fractalType, BasisType basisType, InterpolationType interpolationType, int octaves, double frequency, int seed)
         {
             this.seed = seed;
-            this.Octaves = octaves;
-            this.Frequency = frequency;
-            this.Lacunarity = 2.00;
-            this.Type = fractalType;
-            this.SetAllSourceTypes(basisType, interpolationType);
-            this.ResetAllSources();
+            Octaves = octaves;
+            Frequency = frequency;
+            Lacunarity = 2.00;
+            Type = fractalType;
+            SetAllSourceTypes(basisType, interpolationType);
+            ResetAllSources();
         }
 
-        public override Int32 Seed
+        public override int Seed
         {
-            get { return this.seed; }
+            get { return seed; }
             set
             {
-                this.seed = value;
+                seed = value;
                 for (int source = 0; source < Noise.MAX_SOURCES; source += 1)
-                    this.sources[source].Seed = ((this.seed + source * 300));
+                    sources[source].Seed = seed + source * 300;
             }
         }
 
         public FractalType Type
         {
-            get { return this.type; }
+            get { return type; }
             set
             {
-                this.type = value;
-                switch (this.type)
+                type = value;
+                switch (type)
                 {
                     case FractalType.FRACTIONALBROWNIANMOTION:
-                        this.H = 1.00;
-                        this.Gain = 0.00;
-                        this.Offset = 0.00;
-                        this.FractionalBrownianMotion_CalculateWeights();
+                        H = 1.00;
+                        Gain = 0.00;
+                        Offset = 0.00;
+                        FractionalBrownianMotion_CalculateWeights();
                         break;
                     case FractalType.RIDGEDMULTI:
-                        this.H = 0.90;
-                        this.Gain = 2.00;
-                        this.Offset = 1.00;
-                        this.RidgedMulti_CalculateWeights();
+                        H = 0.90;
+                        Gain = 2.00;
+                        Offset = 1.00;
+                        RidgedMulti_CalculateWeights();
                         break;
                     case FractalType.BILLOW:
-                        this.H = 1.00;
-                        this.Gain = 0.00;
-                        this.Offset = 0.00;
-                        this.Billow_CalculateWeights();
+                        H = 1.00;
+                        Gain = 0.00;
+                        Offset = 0.00;
+                        Billow_CalculateWeights();
                         break;
                     case FractalType.MULTI:
-                        this.H = 1.00;
-                        this.Gain = 0.00;
-                        this.Offset = 0.00;
-                        this.Multi_CalculateWeights();
+                        H = 1.00;
+                        Gain = 0.00;
+                        Offset = 0.00;
+                        Multi_CalculateWeights();
                         break;
                     case FractalType.HYBRIDMULTI:
-                        this.H = 0.25;
-                        this.Gain = 1.00;
-                        this.Offset = 0.70;
-                        this.HybridMulti_CalculateWeights();
+                        H = 0.25;
+                        Gain = 1.00;
+                        Offset = 0.70;
+                        HybridMulti_CalculateWeights();
                         break;
                     default:
-                        this.H = 1.00;
-                        this.Gain = 0.00;
-                        this.Offset = 0.00;
-                        this.FractionalBrownianMotion_CalculateWeights();
+                        H = 1.00;
+                        Gain = 0.00;
+                        Offset = 0.00;
+                        FractionalBrownianMotion_CalculateWeights();
                         break;
                 }
             }
         }
 
-        public Int32 Octaves
+        public int Octaves
         {
-            get {return this.octaves; }
+            get {return octaves; }
             set
             {
                 if (value >= Noise.MAX_SOURCES)
                     value = Noise.MAX_SOURCES - 1;
-                this.octaves = value;
+                octaves = value;
             }
         }
 
-        public Double Frequency { get; set; }
+        public double Frequency { get; set; }
 
-        public Double Lacunarity { get; set; }
+        public double Lacunarity { get; set; }
 
-        public Double Gain { get; set; }
+        public double Gain { get; set; }
 
-        public Double Offset { get; set; }
+        public double Offset { get; set; }
 
-        public Double H { get; set; }
+        public double H { get; set; }
 
         public void SetAllSourceTypes(BasisType newBasisType, InterpolationType newInterpolationType)
         {
             for (int i = 0; i < Noise.MAX_SOURCES; ++i)
             {
-                this.basisFunctions[i] = new ImplicitBasisFunction(newBasisType, newInterpolationType, Seed);
+                basisFunctions[i] = new ImplicitBasisFunction(newBasisType, newInterpolationType, Seed);
             }
         }
 
-        public void SetSourceType(Int32 which, BasisType newBasisType, InterpolationType newInterpolationType)
+        public void SetSourceType(int which, BasisType newBasisType, InterpolationType newInterpolationType)
         {
             if (which >= Noise.MAX_SOURCES || which < 0) return;
 
-            this.basisFunctions[which].BasisType = newBasisType;
-            this.basisFunctions[which].InterpolationType = newInterpolationType;
+            basisFunctions[which].BasisType = newBasisType;
+            basisFunctions[which].InterpolationType = newInterpolationType;
         }
 
-        public void SetSourceOverride(Int32 which, ImplicitModuleBase newSource)
+        public void SetSourceOverride(int which, ImplicitModuleBase newSource)
         {
             if (which < 0 || which >= Noise.MAX_SOURCES) return;
 
-            this.sources[which] = newSource;
+            sources[which] = newSource;
         }
 
-        public void ResetSource(Int32 which)
+        public void ResetSource(int which)
         {
             if (which < 0 || which >= Noise.MAX_SOURCES) return;
 
-            this.sources[which] = this.basisFunctions[which];
+            sources[which] = basisFunctions[which];
         }
 
         public void ResetAllSources()
         {
             for (int c = 0; c < Noise.MAX_SOURCES; ++c)
-                this.sources[c] = this.basisFunctions[c];
+                sources[c] = basisFunctions[c];
         }
 
-        public ImplicitBasisFunction GetBasis(Int32 which)
+        public ImplicitBasisFunction GetBasis(int which)
         {
             if (which < 0 || which >= Noise.MAX_SOURCES) return null;
 
-            return this.basisFunctions[which];
+            return basisFunctions[which];
         }
 
-        public override Double Get(Double x, Double y)
+        public override double Get(double x, double y)
         {
-            Double v;
+            double v;
             switch (type)
             {
                 case FractalType.FRACTIONALBROWNIANMOTION:
@@ -180,9 +180,9 @@ namespace AccidentalNoise
 			return MathHelper.Clamp(v, -1.0, 1.0);
         }
 
-        public override Double Get(Double x, Double y, Double z)
+        public override double Get(double x, double y, double z)
         {
-            Double val;
+            double val;
             switch (type)
             {
                 case FractalType.FRACTIONALBROWNIANMOTION:
@@ -207,9 +207,9 @@ namespace AccidentalNoise
 			return MathHelper.Clamp(val, -1.0, 1.0);
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w)
+        public override double Get(double x, double y, double z, double w)
         {
-            Double val;
+            double val;
             switch (type)
             {
                 case FractalType.FRACTIONALBROWNIANMOTION:
@@ -234,9 +234,9 @@ namespace AccidentalNoise
 			return MathHelper.Clamp(val, -1.0, 1.0);
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        public override double Get(double x, double y, double z, double w, double u, double v)
         {
-            Double val;
+            double val;
             switch (type)
             {
                 case FractalType.FRACTIONALBROWNIANMOTION:
@@ -278,8 +278,8 @@ namespace AccidentalNoise
                 minvalue += -1.0 * expArray[i];
                 maxvalue += 1.0 * expArray[i];
 
-                const Double a = -1.0;
-                const Double b = 1.0;
+                const double a = -1.0;
+                const double b = 1.0;
                 double scale = (b - a) / (maxvalue - minvalue);
                 double bias = a - minvalue * scale;
                 correct[i, 0] = scale;
@@ -300,10 +300,10 @@ namespace AccidentalNoise
             for (int i = 0; i < Noise.MAX_SOURCES; ++i)
             {
                 minvalue += (Offset - 1.0) * (Offset - 1.0) * expArray[i];
-                maxvalue += (Offset) * (Offset) * expArray[i];
+                maxvalue += Offset * Offset * expArray[i];
 
-                const Double a = -1.0;
-                const Double b = 1.0;
+                const double a = -1.0;
+                const double b = 1.0;
                 double scale = (b - a) / (maxvalue - minvalue);
                 double bias = a - minvalue * scale;
                 correct[i, 0] = scale;
@@ -327,8 +327,8 @@ namespace AccidentalNoise
                 minvalue += -1.0 * expArray[i];
                 maxvalue += 1.0 * expArray[i];
 
-                const Double a = -1.0;
-                const Double b = 1.0;
+                const double a = -1.0;
+                const double b = 1.0;
                 double scale = (b - a) / (maxvalue - minvalue);
                 double bias = a - minvalue * scale;
                 correct[i, 0] = scale;
@@ -352,8 +352,8 @@ namespace AccidentalNoise
                 minvalue *= -1.0 * expArray[i] + 1.0;
                 maxvalue *= 1.0 * expArray[i] + 1.0;
 
-                const Double a = -1.0;
-                const Double b = 1.0;
+                const double a = -1.0;
+                const double b = 1.0;
                 double scale = (b - a) / (maxvalue - minvalue);
                 double bias = a - minvalue * scale;
                 correct[i, 0] = scale;
@@ -407,7 +407,7 @@ namespace AccidentalNoise
         }
 
 
-        private Double FractionalBrownianMotion_Get(Double x, Double y)
+        private double FractionalBrownianMotion_Get(double x, double y)
         {
             double value = 0.00;
             x *= Frequency;
@@ -425,7 +425,7 @@ namespace AccidentalNoise
             return value;
         }
 
-        private Double FractionalBrownianMotion_Get(Double x, Double y, Double z)
+        private double FractionalBrownianMotion_Get(double x, double y, double z)
         {
             double value = 0.00;
             x *= Frequency;
@@ -444,7 +444,7 @@ namespace AccidentalNoise
             return value;
         }
 
-        private Double FractionalBrownianMotion_Get(Double x, Double y, Double z, Double w)
+        private double FractionalBrownianMotion_Get(double x, double y, double z, double w)
         {
             double value = 0.00;
             x *= Frequency;
@@ -465,7 +465,7 @@ namespace AccidentalNoise
             return value * correct[octaves - 1, 0] + correct[octaves - 1, 1];
         }
 
-        private Double FractionalBrownianMotion_Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        private double FractionalBrownianMotion_Get(double x, double y, double z, double w, double u, double v)
         {
             double value = 0.00;
             x *= Frequency;
@@ -491,7 +491,7 @@ namespace AccidentalNoise
         }
 
 
-        private Double Multi_Get(Double x, Double y)
+        private double Multi_Get(double x, double y)
         {
             double value = 1.00;
             x *= Frequency;
@@ -508,7 +508,7 @@ namespace AccidentalNoise
             return value * correct[octaves - 1, 0] + correct[octaves - 1, 1];
         }
 
-        private Double Multi_Get(Double x, Double y, Double z, Double w)
+        private double Multi_Get(double x, double y, double z, double w)
         {
             double value = 1.00;
             x *= Frequency;
@@ -528,7 +528,7 @@ namespace AccidentalNoise
             return value * correct[octaves - 1, 0] + correct[octaves - 1, 1];
         }
 
-        private Double Multi_Get(Double x, Double y, Double z)
+        private double Multi_Get(double x, double y, double z)
         {
             double value = 1.00;
             x *= Frequency;
@@ -546,7 +546,7 @@ namespace AccidentalNoise
             return value * correct[octaves - 1, 0] + correct[octaves - 1, 1];
         }
 
-        private Double Multi_Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        private double Multi_Get(double x, double y, double z, double w, double u, double v)
         {
             double value = 1.00;
             x *= Frequency;
@@ -571,7 +571,7 @@ namespace AccidentalNoise
         }
 
 
-        private Double Billow_Get(Double x, Double y)
+        private double Billow_Get(double x, double y)
         {
             double value = 0.00;
             x *= Frequency;
@@ -592,7 +592,7 @@ namespace AccidentalNoise
             return value * correct[octaves - 1, 0] + correct[octaves - 1, 1];
         }
 
-        private Double Billow_Get(Double x, Double y, Double z, Double w)
+        private double Billow_Get(double x, double y, double z, double w)
         {
             double value = 0.00;
             x *= Frequency;
@@ -616,7 +616,7 @@ namespace AccidentalNoise
             return value * correct[octaves - 1, 0] + correct[octaves - 1, 1];
         }
 
-        private Double Billow_Get(Double x, Double y, Double z)
+        private double Billow_Get(double x, double y, double z)
         {
             double value = 0.00;
             x *= Frequency;
@@ -638,7 +638,7 @@ namespace AccidentalNoise
             return value * correct[octaves - 1, 0] + correct[octaves - 1, 1];
         }
 
-        private Double Billow_Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        private double Billow_Get(double x, double y, double z, double w, double u, double v)
         {
             double value = 0.00;
             x *= Frequency;
@@ -667,7 +667,7 @@ namespace AccidentalNoise
         }
 
 
-        private Double RidgedMulti_Get(Double x, Double y)
+        private double RidgedMulti_Get(double x, double y)
         {
             double result = 0.00;
             x *= Frequency;
@@ -688,7 +688,7 @@ namespace AccidentalNoise
             return result * correct[octaves - 1, 0] + correct[octaves - 1, 1];
         }
 
-        private Double RidgedMulti_Get(Double x, Double y, Double z, Double w)
+        private double RidgedMulti_Get(double x, double y, double z, double w)
         {
             double result = 0.00;
             x *= Frequency;
@@ -712,7 +712,7 @@ namespace AccidentalNoise
             return result * correct[octaves - 1, 0] + correct[octaves - 1, 1];
         }
 
-        private Double RidgedMulti_Get(Double x, Double y, Double z)
+        private double RidgedMulti_Get(double x, double y, double z)
         {
             double result = 0.00;
             x *= Frequency;
@@ -734,7 +734,7 @@ namespace AccidentalNoise
             return result * correct[octaves - 1, 0] + correct[octaves - 1, 1];
         }
 
-        private Double RidgedMulti_Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        private double RidgedMulti_Get(double x, double y, double z, double w, double u, double v)
         {
             double result = 0.00;
             x *= Frequency;
@@ -763,7 +763,7 @@ namespace AccidentalNoise
         }
 
 
-        private Double HybridMulti_Get(Double x, Double y)
+        private double HybridMulti_Get(double x, double y)
         {
             x *= Frequency;
             y *= Frequency;
@@ -787,7 +787,7 @@ namespace AccidentalNoise
             return value * correct[octaves - 1, 0] + correct[octaves - 1, 1];
         }
 
-        private Double HybridMulti_Get(Double x, Double y, Double z)
+        private double HybridMulti_Get(double x, double y, double z)
         {
             x *= Frequency;
             y *= Frequency;
@@ -813,7 +813,7 @@ namespace AccidentalNoise
             return value * correct[octaves - 1, 0] + correct[octaves - 1, 1];
         }
 
-        private Double HybridMulti_Get(Double x, Double y, Double z, Double w)
+        private double HybridMulti_Get(double x, double y, double z, double w)
         {
             x *= Frequency;
             y *= Frequency;
@@ -842,7 +842,7 @@ namespace AccidentalNoise
             return value * correct[octaves - 1, 0] + correct[octaves - 1, 1];
         }
 
-        private Double HybridMulti_Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        private double HybridMulti_Get(double x, double y, double z, double w, double u, double v)
         {
             x *= Frequency;
             y *= Frequency;

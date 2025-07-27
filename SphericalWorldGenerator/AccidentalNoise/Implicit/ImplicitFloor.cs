@@ -1,39 +1,39 @@
 ﻿using System;
 
-namespace AccidentalNoise
+namespace AccidentalNoise.Implicit
 {
     public sealed class ImplicitFloor : ImplicitModuleBase
     {
         public ImplicitFloor()
         {
-            this.Source = new ImplicitConstant(0.00);
+            Source = new ImplicitConstant(0.00);
         }
 
         public ImplicitFloor(ImplicitModuleBase source)
         {
-            this.Source = source;
+            Source = source;
         }
 
         public ImplicitModuleBase Source { get; set; }
 
-        public override Double Get(Double x, Double y)
+        public override double Get(double x, double y)
         {
-            return Math.Floor(this.Source.Get(x, y));
+            return Math.Floor(Source.Get(x, y));
         }
 
-        public override Double Get(Double x, Double y, Double z)
+        public override double Get(double x, double y, double z)
         {
-            return Math.Floor(this.Source.Get(x, y, z));
+            return Math.Floor(Source.Get(x, y, z));
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w)
+        public override double Get(double x, double y, double z, double w)
         {
-            return Math.Floor(this.Source.Get(x, y, z, w));
+            return Math.Floor(Source.Get(x, y, z, w));
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        public override double Get(double x, double y, double z, double w, double u, double v)
         {
-            return Math.Floor(this.Source.Get(x, y, z, w, u, v));
+            return Math.Floor(Source.Get(x, y, z, w, u, v));
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace AccidentalNoise
+namespace AccidentalNoise.Implicit
 {
     public class ImplicitCellular : ImplicitModuleBase
     {
         private CellularGenerator generator;
 
-        public readonly Double[] Coefficients = new Double[4];
+        public readonly double[] Coefficients = new double[4];
 
         public ImplicitCellular(CellularGenerator generator)
         {
@@ -17,17 +17,17 @@ namespace AccidentalNoise
 
         public CellularGenerator Generator
         {
-            get { return this.generator; }
+            get { return generator; }
             set
             {
                 if (value == null) throw new ArgumentNullException("value");
-                this.generator = value;
+                generator = value;
             }
         }
 
-        public override Double Get(Double x, Double y)
+        public override double Get(double x, double y)
         {
-            CellularCache c = this.generator.Get(x, y);
+            CellularCache c = generator.Get(x, y);
 
             return
                 c.F[0] * Coefficients[0] +
@@ -36,9 +36,9 @@ namespace AccidentalNoise
                 c.F[3] * Coefficients[3];
         }
 
-        public override Double Get(Double x, Double y, Double z)
+        public override double Get(double x, double y, double z)
         {
-            CellularCache c = this.generator.Get(x, y, z);
+            CellularCache c = generator.Get(x, y, z);
 
             return
                 c.F[0] * Coefficients[0] +
@@ -47,9 +47,9 @@ namespace AccidentalNoise
                 c.F[3] * Coefficients[3];
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w)
+        public override double Get(double x, double y, double z, double w)
         {
-            CellularCache c = this.generator.Get(x, y, z, w);
+            CellularCache c = generator.Get(x, y, z, w);
 
             return
                 c.F[0] * Coefficients[0] +
@@ -58,9 +58,9 @@ namespace AccidentalNoise
                 c.F[3] * Coefficients[3];
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        public override double Get(double x, double y, double z, double w, double u, double v)
         {
-            CellularCache c = this.generator.Get(x, y, z, w, u, v);
+            CellularCache c = generator.Get(x, y, z, w, u, v);
 
             return
                 c.F[0] * Coefficients[0] +

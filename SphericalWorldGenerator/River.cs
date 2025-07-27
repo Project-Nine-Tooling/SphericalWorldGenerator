@@ -24,7 +24,7 @@ namespace SphericalWorldGenerator
         public River(int id)
         {
             ID = id;
-            Tiles = new List<Tile>();
+            Tiles = [];
         }
 
         public void AddTile(Tile tile)
@@ -36,6 +36,6 @@ namespace SphericalWorldGenerator
 
     public class RiverGroup
     {
-        public List<River> Rivers = new();
+        public List<River> Rivers = [];
     }
 }

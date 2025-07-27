@@ -4,13 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PublishAot>true</PublishAot>
     <IsAotCompatible>true</IsAotCompatible>
+    <PublishAot>true</PublishAot>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Parcel_NExT\TheMatrix\Libraries\TheMatrix.Core\TheMatrix.Core.csproj" />
-    <ProjectReference Include="..\AccidentalNoise\AccidentalNoise.csproj" />
-  </ItemGroup>
 
 </Project>

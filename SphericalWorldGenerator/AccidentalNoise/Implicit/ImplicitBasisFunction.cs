@@ -1,12 +1,13 @@
-﻿using System;
+﻿using AccidentalNoise.Enums;
+using System;
 
-namespace AccidentalNoise
+namespace AccidentalNoise.Implicit
 {
     public sealed class ImplicitBasisFunction : ImplicitModuleBase
     {
-        private readonly Double[] scale = new Double[4];
+        private readonly double[] scale = new double[4];
 
-        private readonly Double[] offset = new Double[4];
+        private readonly double[] offset = new double[4];
 
         private InterpolationDelegate interpolator;
 
@@ -18,31 +19,31 @@ namespace AccidentalNoise
 
         private Noise6DDelegate noise6D;
 
-        private Int32 seed;
+        private int seed;
 
         private BasisType basisType;
 
         private InterpolationType interpolationType;
 
-        private readonly Double[,] rotationMatrix = new Double[3, 3];
+        private readonly double[,] rotationMatrix = new double[3, 3];
 
-        private Double cos2D;
+        private double cos2D;
 
-        private Double sin2D;
+        private double sin2D;
 
         public ImplicitBasisFunction(BasisType basisType, InterpolationType interpolationType, int seed)
         {
-            this.BasisType = basisType;
-            this.InterpolationType = interpolationType;
-            this.Seed = seed;
+            BasisType = basisType;
+            InterpolationType = interpolationType;
+            Seed = seed;
         }
 
-        public override Int32 Seed
+        public override int Seed
         {
-            get { return this.seed; }
+            get { return seed; }
             set
             {
-                this.seed = value;
+                seed = value;
                 Random random = new(value);
 
                 double ax = random.NextDouble();
@@ -61,118 +62,118 @@ namespace AccidentalNoise
 
         public BasisType BasisType
         {
-            get { return this.basisType; }
+            get { return basisType; }
             set
             {
-                this.basisType = value;
-                switch (this.basisType)
+                basisType = value;
+                switch (basisType)
                 {
                     case BasisType.VALUE:
-                        this.noise2D = Noise.ValueNoise;
-                        this.noise3D = Noise.ValueNoise;
-                        this.noise4D = Noise.ValueNoise;
-                        this.noise6D = Noise.ValueNoise;
+                        noise2D = Noise.ValueNoise;
+                        noise3D = Noise.ValueNoise;
+                        noise4D = Noise.ValueNoise;
+                        noise6D = Noise.ValueNoise;
                         break;
                     case BasisType.GRADIENT:
-                        this.noise2D = Noise.GradientNoise;
-                        this.noise3D = Noise.GradientNoise;
-                        this.noise4D = Noise.GradientNoise;
-                        this.noise6D = Noise.GradientNoise;
+                        noise2D = Noise.GradientNoise;
+                        noise3D = Noise.GradientNoise;
+                        noise4D = Noise.GradientNoise;
+                        noise6D = Noise.GradientNoise;
                         break;
                     case BasisType.GRADIENTVALUE:
-                        this.noise2D = Noise.GradientValueNoise;
-                        this.noise3D = Noise.GradientValueNoise;
-                        this.noise4D = Noise.GradientValueNoise;
-                        this.noise6D = Noise.GradientValueNoise;
+                        noise2D = Noise.GradientValueNoise;
+                        noise3D = Noise.GradientValueNoise;
+                        noise4D = Noise.GradientValueNoise;
+                        noise6D = Noise.GradientValueNoise;
                         break;
                     case BasisType.WHITE:
-                        this.noise2D = Noise.WhiteNoise;
-                        this.noise3D = Noise.WhiteNoise;
-                        this.noise4D = Noise.WhiteNoise;
-                        this.noise6D = Noise.WhiteNoise;
+                        noise2D = Noise.WhiteNoise;
+                        noise3D = Noise.WhiteNoise;
+                        noise4D = Noise.WhiteNoise;
+                        noise6D = Noise.WhiteNoise;
                         break;
                     case BasisType.SIMPLEX:
-                        this.noise2D = Noise.SimplexNoise;
-                        this.noise3D = Noise.SimplexNoise;
-                        this.noise4D = Noise.SimplexNoise;
-                        this.noise6D = Noise.SimplexNoise;
+                        noise2D = Noise.SimplexNoise;
+                        noise3D = Noise.SimplexNoise;
+                        noise4D = Noise.SimplexNoise;
+                        noise6D = Noise.SimplexNoise;
                         break;
 
                     default:
-                        this.noise2D = Noise.GradientNoise;
-                        this.noise3D = Noise.GradientNoise;
-                        this.noise4D = Noise.GradientNoise;
-                        this.noise6D = Noise.GradientNoise;
+                        noise2D = Noise.GradientNoise;
+                        noise3D = Noise.GradientNoise;
+                        noise4D = Noise.GradientNoise;
+                        noise6D = Noise.GradientNoise;
                         break;
                 }
-                SetMagicNumbers(this.basisType);
+                SetMagicNumbers(basisType);
             }
         }
 
         public InterpolationType InterpolationType
         {
-            get { return this.interpolationType; }
+            get { return interpolationType; }
             set
             {
-                this.interpolationType = value;
-                switch (this.interpolationType)
+                interpolationType = value;
+                switch (interpolationType)
                 {
-                    case InterpolationType.NONE: this.interpolator = Noise.NoInterpolation; break;
-                    case InterpolationType.LINEAR: this.interpolator = Noise.LinearInterpolation; break;
-                    case InterpolationType.CUBIC: this.interpolator = Noise.HermiteInterpolation; break;
-                    default: this.interpolator = Noise.QuinticInterpolation; break;
+                    case InterpolationType.NONE: interpolator = Noise.NoInterpolation; break;
+                    case InterpolationType.LINEAR: interpolator = Noise.LinearInterpolation; break;
+                    case InterpolationType.CUBIC: interpolator = Noise.HermiteInterpolation; break;
+                    default: interpolator = Noise.QuinticInterpolation; break;
                 }
             }
         }
 
-        public override Double Get(Double x, Double y)
+        public override double Get(double x, double y)
         {
             double nx = x * cos2D - y * sin2D;
             double ny = y * cos2D + x * sin2D;
 
-            return this.noise2D(nx, ny, this.seed, this.interpolator);
+            return noise2D(nx, ny, seed, interpolator);
         }
 
-        public override Double Get(Double x, Double y, Double z)
+        public override double Get(double x, double y, double z)
         {
-            double nx = (this.rotationMatrix[0, 0] * x) + (this.rotationMatrix[1, 0] * y) + (this.rotationMatrix[2, 0] * z);
-            double ny = (this.rotationMatrix[0, 1] * x) + (this.rotationMatrix[1, 1] * y) + (this.rotationMatrix[2, 1] * z);
-            double nz = (this.rotationMatrix[0, 2] * x) + (this.rotationMatrix[1, 2] * y) + (this.rotationMatrix[2, 2] * z);
+            double nx = rotationMatrix[0, 0] * x + rotationMatrix[1, 0] * y + rotationMatrix[2, 0] * z;
+            double ny = rotationMatrix[0, 1] * x + rotationMatrix[1, 1] * y + rotationMatrix[2, 1] * z;
+            double nz = rotationMatrix[0, 2] * x + rotationMatrix[1, 2] * y + rotationMatrix[2, 2] * z;
 
-            return this.noise3D(nx, ny, nz, this.seed, this.interpolator);
+            return noise3D(nx, ny, nz, seed, interpolator);
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w)
+        public override double Get(double x, double y, double z, double w)
         {
-            double nx = (this.rotationMatrix[0, 0] * x) + (this.rotationMatrix[1, 0] * y) + (this.rotationMatrix[2, 0] * z);
-            double ny = (this.rotationMatrix[0, 1] * x) + (this.rotationMatrix[1, 1] * y) + (this.rotationMatrix[2, 1] * z);
-            double nz = (this.rotationMatrix[0, 2] * x) + (this.rotationMatrix[1, 2] * y) + (this.rotationMatrix[2, 2] * z);
+            double nx = rotationMatrix[0, 0] * x + rotationMatrix[1, 0] * y + rotationMatrix[2, 0] * z;
+            double ny = rotationMatrix[0, 1] * x + rotationMatrix[1, 1] * y + rotationMatrix[2, 1] * z;
+            double nz = rotationMatrix[0, 2] * x + rotationMatrix[1, 2] * y + rotationMatrix[2, 2] * z;
 
-            return this.noise4D(nx, ny, nz, w, this.seed, this.interpolator);
+            return noise4D(nx, ny, nz, w, seed, interpolator);
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        public override double Get(double x, double y, double z, double w, double u, double v)
         {
-            double nx = (this.rotationMatrix[0, 0] * x) + (this.rotationMatrix[1, 0] * y) + (this.rotationMatrix[2, 0] * z);
-            double ny = (this.rotationMatrix[0, 1] * x) + (this.rotationMatrix[1, 1] * y) + (this.rotationMatrix[2, 1] * z);
-            double nz = (this.rotationMatrix[0, 2] * x) + (this.rotationMatrix[1, 2] * y) + (this.rotationMatrix[2, 2] * z);
+            double nx = rotationMatrix[0, 0] * x + rotationMatrix[1, 0] * y + rotationMatrix[2, 0] * z;
+            double ny = rotationMatrix[0, 1] * x + rotationMatrix[1, 1] * y + rotationMatrix[2, 1] * z;
+            double nz = rotationMatrix[0, 2] * x + rotationMatrix[1, 2] * y + rotationMatrix[2, 2] * z;
 
-            return this.noise6D(nx, ny, nz, w, u, v, this.seed, this.interpolator);
+            return noise6D(nx, ny, nz, w, u, v, seed, interpolator);
         }
 
-        private void SetRotationAngle(Double x, Double y, Double z, Double angle)
+        private void SetRotationAngle(double x, double y, double z, double angle)
         {
-            this.rotationMatrix[0, 0] = 1 + (1 - Math.Cos(angle)) * (x * x - 1);
-            this.rotationMatrix[1, 0] = -z * Math.Sin(angle) + (1 - Math.Cos(angle)) * x * y;
-            this.rotationMatrix[2, 0] = y * Math.Sin(angle) + (1 - Math.Cos(angle)) * x * z;
+            rotationMatrix[0, 0] = 1 + (1 - Math.Cos(angle)) * (x * x - 1);
+            rotationMatrix[1, 0] = -z * Math.Sin(angle) + (1 - Math.Cos(angle)) * x * y;
+            rotationMatrix[2, 0] = y * Math.Sin(angle) + (1 - Math.Cos(angle)) * x * z;
 
-            this.rotationMatrix[0, 1] = z * Math.Sin(angle) + (1 - Math.Cos(angle)) * x * y;
-            this.rotationMatrix[1, 1] = 1 + (1 - Math.Cos(angle)) * (y * y - 1);
-            this.rotationMatrix[2, 1] = -x * Math.Sin(angle) + (1 - Math.Cos(angle)) * y * z;
+            rotationMatrix[0, 1] = z * Math.Sin(angle) + (1 - Math.Cos(angle)) * x * y;
+            rotationMatrix[1, 1] = 1 + (1 - Math.Cos(angle)) * (y * y - 1);
+            rotationMatrix[2, 1] = -x * Math.Sin(angle) + (1 - Math.Cos(angle)) * y * z;
 
-            this.rotationMatrix[0, 2] = -y * Math.Sin(angle) + (1 - Math.Cos(angle)) * x * z;
-            this.rotationMatrix[1, 2] = x * Math.Sin(angle) + (1 - Math.Cos(angle)) * y * z;
-            this.rotationMatrix[2, 2] = 1 + (1 - Math.Cos(angle)) * (z * z - 1);
+            rotationMatrix[0, 2] = -y * Math.Sin(angle) + (1 - Math.Cos(angle)) * x * z;
+            rotationMatrix[1, 2] = x * Math.Sin(angle) + (1 - Math.Cos(angle)) * y * z;
+            rotationMatrix[2, 2] = 1 + (1 - Math.Cos(angle)) * (z * z - 1);
         }
 
         private void SetMagicNumbers(BasisType type)
@@ -184,58 +185,58 @@ namespace AccidentalNoise
             switch (type)
             {
                 case BasisType.VALUE:
-                    this.scale[0] = 1.0;
-                    this.offset[0] = 0.0;
-                    this.scale[1] = 1.0;
-                    this.offset[1] = 0.0;
-                    this.scale[2] = 1.0;
-                    this.offset[2] = 0.0;
-                    this.scale[3] = 1.0;
-                    this.offset[3] = 0.0;
+                    scale[0] = 1.0;
+                    offset[0] = 0.0;
+                    scale[1] = 1.0;
+                    offset[1] = 0.0;
+                    scale[2] = 1.0;
+                    offset[2] = 0.0;
+                    scale[3] = 1.0;
+                    offset[3] = 0.0;
                     break;
 
                 case BasisType.GRADIENT:
-                    this.scale[0] = 1.86848;
-                    this.offset[0] = -0.000118;
-                    this.scale[1] = 1.85148;
-                    this.offset[1] = -0.008272;
-                    this.scale[2] = 1.64127;
-                    this.offset[2] = -0.01527;
-                    this.scale[3] = 1.92517;
-                    this.offset[3] = 0.03393;
+                    scale[0] = 1.86848;
+                    offset[0] = -0.000118;
+                    scale[1] = 1.85148;
+                    offset[1] = -0.008272;
+                    scale[2] = 1.64127;
+                    offset[2] = -0.01527;
+                    scale[3] = 1.92517;
+                    offset[3] = 0.03393;
                     break;
 
                 case BasisType.GRADIENTVALUE:
-                    this.scale[0] = 0.6769;
-                    this.offset[0] = -0.00151;
-                    this.scale[1] = 0.6957;
-                    this.offset[1] = -0.133;
-                    this.scale[2] = 0.74622;
-                    this.offset[2] = 0.01916;
-                    this.scale[3] = 0.7961;
-                    this.offset[3] = -0.0352;
+                    scale[0] = 0.6769;
+                    offset[0] = -0.00151;
+                    scale[1] = 0.6957;
+                    offset[1] = -0.133;
+                    scale[2] = 0.74622;
+                    offset[2] = 0.01916;
+                    scale[3] = 0.7961;
+                    offset[3] = -0.0352;
                     break;
 
                 case BasisType.WHITE:
-                    this.scale[0] = 1.0;
-                    this.offset[0] = 0.0;
-                    this.scale[1] = 1.0;
-                    this.offset[1] = 0.0;
-                    this.scale[2] = 1.0;
-                    this.offset[2] = 0.0;
-                    this.scale[3] = 1.0;
-                    this.offset[3] = 0.0;
+                    scale[0] = 1.0;
+                    offset[0] = 0.0;
+                    scale[1] = 1.0;
+                    offset[1] = 0.0;
+                    scale[2] = 1.0;
+                    offset[2] = 0.0;
+                    scale[3] = 1.0;
+                    offset[3] = 0.0;
                     break;
 
                 default:
-                    this.scale[0] = 1.0;
-                    this.offset[0] = 0.0;
-                    this.scale[1] = 1.0;
-                    this.offset[1] = 0.0;
-                    this.scale[2] = 1.0;
-                    this.offset[2] = 0.0;
-                    this.scale[3] = 1.0;
-                    this.offset[3] = 0.0;
+                    scale[0] = 1.0;
+                    offset[0] = 0.0;
+                    scale[1] = 1.0;
+                    offset[1] = 0.0;
+                    scale[2] = 1.0;
+                    offset[2] = 0.0;
+                    scale[3] = 1.0;
+                    offset[3] = 0.0;
                     break;
             }
         }

@@ -1,39 +1,37 @@
-﻿using System;
-
-namespace AccidentalNoise
+﻿namespace AccidentalNoise.Implicit
 {
     public sealed class ImplicitConstant : ImplicitModuleBase
     {
         public ImplicitConstant()
         {
-            this.Value = 0.00;
+            Value = 0.00;
         }
 
-        public ImplicitConstant(Double value)
+        public ImplicitConstant(double value)
         {
-            this.Value = value;
+            Value = value;
         }
 
-        public Double Value { get;  set; }
+        public double Value { get;  set; }
 
-        public override Double Get(Double x, Double y)
+        public override double Get(double x, double y)
         {
-            return this.Value;
+            return Value;
         }
 
-        public override Double Get(Double x, Double y, Double z)
+        public override double Get(double x, double y, double z)
         {
-            return this.Value;
+            return Value;
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w)
+        public override double Get(double x, double y, double z, double w)
         {
-            return this.Value;
+            return Value;
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        public override double Get(double x, double y, double z, double w, double u, double v)
         {
-            return this.Value;
+            return Value;
         }
     }
 }

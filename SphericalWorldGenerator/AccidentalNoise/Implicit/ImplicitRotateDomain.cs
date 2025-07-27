@@ -1,18 +1,18 @@
 ﻿using System;
 
-namespace AccidentalNoise
+namespace AccidentalNoise.Implicit
 {
     public sealed class ImplicitRotateDomain : ImplicitModuleBase
     {
-        private readonly Double[,] rotationMatrix = new Double[3, 3];
+        private readonly double[,] rotationMatrix = new double[3, 3];
 
-        public ImplicitRotateDomain(ImplicitModuleBase source, Double x, Double y, Double z, Double angle)
+        public ImplicitRotateDomain(ImplicitModuleBase source, double x, double y, double z, double angle)
         {
-            this.Source = source;
-            this.X = new ImplicitConstant(x);
-            this.Y = new ImplicitConstant(y);
-            this.Z = new ImplicitConstant(z);
-            this.Angle = new ImplicitConstant(angle);
+            Source = source;
+            X = new ImplicitConstant(x);
+            Y = new ImplicitConstant(y);
+            Z = new ImplicitConstant(z);
+            Angle = new ImplicitConstant(angle);
         }
 
         public ImplicitModuleBase Source { get; set; }
@@ -25,56 +25,56 @@ namespace AccidentalNoise
 
         public ImplicitModuleBase Angle { get; set; }
 
-        public void SetAxis(Double x, Double y, Double z)
+        public void SetAxis(double x, double y, double z)
         {
-            this.X = new ImplicitConstant(x);
-            this.Y = new ImplicitConstant(y);
-            this.Z = new ImplicitConstant(z);
+            X = new ImplicitConstant(x);
+            Y = new ImplicitConstant(y);
+            Z = new ImplicitConstant(z);
         }
 
-        public override Double Get(Double x, Double y)
+        public override double Get(double x, double y)
         {
-            double d = this.Angle.Get(x, y) * 360.0 * 3.14159265 / 180.0;
+            double d = Angle.Get(x, y) * 360.0 * 3.14159265 / 180.0;
             var cos2D = Math.Cos(d);
             var sin2D = Math.Sin(d);
             var nx = x * cos2D - y * sin2D;
             var ny = y * cos2D + x * sin2D;
-            return this.Source.Get(nx, ny);
+            return Source.Get(nx, ny);
         }
 
-        public override Double Get(Double x, Double y, Double z)
+        public override double Get(double x, double y, double z)
         {
-            this.CalculateRotMatrix(x, y, z);
-            double nx = (this.rotationMatrix[0, 0] * x) + (this.rotationMatrix[1, 0] * y) + (this.rotationMatrix[2, 0] * z);
-            double ny = (this.rotationMatrix[0, 1] * x) + (this.rotationMatrix[1, 1] * y) + (this.rotationMatrix[2, 1] * z);
-            double nz = (this.rotationMatrix[0, 2] * x) + (this.rotationMatrix[1, 2] * y) + (this.rotationMatrix[2, 2] * z);
-            return this.Source.Get(nx, ny, nz);
+            CalculateRotMatrix(x, y, z);
+            double nx = rotationMatrix[0, 0] * x + rotationMatrix[1, 0] * y + rotationMatrix[2, 0] * z;
+            double ny = rotationMatrix[0, 1] * x + rotationMatrix[1, 1] * y + rotationMatrix[2, 1] * z;
+            double nz = rotationMatrix[0, 2] * x + rotationMatrix[1, 2] * y + rotationMatrix[2, 2] * z;
+            return Source.Get(nx, ny, nz);
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w)
+        public override double Get(double x, double y, double z, double w)
         {
-            this.CalculateRotMatrix(x, y, z, w);
-            double nx = (this.rotationMatrix[0, 0] * x) + (this.rotationMatrix[1, 0] * y) + (this.rotationMatrix[2, 0] * z);
-            double ny = (this.rotationMatrix[0, 1] * x) + (this.rotationMatrix[1, 1] * y) + (this.rotationMatrix[2, 1] * z);
-            double nz = (this.rotationMatrix[0, 2] * x) + (this.rotationMatrix[1, 2] * y) + (this.rotationMatrix[2, 2] * z);
-            return this.Source.Get(nx, ny, nz, w);
+            CalculateRotMatrix(x, y, z, w);
+            double nx = rotationMatrix[0, 0] * x + rotationMatrix[1, 0] * y + rotationMatrix[2, 0] * z;
+            double ny = rotationMatrix[0, 1] * x + rotationMatrix[1, 1] * y + rotationMatrix[2, 1] * z;
+            double nz = rotationMatrix[0, 2] * x + rotationMatrix[1, 2] * y + rotationMatrix[2, 2] * z;
+            return Source.Get(nx, ny, nz, w);
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        public override double Get(double x, double y, double z, double w, double u, double v)
         {
-            this.CalculateRotMatrix(x, y, z, w, u, v);
-            double nx = (this.rotationMatrix[0, 0] * x) + (this.rotationMatrix[1, 0] * y) + (this.rotationMatrix[2, 0] * z);
-            double ny = (this.rotationMatrix[0, 1] * x) + (this.rotationMatrix[1, 1] * y) + (this.rotationMatrix[2, 1] * z);
-            double nz = (this.rotationMatrix[0, 2] * x) + (this.rotationMatrix[1, 2] * y) + (this.rotationMatrix[2, 2] * z);
-            return this.Source.Get(nx, ny, nz, w, u, v);
+            CalculateRotMatrix(x, y, z, w, u, v);
+            double nx = rotationMatrix[0, 0] * x + rotationMatrix[1, 0] * y + rotationMatrix[2, 0] * z;
+            double ny = rotationMatrix[0, 1] * x + rotationMatrix[1, 1] * y + rotationMatrix[2, 1] * z;
+            double nz = rotationMatrix[0, 2] * x + rotationMatrix[1, 2] * y + rotationMatrix[2, 2] * z;
+            return Source.Get(nx, ny, nz, w, u, v);
         }
 
-        private void CalculateRotMatrix(Double x, Double y)
+        private void CalculateRotMatrix(double x, double y)
         {
-            var angle = this.Angle.Get(x, y) * 360.0 * Math.PI / 180.0;
-            double ax = this.X.Get(x, y);
-            double ay = this.Y.Get(x, y);
-            double az = this.Z.Get(x, y);
+            var angle = Angle.Get(x, y) * 360.0 * Math.PI / 180.0;
+            double ax = X.Get(x, y);
+            double ay = Y.Get(x, y);
+            double az = Z.Get(x, y);
 
             var cosangle = Math.Cos(angle);
             var sinangle = Math.Sin(angle);
@@ -92,12 +92,12 @@ namespace AccidentalNoise
             rotationMatrix[2, 2] = 1.0 + (1.0 - cosangle) * (az * az - 1.0);
         }
 
-        private void CalculateRotMatrix(Double x, Double y, Double z)
+        private void CalculateRotMatrix(double x, double y, double z)
         {
-            var angle = this.Angle.Get(x, y, z) * 360.0 * Math.PI / 180.0;
-            double ax = this.X.Get(x, y, z);
-            double ay = this.Y.Get(x, y, z);
-            double az = this.Z.Get(x, y, z);
+            var angle = Angle.Get(x, y, z) * 360.0 * Math.PI / 180.0;
+            double ax = X.Get(x, y, z);
+            double ay = Y.Get(x, y, z);
+            double az = Z.Get(x, y, z);
 
             var cosangle = Math.Cos(angle);
             var sinangle = Math.Sin(angle);
@@ -115,12 +115,12 @@ namespace AccidentalNoise
             rotationMatrix[2, 2] = 1.0 + (1.0 - cosangle) * (az * az - 1.0);
         }
 
-        private void CalculateRotMatrix(Double x, Double y, Double z, Double w)
+        private void CalculateRotMatrix(double x, double y, double z, double w)
         {
-            var angle = this.Angle.Get(x, y, z, w) * 360.0 * Math.PI / 180.0;
-            double ax = this.X.Get(x, y, z, w);
-            double ay = this.Y.Get(x, y, z, w);
-            double az = this.Z.Get(x, y, z, w);
+            var angle = Angle.Get(x, y, z, w) * 360.0 * Math.PI / 180.0;
+            double ax = X.Get(x, y, z, w);
+            double ay = Y.Get(x, y, z, w);
+            double az = Z.Get(x, y, z, w);
 
             var cosangle = Math.Cos(angle);
             var sinangle = Math.Sin(angle);
@@ -138,12 +138,12 @@ namespace AccidentalNoise
             rotationMatrix[2, 2] = 1.0 + (1.0 - cosangle) * (az * az - 1.0);
         }
 
-        private void CalculateRotMatrix(Double x, Double y, Double z, Double w, Double u, Double v)
+        private void CalculateRotMatrix(double x, double y, double z, double w, double u, double v)
         {
-            var angle = this.Angle.Get(x, y, z, w, u, v) * 360.0 * Math.PI / 180.0;
-            double ax = this.X.Get(x, y, z, w, u, v);
-            double ay = this.Y.Get(x, y, z, w, u, v);
-            double az = this.Z.Get(x, y, z, w, u, v);
+            var angle = Angle.Get(x, y, z, w, u, v) * 360.0 * Math.PI / 180.0;
+            double ax = X.Get(x, y, z, w, u, v);
+            double ay = Y.Get(x, y, z, w, u, v);
+            double az = Z.Get(x, y, z, w, u, v);
 
             var cosangle = Math.Cos(angle);
             var sinangle = Math.Sin(angle);

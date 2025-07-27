@@ -1,14 +1,12 @@
-﻿using System;
-
-namespace AccidentalNoise
+﻿namespace AccidentalNoise.Implicit
 {
     public sealed class ImplicitScaleOffset : ImplicitModuleBase
     {
-        public ImplicitScaleOffset(ImplicitModuleBase source, Double scale, Double offset)
+        public ImplicitScaleOffset(ImplicitModuleBase source, double scale, double offset)
         {
-            this.Source = source;
-            this.Scale = new ImplicitConstant(scale);
-            this.Offset = new ImplicitConstant(offset);
+            Source = source;
+            Scale = new ImplicitConstant(scale);
+            Offset = new ImplicitConstant(offset);
         }
 
         public ImplicitModuleBase Source { get; set; }
@@ -17,24 +15,24 @@ namespace AccidentalNoise
 
         public ImplicitModuleBase Offset { get; set; }
 
-        public override Double Get(Double x, Double y)
+        public override double Get(double x, double y)
         {
-            return this.Source.Get(x, y) * this.Scale.Get(x, y) + this.Offset.Get(x, y);
+            return Source.Get(x, y) * Scale.Get(x, y) + Offset.Get(x, y);
         }
 
-        public override Double Get(Double x, Double y, Double z)
+        public override double Get(double x, double y, double z)
         {
-            return this.Source.Get(x, y, z) * this.Scale.Get(x, y, z) + this.Offset.Get(x, y, z);
+            return Source.Get(x, y, z) * Scale.Get(x, y, z) + Offset.Get(x, y, z);
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w)
+        public override double Get(double x, double y, double z, double w)
         {
-            return this.Source.Get(x, y, z, w) * this.Scale.Get(x, y, z, w) + this.Offset.Get(x, y, z, w);
+            return Source.Get(x, y, z, w) * Scale.Get(x, y, z, w) + Offset.Get(x, y, z, w);
         }
             
-        public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        public override double Get(double x, double y, double z, double w, double u, double v)
         {
-            return this.Source.Get(x, y, z, w, u, v) * this.Scale.Get(x, y, z, w, u, v) + this.Offset.Get(x, y, z, w, u, v);
+            return Source.Get(x, y, z, w, u, v) * Scale.Get(x, y, z, w, u, v) + Offset.Get(x, y, z, w, u, v);
         }
     }
 }

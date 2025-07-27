@@ -1,66 +1,66 @@
 ﻿using System;
 
-namespace AccidentalNoise
+namespace AccidentalNoise.Implicit
 {
     public sealed class ImplicitAutoCorrect : ImplicitModuleBase
     {
         private ImplicitModuleBase source;
 
-        private Double low;
+        private double low;
 
-        private Double high;
+        private double high;
 
-        private Double scale2D;
+        private double scale2D;
 
-        private Double offset2D;
+        private double offset2D;
 
-        private Double scale3D;
+        private double scale3D;
 
-        private Double offset3D;
+        private double offset3D;
 
-        private Double scale4D;
+        private double scale4D;
 
-        private Double offset4D;
+        private double offset4D;
 
-        private Double scale6D;
+        private double scale6D;
 
-        private Double offset6D;
+        private double offset6D;
 
-        public ImplicitAutoCorrect(ImplicitModuleBase source, Double low, Double high)
+        public ImplicitAutoCorrect(ImplicitModuleBase source, double low, double high)
         {
             this.source = source;
             this.low = low;
             this.high = high;
-            this.Calculate();
+            Calculate();
         }
 
         public ImplicitModuleBase Source
         {
-            get { return this.source; }
+            get { return source; }
             set
             {
-                this.source = value;
-                this.Calculate();
+                source = value;
+                Calculate();
             }
         }
 
-        public Double Low
+        public double Low
         {
-            get { return this.low; }
+            get { return low; }
             set
             {
-                this.low = value;
-                this.Calculate();
+                low = value;
+                Calculate();
             }
         }
 
-        public Double High
+        public double High
         {
-            get { return this.high; }
+            get { return high; }
             set
             {
-                this.high = value;
-                this.Calculate();
+                high = value;
+                Calculate();
             }
         }
 
@@ -76,12 +76,12 @@ namespace AccidentalNoise
                 double nx = random.NextDouble() * 4.0 - 2.0;
                 double ny = random.NextDouble() * 4.0 - 2.0;
 
-                double value = this.Source.Get(nx, ny);
+                double value = Source.Get(nx, ny);
                 if (value < mn) mn = value;
                 if (value > mx) mx = value;
             }
-            this.scale2D = (this.high - this.low) / (mx - mn);
-            this.offset2D = this.low - mn * this.scale2D;
+            scale2D = (high - low) / (mx - mn);
+            offset2D = low - mn * scale2D;
 
             // Calculate 3D
             mn = 10000.0;
@@ -92,12 +92,12 @@ namespace AccidentalNoise
                 double ny = random.NextDouble() * 4.0 - 2.0;
                 double nz = random.NextDouble() * 4.0 - 2.0;
 
-                double value = this.Source.Get(nx, ny, nz);
+                double value = Source.Get(nx, ny, nz);
                 if (value < mn) mn = value;
                 if (value > mx) mx = value;
             }
-            this.scale3D = (this.high - this.low) / (mx - mn);
-            this.offset3D = this.low - mn * this.scale3D;
+            scale3D = (high - low) / (mx - mn);
+            offset3D = low - mn * scale3D;
 
             // Calculate 4D
             mn = 10000.0;
@@ -109,12 +109,12 @@ namespace AccidentalNoise
                 double nz = random.NextDouble() * 4.0 - 2.0;
                 double nw = random.NextDouble() * 4.0 - 2.0;
 
-                double value = this.Source.Get(nx, ny, nz, nw);
+                double value = Source.Get(nx, ny, nz, nw);
                 if (value < mn) mn = value;
                 if (value > mx) mx = value;
             }
-            this.scale4D = (this.high - this.low) / (mx - mn);
-            this.offset4D = this.low - mn * this.scale4D;
+            scale4D = (high - low) / (mx - mn);
+            offset4D = low - mn * scale4D;
 
             // Calculate 6D
             mn = 10000.0;
@@ -128,39 +128,39 @@ namespace AccidentalNoise
                 double nu = random.NextDouble() * 4.0 - 2.0;
                 double nv = random.NextDouble() * 4.0 - 2.0;
 
-                double value = this.Source.Get(nx, ny, nz, nw, nu, nv);
+                double value = Source.Get(nx, ny, nz, nw, nu, nv);
                 if (value < mn) mn = value;
                 if (value > mx) mx = value;
             }
-            this.scale6D = (this.high - this.low) / (mx - mn);
-            this.offset6D = this.low - mn * this.scale6D;
+            scale6D = (high - low) / (mx - mn);
+            offset6D = low - mn * scale6D;
         }
 
-        public void SetRange(Double low, Double high)
+        public void SetRange(double low, double high)
         {
             this.low = low;
             this.high = high;
-            this.Calculate();
+            Calculate();
         }
 
-        public override Double Get(Double x, Double y)
+        public override double Get(double x, double y)
         {
-            return Math.Max(this.low, Math.Min(this.high, this.Source.Get(x, y) * this.scale2D + this.offset2D));
+            return Math.Max(low, Math.Min(high, Source.Get(x, y) * scale2D + offset2D));
         }
 
-        public override Double Get(Double x, Double y, Double z)
+        public override double Get(double x, double y, double z)
         {
-            return Math.Max(this.low, Math.Min(this.high, this.Source.Get(x, y, z) * this.scale3D + this.offset3D));
+            return Math.Max(low, Math.Min(high, Source.Get(x, y, z) * scale3D + offset3D));
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w)
+        public override double Get(double x, double y, double z, double w)
         {
-            return Math.Max(this.low, Math.Min(this.high, this.Source.Get(x, y, z, w) * this.scale4D + this.offset4D));
+            return Math.Max(low, Math.Min(high, Source.Get(x, y, z, w) * scale4D + offset4D));
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        public override double Get(double x, double y, double z, double w, double u, double v)
         {
-            return Math.Max(this.low, Math.Min(this.high, this.Source.Get(x, y, z, w, u, v) * this.scale6D + this.offset6D));
+            return Math.Max(low, Math.Min(high, Source.Get(x, y, z, w, u, v) * scale6D + offset6D));
         }
     }
 }

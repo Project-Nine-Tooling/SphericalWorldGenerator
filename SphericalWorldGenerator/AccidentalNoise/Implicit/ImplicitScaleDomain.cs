@@ -1,20 +1,18 @@
-﻿using System;
-
-namespace AccidentalNoise
+﻿namespace AccidentalNoise.Implicit
 {
     public sealed class ImplicitScaleDomain : ImplicitModuleBase
     {
-        public ImplicitScaleDomain(ImplicitModuleBase source, 
-            Double xScale, Double yScale, Double zScale,
-            Double wScale, Double uScale, Double vScale)
+        public ImplicitScaleDomain(ImplicitModuleBase source,
+            double xScale, double yScale, double zScale,
+            double wScale, double uScale, double vScale)
         {
-            this.Source = source;
-            this.XScale = new ImplicitConstant(xScale);
-            this.YScale = new ImplicitConstant(yScale);
-            this.ZScale = new ImplicitConstant(zScale);
-            this.WScale = new ImplicitConstant(wScale);
-            this.UScale = new ImplicitConstant(uScale);
-            this.VScale = new ImplicitConstant(vScale);
+            Source = source;
+            XScale = new ImplicitConstant(xScale);
+            YScale = new ImplicitConstant(yScale);
+            ZScale = new ImplicitConstant(zScale);
+            WScale = new ImplicitConstant(wScale);
+            UScale = new ImplicitConstant(uScale);
+            VScale = new ImplicitConstant(vScale);
         }
 
         public ImplicitModuleBase Source { get; set; }
@@ -32,50 +30,50 @@ namespace AccidentalNoise
         public ImplicitModuleBase VScale { get; set; }
 
         public void SetScales(
-            Double xScale, Double yScale, Double zScale,
-            Double wScale, Double uScale, Double vScale)
+            double xScale, double yScale, double zScale,
+            double wScale, double uScale, double vScale)
         {
-            this.XScale = new ImplicitConstant(xScale);
-            this.YScale = new ImplicitConstant(yScale);
-            this.ZScale = new ImplicitConstant(zScale);
-            this.WScale = new ImplicitConstant(wScale);
-            this.UScale = new ImplicitConstant(uScale);
-            this.VScale = new ImplicitConstant(vScale);
+            XScale = new ImplicitConstant(xScale);
+            YScale = new ImplicitConstant(yScale);
+            ZScale = new ImplicitConstant(zScale);
+            WScale = new ImplicitConstant(wScale);
+            UScale = new ImplicitConstant(uScale);
+            VScale = new ImplicitConstant(vScale);
         }
 
-        public override Double Get(Double x, Double y)
+        public override double Get(double x, double y)
         {
-            return this.Source.Get(
-                x * this.XScale.Get(x, y), 
-                y * this.YScale.Get(x, y));
+            return Source.Get(
+                x * XScale.Get(x, y), 
+                y * YScale.Get(x, y));
         }
 
-        public override Double Get(Double x, Double y, Double z)
+        public override double Get(double x, double y, double z)
         {
-            return this.Source.Get(
-                x * this.XScale.Get(x, y, z), 
-                y * this.YScale.Get(x, y, z), 
-                z * this.ZScale.Get(x, y, z));
+            return Source.Get(
+                x * XScale.Get(x, y, z), 
+                y * YScale.Get(x, y, z), 
+                z * ZScale.Get(x, y, z));
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w)
+        public override double Get(double x, double y, double z, double w)
         {
-            return this.Source.Get(
-                x * this.XScale.Get(x, y, z, w), 
-                y * this.YScale.Get(x, y, z, w), 
-                z * this.ZScale.Get(x, y, z, w),
-                w * this.WScale.Get(x, y, z, w));
+            return Source.Get(
+                x * XScale.Get(x, y, z, w), 
+                y * YScale.Get(x, y, z, w), 
+                z * ZScale.Get(x, y, z, w),
+                w * WScale.Get(x, y, z, w));
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        public override double Get(double x, double y, double z, double w, double u, double v)
         {
-            return this.Source.Get(
-                x * this.XScale.Get(x, y, z, w, u, v),
-                y * this.YScale.Get(x, y, z, w, u, v),
-                z * this.ZScale.Get(x, y, z, w, u, v),
-                w * this.WScale.Get(x, y, z, w, u, v),
-                u * this.UScale.Get(x, y, z, w, u, v),
-                v * this.VScale.Get(x, y, z, w, u, v));
+            return Source.Get(
+                x * XScale.Get(x, y, z, w, u, v),
+                y * YScale.Get(x, y, z, w, u, v),
+                z * ZScale.Get(x, y, z, w, u, v),
+                w * WScale.Get(x, y, z, w, u, v),
+                u * UScale.Get(x, y, z, w, u, v),
+                v * VScale.Get(x, y, z, w, u, v));
         }
     }
 }

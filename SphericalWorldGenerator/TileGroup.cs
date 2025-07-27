@@ -16,7 +16,7 @@ namespace SphericalWorldGenerator
 
         public TileGroup()
         {
-            Tiles = new List<Tile>();
+            Tiles = [];
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using AccidentalNoise;
+using AccidentalNoise.Enums;
+using AccidentalNoise.Implicit;
 using SphericalWorldGenerator;
 using SphericalWorldGenerator.Maths;
 
