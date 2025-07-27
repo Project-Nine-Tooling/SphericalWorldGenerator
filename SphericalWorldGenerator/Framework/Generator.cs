@@ -1,9 +1,11 @@
 using AccidentalNoise;
+using SphericalWorldGenerator.DataTypes;
 using SphericalWorldGenerator.Maths;
 using SphericalWorldGenerator.Media;
+using SphericalWorldGenerator.Texturing;
 using System.Collections.Generic;
 
-namespace SphericalWorldGenerator
+namespace SphericalWorldGenerator.Framework
 {
     public abstract class Generator
     {
@@ -233,7 +235,7 @@ namespace SphericalWorldGenerator
                 {
                     Tile t = Tiles[x, y];
                     if (t.HeightType == HeightType.River)
-                        AddMoisture(t, (int)60);
+                        AddMoisture(t, 60);
                 }
             }
         }

@@ -1,8 +1,9 @@
-﻿using SphericalWorldGenerator.Maths;
+﻿using SphericalWorldGenerator.Framework;
+using SphericalWorldGenerator.Maths;
 using SphericalWorldGenerator.Media;
 using System.Collections.Generic;
 
-namespace SphericalWorldGenerator
+namespace SphericalWorldGenerator.DataTypes
 {
     public enum HeightType
     {

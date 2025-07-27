@@ -1,9 +1,11 @@
 ﻿using AccidentalNoise;
 using AccidentalNoise.Enums;
 using AccidentalNoise.Implicit;
+using SphericalWorldGenerator.DataTypes;
+using SphericalWorldGenerator.Framework;
 using SphericalWorldGenerator.Maths;
 
-namespace SphericalWorldGenerator
+namespace SphericalWorldGenerator.Generators
 {
     public class WrappingWorldGenerator : Generator
     {

@@ -1,4 +1,4 @@
-﻿namespace SphericalWorldGenerator
+﻿namespace SphericalWorldGenerator.Framework
 {
     public class MapData
     {

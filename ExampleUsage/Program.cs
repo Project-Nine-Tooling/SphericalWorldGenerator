@@ -1,4 +1,4 @@
-﻿using SphericalWorldGenerator;
+﻿using SphericalWorldGenerator.Generators;
 
 namespace ExampleUsage
 {

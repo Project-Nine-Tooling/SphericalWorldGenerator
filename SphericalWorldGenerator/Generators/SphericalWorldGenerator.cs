@@ -1,10 +1,13 @@
 ﻿using AccidentalNoise;
 using AccidentalNoise.Enums;
 using AccidentalNoise.Implicit;
+using SphericalWorldGenerator.DataTypes;
+using SphericalWorldGenerator.Framework;
 using SphericalWorldGenerator.Maths;
 using SphericalWorldGenerator.Media;
+using SphericalWorldGenerator.Texturing;
 
-namespace SphericalWorldGenerator
+namespace SphericalWorldGenerator.Generators
 {
     public class TheSphericalWorldGenerator : Generator
     {
@@ -110,8 +113,8 @@ namespace SphericalWorldGenerator
             float lonExtent = eastLonBound - westLonBound;
             float latExtent = northLatBound - southLatBound;
 
-            float xDelta = lonExtent / (float)Width;
-            float yDelta = latExtent / (float)Height;
+            float xDelta = lonExtent / Width;
+            float yDelta = latExtent / Height;
 
             float curLon = westLonBound;
             float curLat = southLatBound;

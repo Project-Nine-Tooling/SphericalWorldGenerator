@@ -2,11 +2,11 @@
 using SphericalWorldGenerator.Media;
 using SphericalWorldGenerator.Placeholders;
 
-namespace SphericalWorldGenerator
+namespace SphericalWorldGenerator.Geometry
 {
     public static class OctahedronSphereCreator
     {
-        private static Vector3[] directions = {
+        private static Vector3[] Directions = {
             Vector3.left,
             Vector3.back,
             Vector3.right,
@@ -76,7 +76,7 @@ namespace SphericalWorldGenerator
                 for (int d = 0; d < 4; d++)
                 {
                     from = to;
-                    to = Vector3.Lerp(Vector3.down, directions[d], progress);
+                    to = Vector3.Lerp(Vector3.down, Directions[d], progress);
                     t = CreateLowerStrip(i, v, vBottom, t, triangles);
                     v = CreateVertexLine(from, to, i, v, vertices);
                     vBottom += i > 1 ? (i - 1) : 1;
@@ -92,7 +92,7 @@ namespace SphericalWorldGenerator
                 for (int d = 0; d < 4; d++)
                 {
                     from = to;
-                    to = Vector3.Lerp(Vector3.up, directions[d], progress);
+                    to = Vector3.Lerp(Vector3.up, Directions[d], progress);
                     t = CreateUpperStrip(i, v, vBottom, t, triangles);
                     v = CreateVertexLine(from, to, i, v, vertices);
                     vBottom += i + 1;

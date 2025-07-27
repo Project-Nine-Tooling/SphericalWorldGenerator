@@ -1,7 +1,8 @@
-﻿using SphericalWorldGenerator.Maths;
+﻿using SphericalWorldGenerator.DataTypes;
+using SphericalWorldGenerator.Maths;
 using SphericalWorldGenerator.Media;
 
-namespace SphericalWorldGenerator
+namespace SphericalWorldGenerator.Texturing
 {
     public static class TextureGenerator
     {
@@ -28,7 +29,7 @@ namespace SphericalWorldGenerator
         private static Color Warmer = new(1, 100 / 255f, 0, 1);
         private static Color Warmest = new(241 / 255f, 12 / 255f, 0, 1);
 
-        //Moisture map
+        // Moisture map
         private static Color Dryest = new(255 / 255f, 139 / 255f, 17 / 255f, 1);
         private static Color Dryer = new(245 / 255f, 245 / 255f, 23 / 255f, 1);
         private static Color Dry = new(80 / 255f, 255 / 255f, 0 / 255f, 1);
@@ -36,7 +37,7 @@ namespace SphericalWorldGenerator
         private static Color Wetter = new(20 / 255f, 70 / 255f, 255 / 255f, 1);
         private static Color Wettest = new(0 / 255f, 0 / 255f, 100 / 255f, 1);
 
-        //biome map
+        // Biome map
         private static Color Ice = Color.white;
         private static Color Desert = new(238 / 255f, 218 / 255f, 130 / 255f, 1);
         private static Color Savanna = new(177 / 255f, 209 / 255f, 110 / 255f, 1);
@@ -68,8 +69,8 @@ namespace SphericalWorldGenerator
                     xRight = source.GetPixel(bx + 1, by).grayscale * strength;
                     yUp = source.GetPixel(bx, by - 1).grayscale * strength;
                     yDown = source.GetPixel(bx, by + 1).grayscale * strength;
-                    xDelta = ((xLeft - xRight) + 1) * 0.5f;
-                    yDelta = ((yUp - yDown) + 1) * 0.5f;
+                    xDelta = (xLeft - xRight + 1) * 0.5f;
+                    yDelta = (yUp - yDown + 1) * 0.5f;
 
                     pixels[bx + by * source.Width] = new Color(xDelta, yDelta, 1.0f, yDelta);
                 }
@@ -104,7 +105,6 @@ namespace SphericalWorldGenerator
             texture.Apply();
             return texture;
         }
-
         public static Texture2D GetCloud2Texture(int width, int height, Tile[,] tiles)
         {
             Texture2D texture = new(width, height);
@@ -126,7 +126,6 @@ namespace SphericalWorldGenerator
             texture.Apply();
             return texture;
         }
-
         public static Texture2D GetBiomePalette()
         {
 
@@ -166,7 +165,6 @@ namespace SphericalWorldGenerator
             return texture;
 
         }
-
         public static Texture2D GetBumpMap(int width, int height, Tile[,] tiles)
         {
             Texture2D texture = new(width, height);
@@ -274,7 +272,6 @@ namespace SphericalWorldGenerator
             texture.Apply();
             return texture;
         }
-
         public static Texture2D GetHeatMapTexture(int width, int height, Tile[,] tiles)
         {
             Texture2D texture = new(width, height);
@@ -306,7 +303,7 @@ namespace SphericalWorldGenerator
                             break;
                     }
 
-                    //darken the color if a edge tile
+                    // Darken the color if a edge tile
                     if ((int)tiles[x, y].HeightType > 2 && tiles[x, y].Bitmask != 15)
                         pixels[x + y * width] = Color.Lerp(pixels[x + y * width], Color.black, 0.4f);
                 }
@@ -317,7 +314,6 @@ namespace SphericalWorldGenerator
             texture.Apply();
             return texture;
         }
-
         public static Texture2D GetMoistureMapTexture(int width, int height, Tile[,] tiles)
         {
             Texture2D texture = new(width, height);
@@ -349,7 +345,6 @@ namespace SphericalWorldGenerator
             texture.Apply();
             return texture;
         }
-
         public static Texture2D GetBiomeMapTexture(int width, int height, Tile[,] tiles, float coldest, float colder, float cold)
         {
             Texture2D texture = new(width, height);
@@ -405,13 +400,13 @@ namespace SphericalWorldGenerator
                         pixels[x + y * width] = ShallowColor;
                     }
 
-                    // draw rivers
+                    // Draw rivers
                     if (tiles[x, y].HeightType == HeightType.River)
                     {
                         float heatValue = tiles[x, y].HeatValue;
 
                         if (tiles[x, y].HeatType == HeatType.Coldest)
-                            pixels[x + y * width] = Color.Lerp(IceWater, ColdWater, (heatValue) / (coldest));
+                            pixels[x + y * width] = Color.Lerp(IceWater, ColdWater, heatValue / coldest);
                         else if (tiles[x, y].HeatType == HeatType.Colder)
                             pixels[x + y * width] = Color.Lerp(ColdWater, RiverWater, (heatValue - coldest) / (colder - coldest));
                         else if (tiles[x, y].HeatType == HeatType.Cold)
@@ -420,8 +415,7 @@ namespace SphericalWorldGenerator
                             pixels[x + y * width] = ShallowColor;
                     }
 
-
-                    // add a outline
+                    // Ddd a outline
                     if (tiles[x, y].HeightType >= HeightType.Shore && tiles[x, y].HeightType != HeightType.River)
                     {
                         if (tiles[x, y].BiomeBitmask != 15)
