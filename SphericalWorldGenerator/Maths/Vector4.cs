@@ -66,12 +66,12 @@ namespace SphericalWorldGenerator.Maths
             }
         }
 
-        public static Vector4 zero => new Vector4(0f, 0f, 0f, 0f);
-        public static Vector4 one => new Vector4(1f, 1f, 1f, 1f);
+        public static Vector4 zero => new(0f, 0f, 0f, 0f);
+        public static Vector4 one => new(1f, 1f, 1f, 1f);
 
         /// <summary>Component‑wise multiply.</summary>
         public static Vector4 Scale(Vector4 a, Vector4 b)
-            => new Vector4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
+            => new(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
 
         /// <summary>Dot product of two Vector4s.</summary>
         public static float Dot(Vector4 a, Vector4 b)
@@ -101,16 +101,16 @@ namespace SphericalWorldGenerator.Maths
 
         // Arithmetic operators
         public static Vector4 operator +(Vector4 a, Vector4 b)
-            => new Vector4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+            => new(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
 
         public static Vector4 operator -(Vector4 a, Vector4 b)
-            => new Vector4(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w);
+            => new(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w);
 
         public static Vector4 operator -(Vector4 v)
-            => new Vector4(-v.x, -v.y, -v.z, -v.w);
+            => new(-v.x, -v.y, -v.z, -v.w);
 
         public static Vector4 operator *(Vector4 v, float scalar)
-            => new Vector4(v.x * scalar, v.y * scalar, v.z * scalar, v.w * scalar);
+            => new(v.x * scalar, v.y * scalar, v.z * scalar, v.w * scalar);
 
         public static Vector4 operator *(float scalar, Vector4 v)
             => v * scalar;

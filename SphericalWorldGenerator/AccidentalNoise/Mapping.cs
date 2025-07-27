@@ -8,15 +8,15 @@ namespace AccidentalNoise
         
         public static void Map2D(MappingMode mappingMode, Double[,] array, ImplicitModuleBase module, MappingRanges ranges, Double z)
         {
-            var width = array.GetLength(0);
-            var height = array.GetLength(1);
+            int width = array.GetLength(0);
+            int height = array.GetLength(1);
 
-            for (var x = 0; x < width; ++x)
+            for (int x = 0; x < width; ++x)
             {
-                for (var y = 0; y < height; ++y)
+                for (int y = 0; y < height; ++y)
                 {
-                    var p = x / (double)width;
-                    var q = y / (double)height;
+                    double p = x / (double)width;
+                    double q = y / (double)height;
                     double r;
                     double nx;
                     double ny;
@@ -26,7 +26,7 @@ namespace AccidentalNoise
                     double dx;
                     double dy;
                     double dz;
-                    var val = 0.00;
+                    double val = 0.00;
                     switch (mappingMode)
                     {
                         case MappingMode.SeamlessNone:
@@ -62,7 +62,7 @@ namespace AccidentalNoise
                             nx = ranges.MapX0 + p*dx;
                             ny = ranges.MapY0 + p*dy;
                             r = (z - ranges.MapZ0)/(ranges.MapZ1 - ranges.MapZ0);
-                            var zval = r*(ranges.MapZ1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
+                            double zval = r*(ranges.MapZ1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
                             nz = ranges.LoopZ0 + Math.Cos(zval*PI2)*dz/PI2;
                             nw = ranges.LoopZ0 + Math.Sin(zval*PI2)*dz/PI2;
                             val = module.Get(nx, ny, nz, nw);
@@ -84,7 +84,7 @@ namespace AccidentalNoise
                             dy = ranges.MapY1 - ranges.MapY0;
                             dz = ranges.LoopZ1 - ranges.LoopZ0;
                             r = (z - ranges.MapZ0)/(ranges.MapZ1 - ranges.MapZ0);
-                            var xzval = r*(ranges.MapX1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
+                            double xzval = r*(ranges.MapX1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
                             p = p*(ranges.MapX1 - ranges.MapX0)/(ranges.LoopX1 - ranges.LoopX0);
                             nx = ranges.LoopX0 + Math.Cos(p*PI2)*dx/PI2;
                             ny = ranges.LoopX0 + Math.Sin(p*PI2)*dx/PI2;
@@ -98,7 +98,7 @@ namespace AccidentalNoise
                             dy = ranges.LoopY1 - ranges.LoopY0;
                             dz = ranges.LoopZ1 - ranges.LoopZ0;
                             r = (z - ranges.MapZ0)/(ranges.MapZ1 - ranges.MapZ0);
-                            var yzval = r*(ranges.MapZ1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
+                            double yzval = r*(ranges.MapZ1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
                             q = q*(ranges.MapY1 - ranges.MapY0)/(ranges.LoopY1 - ranges.LoopY0);
                             nx = ranges.MapX0 + p*dx;
                             ny = ranges.LoopY0 + Math.Cos(q*PI2)*dy/PI2;
@@ -114,7 +114,7 @@ namespace AccidentalNoise
                             p = p*(ranges.MapX1 - ranges.MapX0)/(ranges.LoopX1 - ranges.LoopX0);
                             q = q*(ranges.MapY1 - ranges.MapY0)/(ranges.LoopY1 - ranges.LoopY0);
                             r = (z - ranges.MapZ0)/(ranges.MapZ1 - ranges.MapZ0);
-                            var xyzval = r*(ranges.MapZ1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
+                            double xyzval = r*(ranges.MapZ1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
                             nx = ranges.LoopX0 + Math.Cos(p*PI2)*dx/PI2;
                             ny = ranges.LoopX0 + Math.Sin(p*PI2)*dx/PI2;
                             nz = ranges.LoopY0 + Math.Cos(q*PI2)*dy/PI2;
@@ -131,21 +131,21 @@ namespace AccidentalNoise
 
         public static void Map2DNoZ(MappingMode mappingMode, Double[,] array, ImplicitModuleBase module, MappingRanges ranges)
         {
-            var width = array.GetLength(0);
-            var height = array.GetLength(1);
+            int width = array.GetLength(0);
+            int height = array.GetLength(1);
 
-            for (var x = 0; x < width; ++x)
+            for (int x = 0; x < width; ++x)
             {
-                for (var y = 0; y < height; ++y)
+                for (int y = 0; y < height; ++y)
                 {
-                    var p = x / (double)width;
-                    var q = y / (double)height;
+                    double p = x / (double)width;
+                    double q = y / (double)height;
                     double nx;
                     double ny;
                     double nz;
                     double dx;
                     double dy;
-                    var val = 0.00;
+                    double val = 0.00;
                     switch (mappingMode)
                     {
                         case MappingMode.SeamlessNone:
@@ -191,19 +191,19 @@ namespace AccidentalNoise
 
         public static void Map3D(MappingMode mappingMode, Double[,,] array, ImplicitModuleBase module, MappingRanges ranges)
         {
-            var width = array.GetLength(0);
-            var height = array.GetLength(1);
-            var depth = array.GetLength(2);
+            int width = array.GetLength(0);
+            int height = array.GetLength(1);
+            int depth = array.GetLength(2);
 
-            for (var x = 0; x < width; ++x)
+            for (int x = 0; x < width; ++x)
             {
-                for (var y = 0; y < height; ++y)
+                for (int y = 0; y < height; ++y)
                 {
-                    for (var z = 0; z < depth; ++z)
+                    for (int z = 0; z < depth; ++z)
                     {
-                        var p = x / (double)width;
-                        var q = y / (double)height;
-                        var r = z / (double)depth;
+                        double p = x / (double)width;
+                        double q = y / (double)height;
+                        double r = z / (double)depth;
                         double nx;
                         double ny;
                         double nz;
@@ -212,7 +212,7 @@ namespace AccidentalNoise
                         double dx;
                         double dy;
                         double dz;
-                        var val = 0.0;
+                        double val = 0.0;
 
                         switch (mappingMode)
                         {

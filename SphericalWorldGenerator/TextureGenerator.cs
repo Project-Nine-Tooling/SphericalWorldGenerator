@@ -5,55 +5,58 @@ namespace SphericalWorldGenerator
 {
     public static class TextureGenerator
     {
+        #region Configurations
         // Height Map Colors
-        private static Color DeepColor = new Color(15 / 255f, 30 / 255f, 80 / 255f, 1);
-        private static Color ShallowColor = new Color(15 / 255f, 40 / 255f, 90 / 255f, 1);
-        private static Color RiverColor = new Color(30 / 255f, 120 / 255f, 200 / 255f, 1);
-        private static Color SandColor = new Color(198 / 255f, 190 / 255f, 31 / 255f, 1);
-        private static Color GrassColor = new Color(50 / 255f, 220 / 255f, 20 / 255f, 1);
-        private static Color ForestColor = new Color(16 / 255f, 160 / 255f, 0, 1);
-        private static Color RockColor = new Color(0.5f, 0.5f, 0.5f, 1);
-        private static Color SnowColor = new Color(1, 1, 1, 1);
+        private static Color DeepColor = new(15 / 255f, 30 / 255f, 80 / 255f, 1);
+        private static Color ShallowColor = new(15 / 255f, 40 / 255f, 90 / 255f, 1);
+        private static Color RiverColor = new(30 / 255f, 120 / 255f, 200 / 255f, 1);
+        private static Color SandColor = new(198 / 255f, 190 / 255f, 31 / 255f, 1);
+        private static Color GrassColor = new(50 / 255f, 220 / 255f, 20 / 255f, 1);
+        private static Color ForestColor = new(16 / 255f, 160 / 255f, 0, 1);
+        private static Color RockColor = new(0.5f, 0.5f, 0.5f, 1);
+        private static Color SnowColor = new(1, 1, 1, 1);
 
-        private static Color IceWater = new Color(210 / 255f, 255 / 255f, 252 / 255f, 1);
-        private static Color ColdWater = new Color(119 / 255f, 156 / 255f, 213 / 255f, 1);
-        private static Color RiverWater = new Color(65 / 255f, 110 / 255f, 179 / 255f, 1);
+        private static Color IceWater = new(210 / 255f, 255 / 255f, 252 / 255f, 1);
+        private static Color ColdWater = new(119 / 255f, 156 / 255f, 213 / 255f, 1);
+        private static Color RiverWater = new(65 / 255f, 110 / 255f, 179 / 255f, 1);
 
         // Height Map Colors
-        private static Color Coldest = new Color(0, 1, 1, 1);
-        private static Color Colder = new Color(170 / 255f, 1, 1, 1);
-        private static Color Cold = new Color(0, 229 / 255f, 133 / 255f, 1);
-        private static Color Warm = new Color(1, 1, 100 / 255f, 1);
-        private static Color Warmer = new Color(1, 100 / 255f, 0, 1);
-        private static Color Warmest = new Color(241 / 255f, 12 / 255f, 0, 1);
+        private static Color Coldest = new(0, 1, 1, 1);
+        private static Color Colder = new(170 / 255f, 1, 1, 1);
+        private static Color Cold = new(0, 229 / 255f, 133 / 255f, 1);
+        private static Color Warm = new(1, 1, 100 / 255f, 1);
+        private static Color Warmer = new(1, 100 / 255f, 0, 1);
+        private static Color Warmest = new(241 / 255f, 12 / 255f, 0, 1);
 
         //Moisture map
-        private static Color Dryest = new Color(255 / 255f, 139 / 255f, 17 / 255f, 1);
-        private static Color Dryer = new Color(245 / 255f, 245 / 255f, 23 / 255f, 1);
-        private static Color Dry = new Color(80 / 255f, 255 / 255f, 0 / 255f, 1);
-        private static Color Wet = new Color(85 / 255f, 255 / 255f, 255 / 255f, 1);
-        private static Color Wetter = new Color(20 / 255f, 70 / 255f, 255 / 255f, 1);
-        private static Color Wettest = new Color(0 / 255f, 0 / 255f, 100 / 255f, 1);
+        private static Color Dryest = new(255 / 255f, 139 / 255f, 17 / 255f, 1);
+        private static Color Dryer = new(245 / 255f, 245 / 255f, 23 / 255f, 1);
+        private static Color Dry = new(80 / 255f, 255 / 255f, 0 / 255f, 1);
+        private static Color Wet = new(85 / 255f, 255 / 255f, 255 / 255f, 1);
+        private static Color Wetter = new(20 / 255f, 70 / 255f, 255 / 255f, 1);
+        private static Color Wettest = new(0 / 255f, 0 / 255f, 100 / 255f, 1);
 
         //biome map
         private static Color Ice = Color.white;
-        private static Color Desert = new Color(238 / 255f, 218 / 255f, 130 / 255f, 1);
-        private static Color Savanna = new Color(177 / 255f, 209 / 255f, 110 / 255f, 1);
-        private static Color TropicalRainforest = new Color(66 / 255f, 123 / 255f, 25 / 255f, 1);
-        private static Color Tundra = new Color(96 / 255f, 131 / 255f, 112 / 255f, 1);
-        private static Color TemperateRainforest = new Color(29 / 255f, 73 / 255f, 40 / 255f, 1);
-        private static Color Grassland = new Color(164 / 255f, 225 / 255f, 99 / 255f, 1);
-        private static Color SeasonalForest = new Color(73 / 255f, 100 / 255f, 35 / 255f, 1);
-        private static Color BorealForest = new Color(95 / 255f, 115 / 255f, 62 / 255f, 1);
-        private static Color Woodland = new Color(139 / 255f, 175 / 255f, 90 / 255f, 1);
+        private static Color Desert = new(238 / 255f, 218 / 255f, 130 / 255f, 1);
+        private static Color Savanna = new(177 / 255f, 209 / 255f, 110 / 255f, 1);
+        private static Color TropicalRainforest = new(66 / 255f, 123 / 255f, 25 / 255f, 1);
+        private static Color Tundra = new(96 / 255f, 131 / 255f, 112 / 255f, 1);
+        private static Color TemperateRainforest = new(29 / 255f, 73 / 255f, 40 / 255f, 1);
+        private static Color Grassland = new(164 / 255f, 225 / 255f, 99 / 255f, 1);
+        private static Color SeasonalForest = new(73 / 255f, 100 / 255f, 35 / 255f, 1);
+        private static Color BorealForest = new(95 / 255f, 115 / 255f, 62 / 255f, 1);
+        private static Color Woodland = new(139 / 255f, 175 / 255f, 90 / 255f, 1);
+        #endregion
 
+        #region Methods
         public static Texture2D CalculateNormalMap(Texture2D source, float strength)
         {
             Texture2D result;
             float xLeft, xRight;
             float yUp, yDown;
             float yDelta, xDelta;
-            var pixels = new Color[source.width * source.height];
+            Color[] pixels = new Color[source.width * source.height];
             strength = Mathf.Clamp(strength, 0.0F, 10.0F);
             result = new Texture2D(source.width, source.height, TextureFormat.ARGB32, true);
 
@@ -77,15 +80,17 @@ namespace SphericalWorldGenerator
             result.Apply();
             return result;
         }
+        #endregion
 
+        #region Routines
         public static Texture2D GetCloud1Texture(int width, int height, Tile[,] tiles)
         {
-            var texture = new Texture2D(width, height);
-            var pixels = new Color[width * height];
+            Texture2D texture = new(width, height);
+            Color[] pixels = new Color[width * height];
 
-            for (var x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
-                for (var y = 0; y < height; y++)
+                for (int y = 0; y < height; y++)
                 {
                     if (tiles[x, y].Cloud1Value > 0.45f)
                         pixels[x + y * width] = Color.Lerp(new Color(1f, 1f, 1f, 0), Color.white, tiles[x, y].Cloud1Value);
@@ -102,12 +107,12 @@ namespace SphericalWorldGenerator
 
         public static Texture2D GetCloud2Texture(int width, int height, Tile[,] tiles)
         {
-            var texture = new Texture2D(width, height);
-            var pixels = new Color[width * height];
+            Texture2D texture = new(width, height);
+            Color[] pixels = new Color[width * height];
 
-            for (var x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
-                for (var y = 0; y < height; y++)
+                for (int y = 0; y < height; y++)
                 {
                     if (tiles[x, y].Cloud2Value > 0.5f)
                         pixels[x + y * width] = Color.Lerp(new Color(1f, 1f, 1f, 0), Color.white, tiles[x, y].Cloud2Value);
@@ -125,12 +130,12 @@ namespace SphericalWorldGenerator
         public static Texture2D GetBiomePalette()
         {
 
-            var texture = new Texture2D(128, 128);
-            var pixels = new Color[128 * 128];
+            Texture2D texture = new(128, 128);
+            Color[] pixels = new Color[128 * 128];
 
-            for (var x = 0; x < 128; x++)
+            for (int x = 0; x < 128; x++)
             {
-                for (var y = 0; y < 128; y++)
+                for (int y = 0; y < 128; y++)
                 {
                     if (x < 10)
                         pixels[x + y * 128] = Ice;
@@ -164,12 +169,12 @@ namespace SphericalWorldGenerator
 
         public static Texture2D GetBumpMap(int width, int height, Tile[,] tiles)
         {
-            var texture = new Texture2D(width, height);
-            var pixels = new Color[width * height];
+            Texture2D texture = new(width, height);
+            Color[] pixels = new Color[width * height];
 
-            for (var x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
-                for (var y = 0; y < height; y++)
+                for (int y = 0; y < height; y++)
                 {
                     switch (tiles[x, y].HeightType)
                     {
@@ -214,12 +219,12 @@ namespace SphericalWorldGenerator
 
         public static Texture2D GetHeightMapTexture(int width, int height, Tile[,] tiles)
         {
-            var texture = new Texture2D(width, height);
-            var pixels = new Color[width * height];
+            Texture2D texture = new(width, height);
+            Color[] pixels = new Color[width * height];
 
-            for (var x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
-                for (var y = 0; y < height; y++)
+                for (int y = 0; y < height; y++)
                 {
                     switch (tiles[x, y].HeightType)
                     {
@@ -272,12 +277,12 @@ namespace SphericalWorldGenerator
 
         public static Texture2D GetHeatMapTexture(int width, int height, Tile[,] tiles)
         {
-            var texture = new Texture2D(width, height);
-            var pixels = new Color[width * height];
+            Texture2D texture = new(width, height);
+            Color[] pixels = new Color[width * height];
 
-            for (var x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
-                for (var y = 0; y < height; y++)
+                for (int y = 0; y < height; y++)
                 {
                     switch (tiles[x, y].HeatType)
                     {
@@ -315,12 +320,12 @@ namespace SphericalWorldGenerator
 
         public static Texture2D GetMoistureMapTexture(int width, int height, Tile[,] tiles)
         {
-            var texture = new Texture2D(width, height);
-            var pixels = new Color[width * height];
+            Texture2D texture = new(width, height);
+            Color[] pixels = new Color[width * height];
 
-            for (var x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
-                for (var y = 0; y < height; y++)
+                for (int y = 0; y < height; y++)
                 {
                     Tile t = tiles[x, y];
 
@@ -347,12 +352,12 @@ namespace SphericalWorldGenerator
 
         public static Texture2D GetBiomeMapTexture(int width, int height, Tile[,] tiles, float coldest, float colder, float cold)
         {
-            var texture = new Texture2D(width, height);
-            var pixels = new Color[width * height];
+            Texture2D texture = new(width, height);
+            Color[] pixels = new Color[width * height];
 
-            for (var x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
-                for (var y = 0; y < height; y++)
+                for (int y = 0; y < height; y++)
                 {
                     BiomeType value = tiles[x, y].BiomeType;
 
@@ -430,6 +435,6 @@ namespace SphericalWorldGenerator
             texture.Apply();
             return texture;
         }
+        #endregion
     }
-
 }

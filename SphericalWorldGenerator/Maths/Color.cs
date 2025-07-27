@@ -83,7 +83,7 @@ namespace SphericalWorldGenerator.Maths
         /// Multiply RGB channels by a scalar; alpha unchanged.
         /// </summary>
         public Color RGBMultiplied(float multiplier)
-            => new Color(r * multiplier, g * multiplier, b * multiplier, a);
+            => new(r * multiplier, g * multiplier, b * multiplier, a);
 
         /// <summary>
         /// Brightness approximation: 0.299*r + 0.587*g + 0.114*b.
@@ -98,33 +98,33 @@ namespace SphericalWorldGenerator.Maths
             => Math.Max(Math.Max(r, g), Math.Max(b, a));
 
         // Common presets
-        public static Color red => new Color(1f, 0f, 0f, 1f);
-        public static Color green => new Color(0f, 1f, 0f, 1f);
-        public static Color blue => new Color(0f, 0f, 1f, 1f);
-        public static Color white => new Color(1f, 1f, 1f, 1f);
-        public static Color black => new Color(0f, 0f, 0f, 1f);
-        public static Color yellow => new Color(1f, 0.9215686f, 0.01568628f, 1f);
-        public static Color cyan => new Color(0f, 1f, 1f, 1f);
-        public static Color magenta => new Color(1f, 0f, 1f, 1f);
-        public static Color gray => new Color(0.5f, 0.5f, 0.5f, 1f);
+        public static Color red => new(1f, 0f, 0f, 1f);
+        public static Color green => new(0f, 1f, 0f, 1f);
+        public static Color blue => new(0f, 0f, 1f, 1f);
+        public static Color white => new(1f, 1f, 1f, 1f);
+        public static Color black => new(0f, 0f, 0f, 1f);
+        public static Color yellow => new(1f, 0.9215686f, 0.01568628f, 1f);
+        public static Color cyan => new(0f, 1f, 1f, 1f);
+        public static Color magenta => new(1f, 0f, 1f, 1f);
+        public static Color gray => new(0.5f, 0.5f, 0.5f, 1f);
         public static Color grey => gray;
-        public static Color clear => new Color(0f, 0f, 0f, 0f);
+        public static Color clear => new(0f, 0f, 0f, 0f);
 
         // Operator overloads
         public static Color operator +(Color a, Color b)
-            => new Color(a.r + b.r, a.g + b.g, a.b + b.b, a.a + b.a);
+            => new(a.r + b.r, a.g + b.g, a.b + b.b, a.a + b.a);
 
         public static Color operator -(Color a, Color b)
-            => new Color(a.r - b.r, a.g - b.g, a.b - b.b, a.a - b.a);
+            => new(a.r - b.r, a.g - b.g, a.b - b.b, a.a - b.a);
 
         public static Color operator *(Color a, float b)
-            => new Color(a.r * b, a.g * b, a.b * b, a.a * b);
+            => new(a.r * b, a.g * b, a.b * b, a.a * b);
 
         public static Color operator *(float b, Color a)
             => a * b;
 
         public static Color operator *(Color a, Color b)
-            => new Color(a.r * b.r, a.g * b.g, a.b * b.b, a.a * b.a);
+            => new(a.r * b.r, a.g * b.g, a.b * b.b, a.a * b.a);
 
         public static Color operator /(Color a, float b)
         {

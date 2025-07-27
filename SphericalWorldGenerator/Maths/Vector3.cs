@@ -36,14 +36,14 @@ namespace SphericalWorldGenerator.Maths
             }
         }
 
-        public static Vector3 zero => new Vector3(0f, 0f, 0f);
-        public static Vector3 one => new Vector3(1f, 1f, 1f);
-        public static Vector3 up => new Vector3(0f, 1f, 0f);
-        public static Vector3 down => new Vector3(0f, -1f, 0f);
-        public static Vector3 left => new Vector3(-1f, 0f, 0f);
-        public static Vector3 right => new Vector3(1f, 0f, 0f);
-        public static Vector3 forward => new Vector3(0f, 0f, 1f);
-        public static Vector3 back => new Vector3(0f, 0f, -1f);
+        public static Vector3 zero => new(0f, 0f, 0f);
+        public static Vector3 one => new(1f, 1f, 1f);
+        public static Vector3 up => new(0f, 1f, 0f);
+        public static Vector3 down => new(0f, -1f, 0f);
+        public static Vector3 left => new(-1f, 0f, 0f);
+        public static Vector3 right => new(1f, 0f, 0f);
+        public static Vector3 forward => new(0f, 0f, 1f);
+        public static Vector3 back => new(0f, 0f, -1f);
 
         /// <summary>Dot product of two vectors.</summary>
         public static float Dot(Vector3 a, Vector3 b)
@@ -51,7 +51,7 @@ namespace SphericalWorldGenerator.Maths
 
         /// <summary>Cross product of two vectors.</summary>
         public static Vector3 Cross(Vector3 a, Vector3 b)
-            => new Vector3(
+            => new(
                    a.y * b.z - a.z * b.y,
                    a.z * b.x - a.x * b.z,
                    a.x * b.y - a.y * b.x
@@ -70,16 +70,16 @@ namespace SphericalWorldGenerator.Maths
 
         // Operator overloads
         public static Vector3 operator +(Vector3 a, Vector3 b)
-            => new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
+            => new(a.x + b.x, a.y + b.y, a.z + b.z);
 
         public static Vector3 operator -(Vector3 a, Vector3 b)
-            => new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
+            => new(a.x - b.x, a.y - b.y, a.z - b.z);
 
         public static Vector3 operator -(Vector3 v)
-            => new Vector3(-v.x, -v.y, -v.z);
+            => new(-v.x, -v.y, -v.z);
 
         public static Vector3 operator *(Vector3 v, float scalar)
-            => new Vector3(v.x * scalar, v.y * scalar, v.z * scalar);
+            => new(v.x * scalar, v.y * scalar, v.z * scalar);
 
         public static Vector3 operator *(float scalar, Vector3 v)
             => v * scalar;

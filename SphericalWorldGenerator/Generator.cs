@@ -88,11 +88,11 @@ namespace SphericalWorldGenerator
 
         protected Tile[,] Tiles;
 
-        protected List<TileGroup> Waters = new List<TileGroup>();
-        protected List<TileGroup> Lands = new List<TileGroup>();
+        protected List<TileGroup> Waters = new();
+        protected List<TileGroup> Lands = new();
 
-        protected List<River> Rivers = new List<River>();
-        protected List<RiverGroup> RiverGroups = new List<RiverGroup>();
+        protected List<River> Rivers = new();
+        protected List<RiverGroup> RiverGroups = new();
 
         // Our texture output gameobject
         protected MeshRenderer HeightMapRenderer;
@@ -174,9 +174,9 @@ namespace SphericalWorldGenerator
 
         private void UpdateBiomeBitmask()
         {
-            for (var x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (var y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
                     Tiles[x, y].UpdateBiomeBitmask();
                 }
@@ -190,9 +190,9 @@ namespace SphericalWorldGenerator
 
         private void GenerateBiomeMap()
         {
-            for (var x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (var y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
 
                     if (!Tiles[x, y].Collidable) continue;
@@ -207,7 +207,7 @@ namespace SphericalWorldGenerator
         {
             int startx = MathHelper.Mod(t.X - radius, Width);
             int endx = MathHelper.Mod(t.X + radius, Width);
-            Vector2 center = new Vector2(t.X, t.Y);
+            Vector2 center = new(t.X, t.Y);
             int curr = radius;
 
             while (curr > 0)
@@ -249,9 +249,9 @@ namespace SphericalWorldGenerator
 
         private void AdjustMoistureMap()
         {
-            for (var x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (var y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
 
                     Tile t = Tiles[x, y];
@@ -301,9 +301,9 @@ namespace SphericalWorldGenerator
         private void BuildRiverGroups()
         {
             //loop each tile, checking if it belongs to multiple rivers
-            for (var x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (var y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
                     Tile t = Tiles[x, y];
 
@@ -385,7 +385,7 @@ namespace SphericalWorldGenerator
                 if (tile.HeightValue > MinRiverHeight)
                 {
                     // Tile is good to start river from
-                    River river = new River(rivercount);
+                    River river = new(rivercount);
 
                     // Figure out the direction this river will try to flow
                     river.CurrentDirection = tile.GetLowestNeighbor(this);
@@ -749,11 +749,11 @@ namespace SphericalWorldGenerator
         {
             Tiles = new Tile[Width, Height];
 
-            for (var x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (var y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
-                    Tile t = new Tile();
+                    Tile t = new();
                     t.X = x;
                     t.Y = y;
 
@@ -882,9 +882,9 @@ namespace SphericalWorldGenerator
 
         private void UpdateNeighbors()
         {
-            for (var x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (var y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
                     Tile t = Tiles[x, y];
 
@@ -898,9 +898,9 @@ namespace SphericalWorldGenerator
 
         private void UpdateBitmasks()
         {
-            for (var x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                for (var y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
                     Tiles[x, y].UpdateBitmask();
                 }
@@ -910,7 +910,7 @@ namespace SphericalWorldGenerator
         private void FloodFill()
         {
             // Use a stack instead of recursion
-            Stack<Tile> stack = new Stack<Tile>();
+            Stack<Tile> stack = new();
 
             for (int x = 0; x < Width; x++)
             {
@@ -925,7 +925,7 @@ namespace SphericalWorldGenerator
                     // Land
                     if (t.Collidable)
                     {
-                        TileGroup group = new TileGroup();
+                        TileGroup group = new();
                         group.Type = TileGroupType.Land;
                         stack.Push(t);
 
@@ -940,7 +940,7 @@ namespace SphericalWorldGenerator
                     // Water
                     else
                     {
-                        TileGroup group = new TileGroup();
+                        TileGroup group = new();
                         group.Type = TileGroupType.Water;
                         stack.Push(t);
 

@@ -115,12 +115,12 @@ namespace SphericalWorldGenerator
             float curLat = southLatBound;
 
             // Loop through each tile using its lat/long coordinates
-            for (var x = 0; x < Width; x++)
+            for (int x = 0; x < Width; x++)
             {
 
                 curLon = westLonBound;
 
-                for (var y = 0; y < Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
 
                     float x1 = 0, y1 = 0, z1 = 0;

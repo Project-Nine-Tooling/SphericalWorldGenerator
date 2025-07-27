@@ -6,7 +6,7 @@ namespace AccidentalNoise
 {
     public sealed class ImplicitCombiner : ImplicitModuleBase
     {
-        private readonly HashSet<ImplicitModuleBase> sources = new HashSet<ImplicitModuleBase>();
+        private readonly HashSet<ImplicitModuleBase> sources = new();
 
         public ImplicitCombiner(CombinerType type)
         {

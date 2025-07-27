@@ -4,13 +4,13 @@ namespace AccidentalNoise
 {
     public sealed class ImplicitCache : ImplicitModuleBase
     {
-        private readonly Cache cache2D = new Cache();
+        private readonly Cache cache2D = new();
 
-        private readonly Cache cache3D = new Cache();
+        private readonly Cache cache3D = new();
 
-        private readonly Cache cache4D = new Cache();
+        private readonly Cache cache4D = new();
 
-        private readonly Cache cache6D = new Cache();
+        private readonly Cache cache6D = new();
 
         public ImplicitCache(ImplicitModuleBase source)
         {

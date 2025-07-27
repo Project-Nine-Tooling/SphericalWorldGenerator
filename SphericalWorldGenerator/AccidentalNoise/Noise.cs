@@ -46,10 +46,10 @@ namespace AccidentalNoise
             // Compare the given distance to the ones already in f
             if (testdist >= f[3]) return;
 
-            var index = 3;
+            int index = 3;
             while (index > 0 && testdist < f[index - 1]) index--;
 
-            for (var i = 3; i-- > index; )
+            for (int i = 3; i-- > index; )
             {
                 f[i + 1] = f[i];
                 disp[i + 1] = disp[i];
@@ -95,11 +95,11 @@ namespace AccidentalNoise
         internal static UInt32 FNV32Buffer(Int32[] uintBuffer, UInt32 len)
         {
             //NOTE: Completely untested.
-            var buffer = new byte[len];
+            byte[] buffer = new byte[len];
             Buffer.BlockCopy(uintBuffer, 0, buffer, 0, buffer.Length);
 
-            var hval = FNV_32_INIT;
-            for (var i = 0; i < len;)
+            uint hval = FNV_32_INIT;
+            for (int i = 0; i < len;)
             {
                 hval ^= buffer[i++];
                 hval *= FNV_32_PRIME;
@@ -110,11 +110,11 @@ namespace AccidentalNoise
         internal static UInt32 FNV32Buffer(Double[] doubleBuffer, UInt32 len)
         {
             //NOTE: Completely untested.
-            var buffer = new byte[len];
+            byte[] buffer = new byte[len];
             Buffer.BlockCopy(doubleBuffer, 0, buffer, 0, buffer.Length);
 
-            var hval = FNV_32_INIT;
-            for (var i = 0; i < len;)
+            uint hval = FNV_32_INIT;
+            for (int i = 0; i < len;)
             {
                 hval ^= buffer[i++];
                 hval *= FNV_32_PRIME;
@@ -124,8 +124,8 @@ namespace AccidentalNoise
 
         internal static UInt32 FNV32Buffer(Byte[] buffer, UInt32 len)
         {
-            var hval = FNV_32_INIT;
-            for (var i = 0; i < len;)
+            uint hval = FNV_32_INIT;
+            for (int i = 0; i < len;)
             {
                 hval ^= buffer[i++];
                 hval *= FNV_32_PRIME;
@@ -208,7 +208,7 @@ namespace AccidentalNoise
             Int32 ix, Int32 iy, 
             Int32 seed)
         {
-            var noise = Noise.HashCoordinates(ix, iy, seed) / 255.0;
+            double noise = Noise.HashCoordinates(ix, iy, seed) / 255.0;
             return noise * 2.0 - 1.0;
         }
 
@@ -217,7 +217,7 @@ namespace AccidentalNoise
             Int32 ix, Int32 iy, Int32 iz, 
             Int32 seed)
         {
-            var noise = Noise.HashCoordinates(ix, iy, iz, seed) / (255.0);
+            double noise = Noise.HashCoordinates(ix, iy, iz, seed) / (255.0);
             return noise * 2.0 - 1.0;
         }
 
@@ -226,7 +226,7 @@ namespace AccidentalNoise
             Int32 ix, Int32 iy, Int32 iz, Int32 iw, 
             Int32 seed)
         {
-            var noise = Noise.HashCoordinates(ix, iy, iz, iw, seed) / 255.0;
+            double noise = Noise.HashCoordinates(ix, iy, iz, iw, seed) / 255.0;
             return noise * 2.0 - 1.0;
         }
 
@@ -235,7 +235,7 @@ namespace AccidentalNoise
             Int32 ix, Int32 iy, Int32 iz, Int32 iw, Int32 iu, Int32 iv, 
             Int32 seed)
         {
-            var noise = Noise.HashCoordinates(ix, iy, iz, iw, iu, iv, seed) / 255.0;
+            double noise = Noise.HashCoordinates(ix, iy, iz, iw, iu, iv, seed) / 255.0;
             return noise * 2.0 - 1.0;
         }
 
@@ -244,10 +244,10 @@ namespace AccidentalNoise
             Int32 ix, Int32 iy, 
             Int32 seed)
         {
-            var hash = Noise.HashCoordinates(ix, iy, seed);
+            uint hash = Noise.HashCoordinates(ix, iy, seed);
 
-            var dx = x - ix;
-            var dy = y - iy;
+            double dx = x - ix;
+            double dy = y - iy;
 
             return (dx * NoiseLookupTable.Gradient2D[hash, 0] +
                     dy * NoiseLookupTable.Gradient2D[hash, 1]);
@@ -258,11 +258,11 @@ namespace AccidentalNoise
             Int32 ix, Int32 iy, Int32 iz,
             Int32 seed)
         {
-            var hash = Noise.HashCoordinates(ix, iy, iz, seed);
+            uint hash = Noise.HashCoordinates(ix, iy, iz, seed);
 
-            var dx = x - ix;
-            var dy = y - iy;
-            var dz = z - iz;
+            double dx = x - ix;
+            double dy = y - iy;
+            double dz = z - iz;
 
             return (dx * NoiseLookupTable.Gradient3D[hash, 0] +
                     dy * NoiseLookupTable.Gradient3D[hash, 1] +
@@ -274,12 +274,12 @@ namespace AccidentalNoise
             Int32 ix, Int32 iy, Int32 iz, Int32 iw,
             Int32 seed)
         {
-            var hash = Noise.HashCoordinates(ix, iy, iz, iw, seed);
+            uint hash = Noise.HashCoordinates(ix, iy, iz, iw, seed);
 
-            var dx = x - ix;
-            var dy = y - iy;
-            var dz = z - iz;
-            var dw = w - iw;
+            double dx = x - ix;
+            double dy = y - iy;
+            double dz = z - iz;
+            double dw = w - iw;
 
             return (dx * NoiseLookupTable.Gradient4D[hash, 0] +
                     dy * NoiseLookupTable.Gradient4D[hash, 1] +
@@ -292,14 +292,14 @@ namespace AccidentalNoise
             Int32 ix, Int32 iy, Int32 iz, Int32 iw, Int32 iu, Int32 iv, 
             Int32 seed)
         {
-            var hash = Noise.HashCoordinates(ix, iy, iz, iw, iu, iv, seed);
+            uint hash = Noise.HashCoordinates(ix, iy, iz, iw, iu, iv, seed);
 
-            var dx = x - ix;
-            var dy = y - iy;
-            var dz = z - iz;
-            var dw = w - iw;
-            var du = u - iu;
-            var dv = v - iv;
+            double dx = x - ix;
+            double dy = y - iy;
+            double dz = z - iz;
+            double dw = w - iw;
+            double du = u - iu;
+            double dv = v - iv;
 
             return (dx * NoiseLookupTable.Gradient6D[hash, 0] +
                     dy * NoiseLookupTable.Gradient6D[hash, 1] +
@@ -314,8 +314,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 iy,
             Int32 seed, WorkerNoise2 noisefunc)
         {
-            var v1 = noisefunc(x, y, x0, iy, seed);
-            var v2 = noisefunc(x, y, x1, iy, seed);
+            double v1 = noisefunc(x, y, x0, iy, seed);
+            double v2 = noisefunc(x, y, x1, iy, seed);
 
             return Lerp(xs, v1, v2);
         }
@@ -325,8 +325,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 y0, Int32 y1,
             Int32 seed, WorkerNoise2 noisefunc)
         {
-            var v1 = interpolate_X_2(x, y, xs, x0, x1, y0, seed, noisefunc);
-            var v2 = interpolate_X_2(x, y, xs, x0, x1, y1, seed, noisefunc);
+            double v1 = interpolate_X_2(x, y, xs, x0, x1, y0, seed, noisefunc);
+            double v2 = interpolate_X_2(x, y, xs, x0, x1, y1, seed, noisefunc);
 
             return Lerp(ys, v1, v2);
         }
@@ -336,8 +336,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 iy, Int32 iz,
             Int32 seed, WorkerNoise3 noisefunc)
         {
-            var v1 = noisefunc(x, y, z, x0, iy, iz, seed);
-            var v2 = noisefunc(x, y, z, x1, iy, iz, seed);
+            double v1 = noisefunc(x, y, z, x0, iy, iz, seed);
+            double v2 = noisefunc(x, y, z, x1, iy, iz, seed);
 
             return Lerp(xs, v1, v2);
         }
@@ -347,8 +347,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 y0, Int32 y1, Int32 iz, 
             Int32 seed, WorkerNoise3 noisefunc)
         {
-            var v1 = interpolate_X_3(x, y, z, xs, x0, x1, y0, iz, seed, noisefunc);
-            var v2 = interpolate_X_3(x, y, z, xs, x0, x1, y1, iz, seed, noisefunc);
+            double v1 = interpolate_X_3(x, y, z, xs, x0, x1, y0, iz, seed, noisefunc);
+            double v2 = interpolate_X_3(x, y, z, xs, x0, x1, y1, iz, seed, noisefunc);
 
             return Lerp(ys, v1, v2);
         }
@@ -358,8 +358,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 y0, Int32 y1, Int32 z0, Int32 z1,
             Int32 seed, WorkerNoise3 noisefunc)
         {
-            var v1 = interpolate_XY_3(x, y, z, xs, ys, x0, x1, y0, y1, z0, seed, noisefunc);
-            var v2 = interpolate_XY_3(x, y, z, xs, ys, x0, x1, y0, y1, z1, seed, noisefunc);
+            double v1 = interpolate_XY_3(x, y, z, xs, ys, x0, x1, y0, y1, z0, seed, noisefunc);
+            double v2 = interpolate_XY_3(x, y, z, xs, ys, x0, x1, y0, y1, z1, seed, noisefunc);
 
             return Lerp(zs, v1, v2);
         }
@@ -369,8 +369,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 iy, Int32 iz, Int32 iw,
             Int32 seed, WorkerNoise4 noisefunc)
         {
-            var v1 = noisefunc(x, y, z, w, x0, iy, iz, iw, seed);
-            var v2 = noisefunc(x, y, z, w, x1, iy, iz, iw, seed);
+            double v1 = noisefunc(x, y, z, w, x0, iy, iz, iw, seed);
+            double v2 = noisefunc(x, y, z, w, x1, iy, iz, iw, seed);
 
             return Lerp(xs, v1, v2);
         }
@@ -380,8 +380,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 y0, Int32 y1, Int32 iz, Int32 iw,
             Int32 seed, WorkerNoise4 noisefunc)
         {
-            var v1 = interpolate_X_4(x, y, z, w, xs, x0, x1, y0, iz, iw, seed, noisefunc);
-            var v2 = interpolate_X_4(x, y, z, w, xs, x0, x1, y1, iz, iw, seed, noisefunc);
+            double v1 = interpolate_X_4(x, y, z, w, xs, x0, x1, y0, iz, iw, seed, noisefunc);
+            double v2 = interpolate_X_4(x, y, z, w, xs, x0, x1, y1, iz, iw, seed, noisefunc);
 
             return Lerp(ys, v1, v2);
         }
@@ -391,8 +391,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 y0, Int32 y1, Int32 z0, Int32 z1, Int32 iw,
             Int32 seed, WorkerNoise4 noisefunc)
         {
-            var v1 = interpolate_XY_4(x, y, z, w, xs, ys, x0, x1, y0, y1, z0, iw, seed, noisefunc);
-            var v2 = interpolate_XY_4(x, y, z, w, xs, ys, x0, x1, y0, y1, z1, iw, seed, noisefunc);
+            double v1 = interpolate_XY_4(x, y, z, w, xs, ys, x0, x1, y0, y1, z0, iw, seed, noisefunc);
+            double v2 = interpolate_XY_4(x, y, z, w, xs, ys, x0, x1, y0, y1, z1, iw, seed, noisefunc);
 
             return Lerp(zs, v1, v2);
         }
@@ -402,8 +402,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 y0, Int32 y1, Int32 z0, Int32 z1, Int32 w0, Int32 w1,
             Int32 seed, WorkerNoise4 noisefunc)
         {
-            var v1 = interpolate_XYZ_4(x, y, z, w, xs, ys, zs, x0, x1, y0, y1, z0, z1, w0, seed, noisefunc);
-            var v2 = interpolate_XYZ_4(x, y, z, w, xs, ys, zs, x0, x1, y0, y1, z0, z1, w1, seed, noisefunc);
+            double v1 = interpolate_XYZ_4(x, y, z, w, xs, ys, zs, x0, x1, y0, y1, z0, z1, w0, seed, noisefunc);
+            double v2 = interpolate_XYZ_4(x, y, z, w, xs, ys, zs, x0, x1, y0, y1, z0, z1, w1, seed, noisefunc);
 
             return Lerp(ws, v1, v2);
         }
@@ -413,8 +413,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 iy, Int32 iz, Int32 iw, Int32 iu, Int32 iv,
             Int32 seed, WorkerNoise6 noisefunc)
         {
-            var v1 = noisefunc(x, y, z, w, u, v, x0, iy, iz, iw, iu, iv, seed);
-            var v2 = noisefunc(x, y, z, w, u, v, x1, iy, iz, iw, iu, iv, seed);
+            double v1 = noisefunc(x, y, z, w, u, v, x0, iy, iz, iw, iu, iv, seed);
+            double v2 = noisefunc(x, y, z, w, u, v, x1, iy, iz, iw, iu, iv, seed);
 
             return Lerp(xs, v1, v2);
         }
@@ -425,8 +425,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 y0, Int32 y1, Int32 iz, Int32 iw, Int32 iu, Int32 iv,
             Int32 seed, WorkerNoise6 noisefunc)
         {
-            var v1 = interpolate_X_6(x, y, z, w, u, v, xs, x0, x1, y0, iz, iw, iu, iv, seed, noisefunc);
-            var v2 = interpolate_X_6(x, y, z, w, u, v, xs, x0, x1, y1, iz, iw, iu, iv, seed, noisefunc);
+            double v1 = interpolate_X_6(x, y, z, w, u, v, xs, x0, x1, y0, iz, iw, iu, iv, seed, noisefunc);
+            double v2 = interpolate_X_6(x, y, z, w, u, v, xs, x0, x1, y1, iz, iw, iu, iv, seed, noisefunc);
 
             return Lerp(ys, v1, v2);
         }
@@ -437,8 +437,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 y0, Int32 y1, Int32 z0, Int32 z1, Int32 iw, Int32 iu, Int32 iv,
             Int32 seed, WorkerNoise6 noisefunc)
         {
-            var v1 = interpolate_XY_6(x, y, z, w, u, v, xs, ys, x0, x1, y0, y1, z0, iw, iu, iv, seed, noisefunc);
-            var v2 = interpolate_XY_6(x, y, z, w, u, v, xs, ys, x0, x1, y0, y1, z1, iw, iu, iv, seed, noisefunc);
+            double v1 = interpolate_XY_6(x, y, z, w, u, v, xs, ys, x0, x1, y0, y1, z0, iw, iu, iv, seed, noisefunc);
+            double v2 = interpolate_XY_6(x, y, z, w, u, v, xs, ys, x0, x1, y0, y1, z1, iw, iu, iv, seed, noisefunc);
 
             return Lerp(zs, v1, v2);
         }
@@ -449,8 +449,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 y0, Int32 y1, Int32 z0, Int32 z1, Int32 w0, Int32 w1, Int32 iu, Int32 iv,
             Int32 seed, WorkerNoise6 noisefunc)
         {
-            var v1 = interpolate_XYZ_6(x, y, z, w, u, v, xs, ys, zs, x0, x1, y0, y1, z0, z1, w0, iu, iv, seed, noisefunc);
-            var v2 = interpolate_XYZ_6(x, y, z, w, u, v, xs, ys, zs, x0, x1, y0, y1, z0, z1, w1, iu, iv, seed, noisefunc);
+            double v1 = interpolate_XYZ_6(x, y, z, w, u, v, xs, ys, zs, x0, x1, y0, y1, z0, z1, w0, iu, iv, seed, noisefunc);
+            double v2 = interpolate_XYZ_6(x, y, z, w, u, v, xs, ys, zs, x0, x1, y0, y1, z0, z1, w1, iu, iv, seed, noisefunc);
 
             return Lerp(ws, v1, v2);
         }
@@ -461,8 +461,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 y0, Int32 y1, Int32 z0, Int32 z1, Int32 w0, Int32 w1, Int32 u0, Int32 u1, Int32 iv,
             Int32 seed, WorkerNoise6 noisefunc)
         {
-            var v1 = interpolate_XYZW_6(x, y, z, w, u, v, xs, ys, zs, ws, x0, x1, y0, y1, z0, z1, w0, w1, u0, iv, seed, noisefunc);
-            var v2 = interpolate_XYZW_6(x, y, z, w, u, v, xs, ys, zs, ws, x0, x1, y0, y1, z0, z1, w0, w1, u1, iv, seed, noisefunc);
+            double v1 = interpolate_XYZW_6(x, y, z, w, u, v, xs, ys, zs, ws, x0, x1, y0, y1, z0, z1, w0, w1, u0, iv, seed, noisefunc);
+            double v2 = interpolate_XYZW_6(x, y, z, w, u, v, xs, ys, zs, ws, x0, x1, y0, y1, z0, z1, w0, w1, u1, iv, seed, noisefunc);
 
             return Lerp(us, v1, v2);
         }
@@ -473,8 +473,8 @@ namespace AccidentalNoise
             Int32 x0, Int32 x1, Int32 y0, Int32 y1, Int32 z0, Int32 z1, Int32 w0, Int32 w1, Int32 u0, Int32 u1, Int32 v0, Int32 v1,
             Int32 seed, WorkerNoise6 noisefunc)
         {
-            var val1 = interpolate_XYZWU_6(x, y, z, w, u, v, xs, ys, zs, ws, us, x0, x1, y0, y1, z0, z1, w0, w1, u0, u1, v0, seed, noisefunc);
-            var val2 = interpolate_XYZWU_6(x, y, z, w, u, v, xs, ys, zs, ws, us, x0, x1, y0, y1, z0, z1, w0, w1, u0, u1, v1, seed, noisefunc);
+            double val1 = interpolate_XYZWU_6(x, y, z, w, u, v, xs, ys, zs, ws, us, x0, x1, y0, y1, z0, z1, w0, w1, u0, u1, v0, seed, noisefunc);
+            double val2 = interpolate_XYZWU_6(x, y, z, w, u, v, xs, ys, zs, ws, us, x0, x1, y0, y1, z0, z1, w0, w1, u0, u1, v1, seed, noisefunc);
 
             return Lerp(vs, val1, val2);
         }
@@ -482,153 +482,153 @@ namespace AccidentalNoise
         // The usable noise functions
         public static Double ValueNoise(Double x, Double y, Int32 seed, InterpolationDelegate interp)
         {
-            var x0 = FastFloor(x);
-            var y0 = FastFloor(y);
+            int x0 = FastFloor(x);
+            int y0 = FastFloor(y);
 
-            var x1 = x0 + 1;
-            var y1 = y0 + 1;
+            int x1 = x0 + 1;
+            int y1 = y0 + 1;
 
-            var xs = interp((x - x0));
-            var ys = interp((y - y0));
+            double xs = interp((x - x0));
+            double ys = interp((y - y0));
 
             return interpolate_XY_2(x, y, xs, ys, x0, x1, y0, y1, seed, InternalValueNoise);
         }
 
         public static Double ValueNoise(Double x, Double y, Double z, Int32 seed, InterpolationDelegate interp)
         {
-            var x0 = FastFloor(x);
-            var y0 = FastFloor(y);
-            var z0 = FastFloor(z);
-            var x1 = x0 + 1;
-            var y1 = y0 + 1;
-            var z1 = z0 + 1;
+            int x0 = FastFloor(x);
+            int y0 = FastFloor(y);
+            int z0 = FastFloor(z);
+            int x1 = x0 + 1;
+            int y1 = y0 + 1;
+            int z1 = z0 + 1;
 
-            var xs = interp((x - x0));
-            var ys = interp((y - y0));
-            var zs = interp((z - z0));
+            double xs = interp((x - x0));
+            double ys = interp((y - y0));
+            double zs = interp((z - z0));
 
             return interpolate_XYZ_3(x, y, z, xs, ys, zs, x0, x1, y0, y1, z0, z1, seed, InternalValueNoise);
         }
 
         public static Double ValueNoise(Double x, Double y, Double z, Double w, Int32 seed, InterpolationDelegate interp)
         {
-            var x0 = FastFloor(x);
-            var y0 = FastFloor(y);
-            var z0 = FastFloor(z);
-            var w0 = FastFloor(w);
+            int x0 = FastFloor(x);
+            int y0 = FastFloor(y);
+            int z0 = FastFloor(z);
+            int w0 = FastFloor(w);
 
-            var x1 = x0 + 1;
-            var y1 = y0 + 1;
-            var z1 = z0 + 1;
-            var w1 = w0 + 1;
+            int x1 = x0 + 1;
+            int y1 = y0 + 1;
+            int z1 = z0 + 1;
+            int w1 = w0 + 1;
 
-            var xs = interp((x - x0));
-            var ys = interp((y - y0));
-            var zs = interp((z - z0));
-            var ws = interp((w - w0));
+            double xs = interp((x - x0));
+            double ys = interp((y - y0));
+            double zs = interp((z - z0));
+            double ws = interp((w - w0));
 
             return interpolate_XYZW_4(x, y, z, w, xs, ys, zs, ws, x0, x1, y0, y1, z0, z1, w0, w1, seed, InternalValueNoise);
         }
 
         public static Double ValueNoise(Double x, Double y, Double z, Double w, Double u, Double v, Int32 seed, InterpolationDelegate interp)
         {
-            var x0 = FastFloor(x);
-            var y0 = FastFloor(y);
-            var z0 = FastFloor(z);
-            var w0 = FastFloor(w);
-            var u0 = FastFloor(u);
-            var v0 = FastFloor(v);
+            int x0 = FastFloor(x);
+            int y0 = FastFloor(y);
+            int z0 = FastFloor(z);
+            int w0 = FastFloor(w);
+            int u0 = FastFloor(u);
+            int v0 = FastFloor(v);
 
-            var x1 = x0 + 1;
-            var y1 = y0 + 1;
-            var z1 = z0 + 1;
-            var w1 = w0 + 1;
-            var u1 = u0 + 1;
-            var v1 = v0 + 1;
+            int x1 = x0 + 1;
+            int y1 = y0 + 1;
+            int z1 = z0 + 1;
+            int w1 = w0 + 1;
+            int u1 = u0 + 1;
+            int v1 = v0 + 1;
 
-            var xs = interp((x - x0));
-            var ys = interp((y - y0));
-            var zs = interp((z - z0));
-            var ws = interp((w - w0));
-            var us = interp((u - u0));
-            var vs = interp((v - v0));
+            double xs = interp((x - x0));
+            double ys = interp((y - y0));
+            double zs = interp((z - z0));
+            double ws = interp((w - w0));
+            double us = interp((u - u0));
+            double vs = interp((v - v0));
 
             return interpolate_XYZWUV_6(x, y, z, w, u, v, xs, ys, zs, ws, us, vs, x0, x1, y0, y1, z0, z1, w0, w1, u0, u1, v0, v1, seed, InternalValueNoise);
         }
 
         public static Double GradientNoise(Double x, Double y, Int32 seed, InterpolationDelegate interp)
         {
-            var x0 = FastFloor(x);
-            var y0 = FastFloor(y);
+            int x0 = FastFloor(x);
+            int y0 = FastFloor(y);
 
-            var x1 = x0 + 1;
-            var y1 = y0 + 1;
+            int x1 = x0 + 1;
+            int y1 = y0 + 1;
 
-            var xs = interp((x - x0));
-            var ys = interp((y - y0));
+            double xs = interp((x - x0));
+            double ys = interp((y - y0));
 
             return interpolate_XY_2(x, y, xs, ys, x0, x1, y0, y1, seed, InternalGradientNoise);
         }
 
         public static Double GradientNoise(Double x, Double y, Double z, Int32 seed, InterpolationDelegate interp)
         {
-            var x0 = FastFloor(x);
-            var y0 = FastFloor(y);
-            var z0 = FastFloor(z);
+            int x0 = FastFloor(x);
+            int y0 = FastFloor(y);
+            int z0 = FastFloor(z);
 
-            var x1 = x0 + 1;
-            var y1 = y0 + 1;
-            var z1 = z0 + 1;
+            int x1 = x0 + 1;
+            int y1 = y0 + 1;
+            int z1 = z0 + 1;
 
-            var xs = interp((x - x0));
-            var ys = interp((y - y0));
-            var zs = interp((z - z0));
+            double xs = interp((x - x0));
+            double ys = interp((y - y0));
+            double zs = interp((z - z0));
 
             return interpolate_XYZ_3(x, y, z, xs, ys, zs, x0, x1, y0, y1, z0, z1, seed, InternalGradientNoise);
         }
 
         public static Double GradientNoise(Double x, Double y, Double z, Double w, Int32 seed, InterpolationDelegate interp)
         {
-            var x0 = FastFloor(x);
-            var y0 = FastFloor(y);
-            var z0 = FastFloor(z);
-            var w0 = FastFloor(w);
+            int x0 = FastFloor(x);
+            int y0 = FastFloor(y);
+            int z0 = FastFloor(z);
+            int w0 = FastFloor(w);
 
-            var x1 = x0 + 1;
-            var y1 = y0 + 1;
-            var z1 = z0 + 1;
-            var w1 = w0 + 1;
+            int x1 = x0 + 1;
+            int y1 = y0 + 1;
+            int z1 = z0 + 1;
+            int w1 = w0 + 1;
 
-            var xs = interp((x - x0));
-            var ys = interp((y - y0));
-            var zs = interp((z - z0));
-            var ws = interp((w - w0));
+            double xs = interp((x - x0));
+            double ys = interp((y - y0));
+            double zs = interp((z - z0));
+            double ws = interp((w - w0));
 
             return interpolate_XYZW_4(x, y, z, w, xs, ys, zs, ws, x0, x1, y0, y1, z0, z1, w0, w1, seed, InternalGradientNoise);
         }
 
         public static Double GradientNoise(Double x, Double y, Double z, Double w, Double u, Double v, Int32 seed, InterpolationDelegate interp)
         {
-            var x0 = FastFloor(x);
-            var y0 = FastFloor(y);
-            var z0 = FastFloor(z);
-            var w0 = FastFloor(w);
-            var u0 = FastFloor(u);
-            var v0 = FastFloor(v);
+            int x0 = FastFloor(x);
+            int y0 = FastFloor(y);
+            int z0 = FastFloor(z);
+            int w0 = FastFloor(w);
+            int u0 = FastFloor(u);
+            int v0 = FastFloor(v);
 
-            var x1 = x0 + 1;
-            var y1 = y0 + 1;
-            var z1 = z0 + 1;
-            var w1 = w0 + 1;
-            var u1 = u0 + 1;
-            var v1 = v0 + 1;
+            int x1 = x0 + 1;
+            int y1 = y0 + 1;
+            int z1 = z0 + 1;
+            int w1 = w0 + 1;
+            int u1 = u0 + 1;
+            int v1 = v0 + 1;
 
-            var xs = interp((x - x0));
-            var ys = interp((y - y0));
-            var zs = interp((z - z0));
-            var ws = interp((w - w0));
-            var us = interp((u - u0));
-            var vs = interp((v - v0));
+            double xs = interp((x - x0));
+            double ys = interp((y - y0));
+            double zs = interp((z - z0));
+            double ws = interp((w - w0));
+            double us = interp((u - u0));
+            double vs = interp((v - v0));
 
             return interpolate_XYZWUV_6(x, y, z, w, u, v, xs, ys, zs, ws, us, vs, x0, x1, y0, y1, z0, z1, w0, w1, u0, u1, v0, v1, seed, InternalGradientNoise);
         }
@@ -675,27 +675,27 @@ namespace AccidentalNoise
 
         public static void CellularFunction(Double x, Double y, Int32 seed, Double[] f, Double[] disp)
         {
-            var xInt = FastFloor(x);
-            var yInt = FastFloor(y);
+            int xInt = FastFloor(x);
+            int yInt = FastFloor(y);
 
-            for (var c = 0; c < 4; ++c)
+            for (int c = 0; c < 4; ++c)
             {
                 f[c] = 99999.0;
                 disp[c] = 0.0;
             }
 
-            for (var ycur = yInt - 3; ycur <= yInt + 3; ++ycur)
+            for (int ycur = yInt - 3; ycur <= yInt + 3; ++ycur)
             {
-                for (var xcur = xInt - 3; xcur <= xInt + 3; ++xcur)
+                for (int xcur = xInt - 3; xcur <= xInt + 3; ++xcur)
                 {
-                    var xpos = xcur + InternalValueNoise(x, y, xcur, ycur, seed);
-                    var ypos = ycur + InternalValueNoise(x, y, xcur, ycur, seed + 1);
-                    var xdist = xpos - x;
-                    var ydist = ypos - y;
-                    var dist = (xdist * xdist + ydist * ydist);
-                    var xval = FastFloor(xpos);
-                    var yval = FastFloor(ypos);
-                    var dsp = InternalValueNoise(x, y, xval, yval, seed + 3);
+                    double xpos = xcur + InternalValueNoise(x, y, xcur, ycur, seed);
+                    double ypos = ycur + InternalValueNoise(x, y, xcur, ycur, seed + 1);
+                    double xdist = xpos - x;
+                    double ydist = ypos - y;
+                    double dist = (xdist * xdist + ydist * ydist);
+                    int xval = FastFloor(xpos);
+                    int yval = FastFloor(ypos);
+                    double dsp = InternalValueNoise(x, y, xval, yval, seed + 3);
                     AddDistance(f, disp, dist, dsp);
                 }
             }
@@ -703,33 +703,33 @@ namespace AccidentalNoise
 
         public static void CellularFunction(Double x, Double y, Double z, Int32 seed, Double[] f, Double[] disp)
         {
-            var xInt = FastFloor(x);
-            var yInt = FastFloor(y);
-            var zInt = FastFloor(z);
+            int xInt = FastFloor(x);
+            int yInt = FastFloor(y);
+            int zInt = FastFloor(z);
 
-            for (var c = 0; c < 4; ++c)
+            for (int c = 0; c < 4; ++c)
             {
                 f[c] = 99999.0;
                 disp[c] = 0.0;
             }
 
-            for (var zcur = zInt - 2; zcur <= zInt + 2; ++zcur)
+            for (int zcur = zInt - 2; zcur <= zInt + 2; ++zcur)
             {
-                for (var ycur = yInt - 2; ycur <= yInt + 2; ++ycur)
+                for (int ycur = yInt - 2; ycur <= yInt + 2; ++ycur)
                 {
-                    for (var xcur = xInt - 2; xcur <= xInt + 2; ++xcur)
+                    for (int xcur = xInt - 2; xcur <= xInt + 2; ++xcur)
                     {
-                        var xpos = xcur + InternalValueNoise(x, y, z, xcur, ycur, zcur, seed);
-                        var ypos = ycur + InternalValueNoise(x, y, z, xcur, ycur, zcur, seed + 1);
-                        var zpos = zcur + InternalValueNoise(x, y, z, xcur, ycur, zcur, seed + 2);
-                        var xdist = xpos - x;
-                        var ydist = ypos - y;
-                        var zdist = zpos - z;
-                        var dist = (xdist * xdist + ydist * ydist + zdist * zdist);
-                        var xval = FastFloor(xpos);
-                        var yval = FastFloor(ypos);
-                        var zval = FastFloor(zpos);
-                        var dsp = InternalValueNoise(x, y, z, xval, yval, zval, seed + 3);
+                        double xpos = xcur + InternalValueNoise(x, y, z, xcur, ycur, zcur, seed);
+                        double ypos = ycur + InternalValueNoise(x, y, z, xcur, ycur, zcur, seed + 1);
+                        double zpos = zcur + InternalValueNoise(x, y, z, xcur, ycur, zcur, seed + 2);
+                        double xdist = xpos - x;
+                        double ydist = ypos - y;
+                        double zdist = zpos - z;
+                        double dist = (xdist * xdist + ydist * ydist + zdist * zdist);
+                        int xval = FastFloor(xpos);
+                        int yval = FastFloor(ypos);
+                        int zval = FastFloor(zpos);
+                        double dsp = InternalValueNoise(x, y, z, xval, yval, zval, seed + 3);
                         AddDistance(f, disp, dist, dsp);
                     }
                 }
@@ -738,39 +738,39 @@ namespace AccidentalNoise
 
         public static void CellularFunction(Double x, Double y, Double z, Double w, Int32 seed, Double[] f, Double[] disp)
         {
-            var xInt = FastFloor(x);
-            var yInt = FastFloor(y);
-            var zInt = FastFloor(z);
-            var wInt = FastFloor(w);
+            int xInt = FastFloor(x);
+            int yInt = FastFloor(y);
+            int zInt = FastFloor(z);
+            int wInt = FastFloor(w);
 
-            for (var c = 0; c < 4; ++c)
+            for (int c = 0; c < 4; ++c)
             {
                 f[c] = 99999.0;
                 disp[c] = 0.0;
             }
 
-            for (var wcur = wInt - 2; wcur <= wInt + 2; ++wcur)
+            for (int wcur = wInt - 2; wcur <= wInt + 2; ++wcur)
             {
-                for (var zcur = zInt - 2; zcur <= zInt + 2; ++zcur)
+                for (int zcur = zInt - 2; zcur <= zInt + 2; ++zcur)
                 {
-                    for (var ycur = yInt - 2; ycur <= yInt + 2; ++ycur)
+                    for (int ycur = yInt - 2; ycur <= yInt + 2; ++ycur)
                     {
-                        for (var xcur = xInt - 2; xcur <= xInt + 2; ++xcur)
+                        for (int xcur = xInt - 2; xcur <= xInt + 2; ++xcur)
                         {
-                            var xpos = xcur + InternalValueNoise(x, y, z, w, xcur, ycur, zcur, wcur, seed);
-                            var ypos = ycur + InternalValueNoise(x, y, z, w, xcur, ycur, zcur, wcur, seed + 1);
-                            var zpos = zcur + InternalValueNoise(x, y, z, w, xcur, ycur, zcur, wcur, seed + 2);
-                            var wpos = wcur + InternalValueNoise(x, y, z, w, xcur, ycur, zcur, wcur, seed + 3);
-                            var xdist = xpos - x;
-                            var ydist = ypos - y;
-                            var zdist = zpos - z;
-                            var wdist = wpos - w;
-                            var dist = (xdist * xdist + ydist * ydist + zdist * zdist + wdist * wdist);
-                            var xval = FastFloor(xpos);
-                            var yval = FastFloor(ypos);
-                            var zval = FastFloor(zpos);
-                            var wval = FastFloor(wpos);
-                            var dsp = InternalValueNoise(x, y, z, w, xval, yval, zval, wval, seed + 3);
+                            double xpos = xcur + InternalValueNoise(x, y, z, w, xcur, ycur, zcur, wcur, seed);
+                            double ypos = ycur + InternalValueNoise(x, y, z, w, xcur, ycur, zcur, wcur, seed + 1);
+                            double zpos = zcur + InternalValueNoise(x, y, z, w, xcur, ycur, zcur, wcur, seed + 2);
+                            double wpos = wcur + InternalValueNoise(x, y, z, w, xcur, ycur, zcur, wcur, seed + 3);
+                            double xdist = xpos - x;
+                            double ydist = ypos - y;
+                            double zdist = zpos - z;
+                            double wdist = wpos - w;
+                            double dist = (xdist * xdist + ydist * ydist + zdist * zdist + wdist * wdist);
+                            int xval = FastFloor(xpos);
+                            int yval = FastFloor(ypos);
+                            int zval = FastFloor(zpos);
+                            int wval = FastFloor(wpos);
+                            double dsp = InternalValueNoise(x, y, z, w, xval, yval, zval, wval, seed + 3);
                             AddDistance(f, disp, dist, dsp);
                         }
                     }
@@ -780,52 +780,52 @@ namespace AccidentalNoise
 
         public static void CellularFunction(Double x, Double y, Double z, Double w, Double u, Double v, Int32 seed, Double[] f, Double[] disp)
         {
-            var xInt = FastFloor(x);
-            var yInt = FastFloor(y);
-            var zInt = FastFloor(z);
-            var wInt = FastFloor(w);
-            var uInt = FastFloor(u);
-            var vInt = FastFloor(v);
+            int xInt = FastFloor(x);
+            int yInt = FastFloor(y);
+            int zInt = FastFloor(z);
+            int wInt = FastFloor(w);
+            int uInt = FastFloor(u);
+            int vInt = FastFloor(v);
 
-            for (var c = 0; c < 4; ++c)
+            for (int c = 0; c < 4; ++c)
             {
                 f[c] = 99999.0;
                 disp[c] = 0.0;
             }
 
-            for (var vcur = vInt - 1; vcur <= vInt + 1; ++vcur)
+            for (int vcur = vInt - 1; vcur <= vInt + 1; ++vcur)
             {
-                for (var ucur = uInt - 1; ucur <= uInt + 1; ++ucur)
+                for (int ucur = uInt - 1; ucur <= uInt + 1; ++ucur)
                 {
 
-                    for (var wcur = wInt - 2; wcur <= wInt + 2; ++wcur)
+                    for (int wcur = wInt - 2; wcur <= wInt + 2; ++wcur)
                     {
-                        for (var zcur = zInt - 2; zcur <= zInt + 2; ++zcur)
+                        for (int zcur = zInt - 2; zcur <= zInt + 2; ++zcur)
                         {
-                            for (var ycur = yInt - 2; ycur <= yInt + 2; ++ycur)
+                            for (int ycur = yInt - 2; ycur <= yInt + 2; ++ycur)
                             {
-                                for (var xcur = xInt - 2; xcur <= xInt + 2; ++xcur)
+                                for (int xcur = xInt - 2; xcur <= xInt + 2; ++xcur)
                                 {
-                                    var xpos = xcur + InternalValueNoise(x, y, z, w, u, v, xcur, ycur, zcur, wcur, ucur, vcur, seed);
-                                    var ypos = ycur + InternalValueNoise(x, y, z, w, u, v, xcur, ycur, zcur, wcur, ucur, vcur, seed + 1);
-                                    var zpos = zcur + InternalValueNoise(x, y, z, w, u, v, xcur, ycur, zcur, wcur, ucur, vcur, seed + 2);
-                                    var wpos = wcur + InternalValueNoise(x, y, z, w, u, v, xcur, ycur, zcur, wcur, ucur, vcur, seed + 3);
-                                    var upos = ucur + InternalValueNoise(x, y, z, w, u, v, xcur, ycur, zcur, wcur, ucur, vcur, seed + 4);
-                                    var vpos = vcur + InternalValueNoise(x, y, z, w, u, v, xcur, ycur, zcur, wcur, ucur, vcur, seed + 5);
-                                    var xdist = xpos - x;
-                                    var ydist = ypos - y;
-                                    var zdist = zpos - z;
-                                    var wdist = wpos - w;
-                                    var udist = upos - u;
-                                    var vdist = vpos - v;
-                                    var dist = (xdist * xdist + ydist * ydist + zdist * zdist + wdist * wdist + udist * udist + vdist * vdist);
-                                    var xval = FastFloor(xpos);
-                                    var yval = FastFloor(ypos);
-                                    var zval = FastFloor(zpos);
-                                    var wval = FastFloor(wpos);
-                                    var uval = FastFloor(upos);
-                                    var vval = FastFloor(vpos);
-                                    var dsp = InternalValueNoise(x, y, z, w, u, v, xval, yval, zval, wval, uval, vval, seed + 6);
+                                    double xpos = xcur + InternalValueNoise(x, y, z, w, u, v, xcur, ycur, zcur, wcur, ucur, vcur, seed);
+                                    double ypos = ycur + InternalValueNoise(x, y, z, w, u, v, xcur, ycur, zcur, wcur, ucur, vcur, seed + 1);
+                                    double zpos = zcur + InternalValueNoise(x, y, z, w, u, v, xcur, ycur, zcur, wcur, ucur, vcur, seed + 2);
+                                    double wpos = wcur + InternalValueNoise(x, y, z, w, u, v, xcur, ycur, zcur, wcur, ucur, vcur, seed + 3);
+                                    double upos = ucur + InternalValueNoise(x, y, z, w, u, v, xcur, ycur, zcur, wcur, ucur, vcur, seed + 4);
+                                    double vpos = vcur + InternalValueNoise(x, y, z, w, u, v, xcur, ycur, zcur, wcur, ucur, vcur, seed + 5);
+                                    double xdist = xpos - x;
+                                    double ydist = ypos - y;
+                                    double zdist = zpos - z;
+                                    double wdist = wpos - w;
+                                    double udist = upos - u;
+                                    double vdist = vpos - v;
+                                    double dist = (xdist * xdist + ydist * ydist + zdist * zdist + wdist * wdist + udist * udist + vdist * vdist);
+                                    int xval = FastFloor(xpos);
+                                    int yval = FastFloor(ypos);
+                                    int zval = FastFloor(zpos);
+                                    int wval = FastFloor(wpos);
+                                    int uval = FastFloor(upos);
+                                    int vval = FastFloor(vpos);
+                                    double dsp = InternalValueNoise(x, y, z, w, u, v, xval, yval, zval, wval, uval, vval, seed + 6);
                                     AddDistance(f, disp, dist, dsp);
                                 }
                             }
@@ -906,8 +906,8 @@ namespace AccidentalNoise
 
         internal static void SortBy4(Double[] l1, Int32[] l2)
         {
-            var a = new VectorOrdering[4];
-            for (var c = 0; c < 4; c += 1)
+            VectorOrdering[] a = new VectorOrdering[4];
+            for (int c = 0; c < 4; c += 1)
             {
                 a[c].Value = l1[c];
                 a[c].Axis = l2[c];
@@ -915,7 +915,7 @@ namespace AccidentalNoise
 
             Array.Sort(a, VectorOrderingCompare);
 
-            for (var c = 0; c < 4; c += 1)
+            for (int c = 0; c < 4; c += 1)
             {
                 l2[c] = a[c].Axis;
             }
@@ -923,8 +923,8 @@ namespace AccidentalNoise
 
         internal static void SortBy6(Double[] l1, Int32[] l2)
         {
-            var a = new VectorOrdering[6];
-            for (var c = 0; c < 6; c += 1)
+            VectorOrdering[] a = new VectorOrdering[6];
+            for (int c = 0; c < 6; c += 1)
             {
                 a[c].Value = l1[c];
                 a[c].Axis = l2[c];
@@ -932,7 +932,7 @@ namespace AccidentalNoise
 
             Array.Sort(a, VectorOrderingCompare);
 
-            for (var c = 0; c < 6; c += 1)
+            for (int c = 0; c < 6; c += 1)
             {
                 l2[c] = a[c].Axis;
             }
@@ -1091,20 +1091,20 @@ namespace AccidentalNoise
                 }
             }
 
-            var x1 = x0 - i1 + G3;
-            var y1 = y0 - j1 + G3;
-            var z1 = z0 - k1 + G3;
-            var x2 = x0 - i2 + 2.0 * G3;
-            var y2 = y0 - j2 + 2.0 * G3;
-            var z2 = z0 - k2 + 2.0 * G3;
-            var x3 = x0 - 1.0 + 3.0 * G3;
-            var y3 = y0 - 1.0 + 3.0 * G3;
-            var z3 = z0 - 1.0 + 3.0 * G3;
+            double x1 = x0 - i1 + G3;
+            double y1 = y0 - j1 + G3;
+            double z1 = z0 - k1 + G3;
+            double x2 = x0 - i2 + 2.0 * G3;
+            double y2 = y0 - j2 + 2.0 * G3;
+            double z2 = z0 - k2 + 2.0 * G3;
+            double x3 = x0 - 1.0 + 3.0 * G3;
+            double y3 = y0 - 1.0 + 3.0 * G3;
+            double z3 = z0 - 1.0 + 3.0 * G3;
 
-            var h0 = HashCoordinates(i, j, k, (int) seed);
-            var h1 = HashCoordinates(i + i1, j + j1, k + k1, (int) seed);
-            var h2 = HashCoordinates(i + i2, j + j2, k + k2, (int) seed);
-            var h3 = HashCoordinates(i + 1, j + 1, k + 1, (int) seed);
+            uint h0 = HashCoordinates(i, j, k, (int) seed);
+            uint h1 = HashCoordinates(i + i1, j + j1, k + k1, (int) seed);
+            uint h2 = HashCoordinates(i + i2, j + j2, k + k2, (int) seed);
+            uint h3 = HashCoordinates(i + 1, j + 1, k + 1, (int) seed);
 
             Double[] g0 = {
                               NoiseLookupTable.Gradient3D[h0, 0], NoiseLookupTable.Gradient3D[h0, 1],
@@ -1123,7 +1123,7 @@ namespace AccidentalNoise
                               NoiseLookupTable.Gradient3D[h3, 2]
                           };
 
-            var t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0;
+            double t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0;
             if (t0 < 0.0) n0 = 0.0;
             else
             {
@@ -1131,7 +1131,7 @@ namespace AccidentalNoise
                 n0 = t0*t0*ArrayDot(g0, x0, y0, z0);
             }
 
-            var t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1;
+            double t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1;
             if (t1 < 0.0) n1 = 0.0;
             else
             {
@@ -1139,7 +1139,7 @@ namespace AccidentalNoise
                 n1 = t1*t1*ArrayDot(g1, x1, y1, z1);
             }
 
-            var t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2;
+            double t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2;
             if (t2 < 0) n2 = 0.0;
             else
             {
@@ -1147,7 +1147,7 @@ namespace AccidentalNoise
                 n2 = t2*t2*ArrayDot(g2, x2, y2, z2);
             }
 
-            var t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3;
+            double t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3;
             if (t3 < 0) n3 = 0.0;
             else
             {
@@ -1317,53 +1317,53 @@ namespace AccidentalNoise
 
             Double[] loc = {x, y, z, w};
             Double s = 0;
-            for (var c = 0; c < 4; ++c)
+            for (int c = 0; c < 4; ++c)
                 s += loc[c];
             s *= f4;
 
-            var skewLoc = new[] {FastFloor(x + s), FastFloor(y + s), FastFloor(z + s), FastFloor(w + s)};
-            var intLoc = new[] {FastFloor(x + s), FastFloor(y + s), FastFloor(z + s), FastFloor(w + s)};
-            var unskew = 0.00;
-            for (var c = 0; c < 4; ++c)
+            int[] skewLoc = new[] {FastFloor(x + s), FastFloor(y + s), FastFloor(z + s), FastFloor(w + s)};
+            int[] intLoc = new[] {FastFloor(x + s), FastFloor(y + s), FastFloor(z + s), FastFloor(w + s)};
+            double unskew = 0.00;
+            for (int c = 0; c < 4; ++c)
                 unskew += skewLoc[c];
             unskew *= g4;
-            var cellDist = new[]
+            double[] cellDist = new[]
             {
                 loc[0] - skewLoc[0] + unskew, loc[1] - skewLoc[1] + unskew,
                 loc[2] - skewLoc[2] + unskew, loc[3] - skewLoc[3] + unskew
             };
-            var distOrder = new[] {0, 1, 2, 3};
+            int[] distOrder = new[] {0, 1, 2, 3};
             SortBy4(cellDist, distOrder);
 
-            var newDistOrder = new[] {-1, distOrder[0], distOrder[1], distOrder[2], distOrder[3]};
+            int[] newDistOrder = new[] {-1, distOrder[0], distOrder[1], distOrder[2], distOrder[3]};
 
-            var n = 0.00;
-            var skewOffset = 0.00;
+            double n = 0.00;
+            double skewOffset = 0.00;
 
-            for (var c = 0; c < 5; ++c)
+            for (int c = 0; c < 5; ++c)
             {
-                var i = newDistOrder[c];
+                int i = newDistOrder[c];
                 if (i != -1)
                     intLoc[i] += 1;
 
-                var u = new Double[4];
-                for (var d = 0; d < 4; ++d)
+                double[] u = new Double[4];
+                for (int d = 0; d < 4; ++d)
                 {
                     u[d] = cellDist[d] - (intLoc[d] - skewLoc[d]) + skewOffset;
                 }
 
                 var t = cornerToFaceSquared;
 
-                for (var d = 0; d < 4; ++d)
+                for (int d = 0; d < 4; ++d)
                 {
                     t -= u[d]*u[d];
                 }
 
                 if (t > 0.0)
                 {
-                    var h = HashCoordinates(intLoc[0], intLoc[1], intLoc[2], intLoc[3], seed);
-                    var gr = 0.00;
-                    for (var d = 0; d < 4; ++d)
+                    uint h = HashCoordinates(intLoc[0], intLoc[1], intLoc[2], intLoc[3], seed);
+                    double gr = 0.00;
+                    for (int d = 0; d < 4; ++d)
                     {
                         gr += NoiseLookupTable.Gradient4D[h, d]*u[d];
                     }
@@ -1393,65 +1393,65 @@ namespace AccidentalNoise
             var valueScaler = Math.Pow(5.0, -0.5);
             valueScaler *= Math.Pow(5.0, -3.5) * 100 + 13;
 
-            var loc = new[] { x, y, z, w, u, v };
-            var s = 0.00;
-            for (var c = 0; c < 6; ++c)
+            double[] loc = new[] { x, y, z, w, u, v };
+            double s = 0.00;
+            for (int c = 0; c < 6; ++c)
                 s += loc[c];
             s *= f4;
 
-            var skewLoc = new[]{
+            int[] skewLoc = new[]{
                 FastFloor(x + s), FastFloor(y + s), FastFloor(z + s), 
                 FastFloor(w + s), FastFloor(u + s), FastFloor(v + s)
             };
-            var intLoc = new[]{
+            int[] intLoc = new[]{
                 FastFloor(x + s), FastFloor(y + s), FastFloor(z + s),
                 FastFloor(w + s), FastFloor(u + s), FastFloor(v + s)
             };
-            var unskew = 0.0;
-            for (var c = 0; c < 6; ++c) 
+            double unskew = 0.0;
+            for (int c = 0; c < 6; ++c) 
                 unskew += skewLoc[c];
             unskew *= g4;
 
-            var cellDist = new[]
+            double[] cellDist = new[]
             {
                 loc[0] - skewLoc[0] + unskew, loc[1] - skewLoc[1] + unskew,
                 loc[2] - skewLoc[2] + unskew, loc[3] - skewLoc[3] + unskew,
                 loc[4] - skewLoc[4] + unskew, loc[5] - skewLoc[5] + unskew
             };
-            var distOrder = new[] { 0, 1, 2, 3, 4, 5 };
+            int[] distOrder = new[] { 0, 1, 2, 3, 4, 5 };
             SortBy6(cellDist, distOrder);
 
-            var newDistOrder = new[] 
+            int[] newDistOrder = new[] 
             {
                 -1, distOrder[0], distOrder[1], distOrder[2], distOrder[3], distOrder[4], distOrder[5]
             };
 
-            var n = 0.00;
-            var skewOffset = 0.00;
+            double n = 0.00;
+            double skewOffset = 0.00;
 
-            for (var c = 0; c < 7; ++c)
+            for (int c = 0; c < 7; ++c)
             {
-                var i = newDistOrder[c];
+                int i = newDistOrder[c];
                 if (i != -1) 
                     intLoc[i] += 1;
 
-                var uu = new Double[6];
-                for (var d = 0; d < 6; ++d)
+                double[] uu = new Double[6];
+                for (int d = 0; d < 6; ++d)
                 {
                     uu[d] = cellDist[d] - (intLoc[d] - skewLoc[d]) + skewOffset;
                 }
 
                 var t = cornerFaceSqrd;
 
-                for (var d = 0; d < 6; ++d)
+                for (int d = 0; d < 6; ++d)
                 {
                     t -= uu[d]*uu[d];
                 }
 
                 if (t > 0.0)
                 {
-                    var h = HashCoordinates(intLoc[0], intLoc[1], intLoc[2], intLoc[3], intLoc[4], intLoc[5], seed);
-                    var gr = 0.00;
+                    uint h = HashCoordinates(intLoc[0], intLoc[1], intLoc[2], intLoc[3], intLoc[4], intLoc[5], seed);
+                    double gr = 0.00;
 
                     gr += NoiseLookupTable.Gradient6D[h, 0]*uu[0];
                     gr += NoiseLookupTable.Gradient6D[h, 1]*uu[1];

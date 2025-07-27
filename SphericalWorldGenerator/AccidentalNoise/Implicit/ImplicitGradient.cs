@@ -82,43 +82,43 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y)
         {
-            var dx = x - this.gradientX0;
-            var dy = y - this.gradientY0;
-            var dp = dx * this.gradientX1 + dy * this.gradientY1;
+            double dx = x - this.gradientX0;
+            double dy = y - this.gradientY0;
+            double dp = dx * this.gradientX1 + dy * this.gradientY1;
             dp /= this.length2;
             return dp;
         }
 
         public override Double Get(Double x, Double y, Double z)
         {
-            var dx = x - this.gradientX0;
-            var dy = y - this.gradientY0;
-            var dz = z - this.gradientZ0;
-            var dp = dx * this.gradientX1 + dy * this.gradientY1 + dz * this.gradientZ1;
+            double dx = x - this.gradientX0;
+            double dy = y - this.gradientY0;
+            double dz = z - this.gradientZ0;
+            double dp = dx * this.gradientX1 + dy * this.gradientY1 + dz * this.gradientZ1;
             dp /= this.length3;
             return dp;
         }
 
         public override Double Get(Double x, Double y, Double z, Double w)
         {
-            var dx = x - this.gradientX0;
-            var dy = y - this.gradientY0;
-            var dz = z - this.gradientZ0;
-            var dw = w - this.gradientW0;
-            var dp = dx * this.gradientX1 + dy * this.gradientY1 + dz * this.gradientZ1 + dw * this.gradientW1;
+            double dx = x - this.gradientX0;
+            double dy = y - this.gradientY0;
+            double dz = z - this.gradientZ0;
+            double dw = w - this.gradientW0;
+            double dp = dx * this.gradientX1 + dy * this.gradientY1 + dz * this.gradientZ1 + dw * this.gradientW1;
             dp /= this.length4;
             return dp;
         }
 
         public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
         {
-            var dx = x - this.gradientX0;
-            var dy = y - this.gradientY0;
-            var dz = z - this.gradientZ0;
-            var dw = w - this.gradientW0;
-            var du = u - this.gradientU0;
-            var dv = v - this.gradientV0;
-            var dp = dx * this.gradientX1 + dy * this.gradientY1 + dz * this.gradientZ1 + dw * this.gradientW1 + du * this.gradientU1 + dv * this.gradientV1;
+            double dx = x - this.gradientX0;
+            double dy = y - this.gradientY0;
+            double dz = z - this.gradientZ0;
+            double dw = w - this.gradientW0;
+            double du = u - this.gradientU0;
+            double dv = v - this.gradientV0;
+            double dp = dx * this.gradientX1 + dy * this.gradientY1 + dz * this.gradientZ1 + dw * this.gradientW1 + du * this.gradientU1 + dv * this.gradientV1;
             dp /= this.length6;
             return dp;
         }

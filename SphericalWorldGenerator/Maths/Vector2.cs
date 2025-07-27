@@ -35,12 +35,12 @@ namespace SphericalWorldGenerator.Maths
         }
 
         // Common constants
-        public static Vector2 zero => new Vector2(0f, 0f);
-        public static Vector2 one => new Vector2(1f, 1f);
-        public static Vector2 up => new Vector2(0f, 1f);
-        public static Vector2 down => new Vector2(0f, -1f);
-        public static Vector2 left => new Vector2(-1f, 0f);
-        public static Vector2 right => new Vector2(1f, 0f);
+        public static Vector2 zero => new(0f, 0f);
+        public static Vector2 one => new(1f, 1f);
+        public static Vector2 up => new(0f, 1f);
+        public static Vector2 down => new(0f, -1f);
+        public static Vector2 left => new(-1f, 0f);
+        public static Vector2 right => new(1f, 0f);
 
         // Magnitude and normalization
         public float magnitude => MathF.Sqrt(x * x + y * y);
@@ -90,7 +90,7 @@ namespace SphericalWorldGenerator.Maths
         public static float Distance(Vector2 a, Vector2 b) => (a - b).magnitude;
 
         // Scale (component‐wise multiplication)
-        public static Vector2 Scale(Vector2 a, Vector2 b) => new Vector2(a.x * b.x, a.y * b.y);
+        public static Vector2 Scale(Vector2 a, Vector2 b) => new(a.x * b.x, a.y * b.y);
 
         // Reflect vector off a surface with normal n
         public static Vector2 Reflect(Vector2 direction, Vector2 normal)
@@ -101,12 +101,12 @@ namespace SphericalWorldGenerator.Maths
         }
 
         // Operators
-        public static Vector2 operator +(Vector2 a, Vector2 b) => new Vector2(a.x + b.x, a.y + b.y);
-        public static Vector2 operator -(Vector2 a, Vector2 b) => new Vector2(a.x - b.x, a.y - b.y);
-        public static Vector2 operator -(Vector2 v) => new Vector2(-v.x, -v.y);
-        public static Vector2 operator *(Vector2 v, float d) => new Vector2(v.x * d, v.y * d);
-        public static Vector2 operator *(float d, Vector2 v) => new Vector2(v.x * d, v.y * d);
-        public static Vector2 operator /(Vector2 v, float d) => new Vector2(v.x / d, v.y / d);
+        public static Vector2 operator +(Vector2 a, Vector2 b) => new(a.x + b.x, a.y + b.y);
+        public static Vector2 operator -(Vector2 a, Vector2 b) => new(a.x - b.x, a.y - b.y);
+        public static Vector2 operator -(Vector2 v) => new(-v.x, -v.y);
+        public static Vector2 operator *(Vector2 v, float d) => new(v.x * d, v.y * d);
+        public static Vector2 operator *(float d, Vector2 v) => new(v.x * d, v.y * d);
+        public static Vector2 operator /(Vector2 v, float d) => new(v.x / d, v.y / d);
 
         public static bool operator ==(Vector2 a, Vector2 b) => a.Equals(b);
         public static bool operator !=(Vector2 a, Vector2 b) => !a.Equals(b);

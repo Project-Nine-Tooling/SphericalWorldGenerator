@@ -34,10 +34,10 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y)
         {
-            var dx = x - this.XCenter.Get(x, y);
-            var dy = y - this.YCenter.Get(x, y);
+            double dx = x - this.XCenter.Get(x, y);
+            double dy = y - this.YCenter.Get(x, y);
             var len = Math.Sqrt(dx * dx + dy * dy);
-            var rad = this.Radius.Get(x, y);
+            double rad = this.Radius.Get(x, y);
             var i = (rad - len) / rad;
             if (i < 0) i = 0;
             if (i > 1) i = 1;
@@ -47,11 +47,11 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y, Double z)
         {
-            var dx = x - this.XCenter.Get(x, y, z);
-            var dy = y - this.YCenter.Get(x, y, z);
-            var dz = z - this.ZCenter.Get(x, y, z);
+            double dx = x - this.XCenter.Get(x, y, z);
+            double dy = y - this.YCenter.Get(x, y, z);
+            double dz = z - this.ZCenter.Get(x, y, z);
             var len = Math.Sqrt(dx * dx + dy * dy + dz * dz);
-            var rad = this.Radius.Get(x, y, z);
+            double rad = this.Radius.Get(x, y, z);
             var i = (rad - len) / rad;
             if (i < 0) i = 0;
             if (i > 1) i = 1;
@@ -61,12 +61,12 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y, Double z, Double w)
         {
-            var dx = x - this.XCenter.Get(x, y, z, w);
-            var dy = y - this.YCenter.Get(x, y, z, w);
-            var dz = z - this.ZCenter.Get(x, y, z, w);
-            var dw = w - this.WCenter.Get(x, y, z, w);
+            double dx = x - this.XCenter.Get(x, y, z, w);
+            double dy = y - this.YCenter.Get(x, y, z, w);
+            double dz = z - this.ZCenter.Get(x, y, z, w);
+            double dw = w - this.WCenter.Get(x, y, z, w);
             var len = Math.Sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
-            var rad = this.Radius.Get(x, y, z, w);
+            double rad = this.Radius.Get(x, y, z, w);
             var i = (rad - len) / rad;
             if (i < 0) i = 0;
             if (i > 1) i = 1;
@@ -76,14 +76,14 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
         {
-            var dx = x - this.XCenter.Get(x, y, z, w, u, v);
-            var dy = y - this.YCenter.Get(x, y, z, w, u, v);
-            var dz = z - this.ZCenter.Get(x, y, z, w, u, v);
-            var dw = w - this.WCenter.Get(x, y, z, w, u, v);
-            var du = u - this.UCenter.Get(x, y, z, w, u, v);
-            var dv = v - this.VCenter.Get(x, y, z, w, u, v);
+            double dx = x - this.XCenter.Get(x, y, z, w, u, v);
+            double dy = y - this.YCenter.Get(x, y, z, w, u, v);
+            double dz = z - this.ZCenter.Get(x, y, z, w, u, v);
+            double dw = w - this.WCenter.Get(x, y, z, w, u, v);
+            double du = u - this.UCenter.Get(x, y, z, w, u, v);
+            double dv = v - this.VCenter.Get(x, y, z, w, u, v);
             var len = Math.Sqrt(dx * dx + dy * dy + dz * dz + dw * dw + du * du + dv * dv);
-            var rad = this.Radius.Get(x, y, z, w, u, v);
+            double rad = this.Radius.Get(x, y, z, w, u, v);
             var i = (rad - len) / rad;
             if (i < 0) i = 0;
             if (i > 1) i = 1;

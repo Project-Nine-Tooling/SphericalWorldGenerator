@@ -43,11 +43,11 @@ namespace AccidentalNoise
             set
             {
                 this.seed = value;
-                var random = new Random(value);
+                Random random = new(value);
 
-                var ax = random.NextDouble();
-                var ay = random.NextDouble();
-                var az = random.NextDouble();
+                double ax = random.NextDouble();
+                double ay = random.NextDouble();
+                double az = random.NextDouble();
                 var len = Math.Sqrt(ax * ax + ay * ay + az * az);
                 ax /= len;
                 ay /= len;
@@ -127,35 +127,35 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y)
         {
-            var nx = x * cos2D - y * sin2D;
-            var ny = y * cos2D + x * sin2D;
+            double nx = x * cos2D - y * sin2D;
+            double ny = y * cos2D + x * sin2D;
 
             return this.noise2D(nx, ny, this.seed, this.interpolator);
         }
 
         public override Double Get(Double x, Double y, Double z)
         {
-            var nx = (this.rotationMatrix[0, 0] * x) + (this.rotationMatrix[1, 0] * y) + (this.rotationMatrix[2, 0] * z);
-            var ny = (this.rotationMatrix[0, 1] * x) + (this.rotationMatrix[1, 1] * y) + (this.rotationMatrix[2, 1] * z);
-            var nz = (this.rotationMatrix[0, 2] * x) + (this.rotationMatrix[1, 2] * y) + (this.rotationMatrix[2, 2] * z);
+            double nx = (this.rotationMatrix[0, 0] * x) + (this.rotationMatrix[1, 0] * y) + (this.rotationMatrix[2, 0] * z);
+            double ny = (this.rotationMatrix[0, 1] * x) + (this.rotationMatrix[1, 1] * y) + (this.rotationMatrix[2, 1] * z);
+            double nz = (this.rotationMatrix[0, 2] * x) + (this.rotationMatrix[1, 2] * y) + (this.rotationMatrix[2, 2] * z);
 
             return this.noise3D(nx, ny, nz, this.seed, this.interpolator);
         }
 
         public override Double Get(Double x, Double y, Double z, Double w)
         {
-            var nx = (this.rotationMatrix[0, 0] * x) + (this.rotationMatrix[1, 0] * y) + (this.rotationMatrix[2, 0] * z);
-            var ny = (this.rotationMatrix[0, 1] * x) + (this.rotationMatrix[1, 1] * y) + (this.rotationMatrix[2, 1] * z);
-            var nz = (this.rotationMatrix[0, 2] * x) + (this.rotationMatrix[1, 2] * y) + (this.rotationMatrix[2, 2] * z);
+            double nx = (this.rotationMatrix[0, 0] * x) + (this.rotationMatrix[1, 0] * y) + (this.rotationMatrix[2, 0] * z);
+            double ny = (this.rotationMatrix[0, 1] * x) + (this.rotationMatrix[1, 1] * y) + (this.rotationMatrix[2, 1] * z);
+            double nz = (this.rotationMatrix[0, 2] * x) + (this.rotationMatrix[1, 2] * y) + (this.rotationMatrix[2, 2] * z);
 
             return this.noise4D(nx, ny, nz, w, this.seed, this.interpolator);
         }
 
         public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
         {
-            var nx = (this.rotationMatrix[0, 0] * x) + (this.rotationMatrix[1, 0] * y) + (this.rotationMatrix[2, 0] * z);
-            var ny = (this.rotationMatrix[0, 1] * x) + (this.rotationMatrix[1, 1] * y) + (this.rotationMatrix[2, 1] * z);
-            var nz = (this.rotationMatrix[0, 2] * x) + (this.rotationMatrix[1, 2] * y) + (this.rotationMatrix[2, 2] * z);
+            double nx = (this.rotationMatrix[0, 0] * x) + (this.rotationMatrix[1, 0] * y) + (this.rotationMatrix[2, 0] * z);
+            double ny = (this.rotationMatrix[0, 1] * x) + (this.rotationMatrix[1, 1] * y) + (this.rotationMatrix[2, 1] * z);
+            double nz = (this.rotationMatrix[0, 2] * x) + (this.rotationMatrix[1, 2] * y) + (this.rotationMatrix[2, 2] * z);
 
             return this.noise6D(nx, ny, nz, w, u, v, this.seed, this.interpolator);
         }

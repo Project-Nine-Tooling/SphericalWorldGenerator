@@ -6,13 +6,13 @@ namespace AccidentalNoise
     {
         private Int32 seed;
 
-        private readonly CellularCache cache2D = new CellularCache();
+        private readonly CellularCache cache2D = new();
 
-        private readonly CellularCache cache3D = new CellularCache();
+        private readonly CellularCache cache3D = new();
 
-        private readonly CellularCache cache4D = new CellularCache();
+        private readonly CellularCache cache4D = new();
 
-        private readonly CellularCache cache6D = new CellularCache();
+        private readonly CellularCache cache6D = new();
 
         public CellularGenerator()
         {

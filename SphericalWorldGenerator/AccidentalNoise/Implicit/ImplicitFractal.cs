@@ -35,7 +35,7 @@ namespace AccidentalNoise
             set
             {
                 this.seed = value;
-                for (var source = 0; source < Noise.MAX_SOURCES; source += 1)
+                for (int source = 0; source < Noise.MAX_SOURCES; source += 1)
                     this.sources[source].Seed = ((this.seed + source * 300));
             }
         }
@@ -111,7 +111,7 @@ namespace AccidentalNoise
 
         public void SetAllSourceTypes(BasisType newBasisType, InterpolationType newInterpolationType)
         {
-            for (var i = 0; i < Noise.MAX_SOURCES; ++i)
+            for (int i = 0; i < Noise.MAX_SOURCES; ++i)
             {
                 this.basisFunctions[i] = new ImplicitBasisFunction(newBasisType, newInterpolationType, Seed);
             }
@@ -141,7 +141,7 @@ namespace AccidentalNoise
 
         public void ResetAllSources()
         {
-            for (var c = 0; c < Noise.MAX_SOURCES; ++c)
+            for (int c = 0; c < Noise.MAX_SOURCES; ++c)
                 this.sources[c] = this.basisFunctions[c];
         }
 
@@ -264,23 +264,23 @@ namespace AccidentalNoise
 
         private void FractionalBrownianMotion_CalculateWeights()
         {
-            for (var i = 0; i < Noise.MAX_SOURCES; ++i)
+            for (int i = 0; i < Noise.MAX_SOURCES; ++i)
             {
                 expArray[i] = Math.Pow(Lacunarity, -i * H);
             }
 
             // Calculate scale/bias pairs by guessing at minimum and maximum values and remapping to [-1,1]
-            var minvalue = 0.00;
-            var maxvalue = 0.00;
-            for (var i = 0; i < Noise.MAX_SOURCES; ++i)
+            double minvalue = 0.00;
+            double maxvalue = 0.00;
+            for (int i = 0; i < Noise.MAX_SOURCES; ++i)
             {
                 minvalue += -1.0 * expArray[i];
                 maxvalue += 1.0 * expArray[i];
 
                 const Double a = -1.0;
                 const Double b = 1.0;
-                var scale = (b - a) / (maxvalue - minvalue);
-                var bias = a - minvalue * scale;
+                double scale = (b - a) / (maxvalue - minvalue);
+                double bias = a - minvalue * scale;
                 correct[i, 0] = scale;
                 correct[i, 1] = bias;
             }
@@ -288,23 +288,23 @@ namespace AccidentalNoise
 
         private void RidgedMulti_CalculateWeights()
         {
-            for (var i = 0; i < Noise.MAX_SOURCES; ++i)
+            for (int i = 0; i < Noise.MAX_SOURCES; ++i)
             {
                 expArray[i] = Math.Pow(Lacunarity, -i * H);
             }
 
             // Calculate scale/bias pairs by guessing at minimum and maximum values and remapping to [-1,1]
-            var minvalue = 0.00;
-            var maxvalue = 0.00;
-            for (var i = 0; i < Noise.MAX_SOURCES; ++i)
+            double minvalue = 0.00;
+            double maxvalue = 0.00;
+            for (int i = 0; i < Noise.MAX_SOURCES; ++i)
             {
                 minvalue += (Offset - 1.0) * (Offset - 1.0) * expArray[i];
                 maxvalue += (Offset) * (Offset) * expArray[i];
 
                 const Double a = -1.0;
                 const Double b = 1.0;
-                var scale = (b - a) / (maxvalue - minvalue);
-                var bias = a - minvalue * scale;
+                double scale = (b - a) / (maxvalue - minvalue);
+                double bias = a - minvalue * scale;
                 correct[i, 0] = scale;
                 correct[i, 1] = bias;
             }
@@ -313,23 +313,23 @@ namespace AccidentalNoise
 
         private void Billow_CalculateWeights()
         {
-            for (var i = 0; i < Noise.MAX_SOURCES; ++i)
+            for (int i = 0; i < Noise.MAX_SOURCES; ++i)
             {
                 expArray[i] = Math.Pow(Lacunarity, -i * H);
             }
 
             // Calculate scale/bias pairs by guessing at minimum and maximum values and remapping to [-1,1]
-            var minvalue = 0.0;
-            var maxvalue = 0.0;
-            for (var i = 0; i < Noise.MAX_SOURCES; ++i)
+            double minvalue = 0.0;
+            double maxvalue = 0.0;
+            for (int i = 0; i < Noise.MAX_SOURCES; ++i)
             {
                 minvalue += -1.0 * expArray[i];
                 maxvalue += 1.0 * expArray[i];
 
                 const Double a = -1.0;
                 const Double b = 1.0;
-                var scale = (b - a) / (maxvalue - minvalue);
-                var bias = a - minvalue * scale;
+                double scale = (b - a) / (maxvalue - minvalue);
+                double bias = a - minvalue * scale;
                 correct[i, 0] = scale;
                 correct[i, 1] = bias;
             }
@@ -338,23 +338,23 @@ namespace AccidentalNoise
 
         private void Multi_CalculateWeights()
         {
-            for (var i = 0; i < Noise.MAX_SOURCES; ++i)
+            for (int i = 0; i < Noise.MAX_SOURCES; ++i)
             {
                 expArray[i] = Math.Pow(Lacunarity, -i * H);
             }
 
             // Calculate scale/bias pairs by guessing at minimum and maximum values and remapping to [-1,1]
-            var minvalue = 1.0;
-            var maxvalue = 1.0;
-            for (var i = 0; i < Noise.MAX_SOURCES; ++i)
+            double minvalue = 1.0;
+            double maxvalue = 1.0;
+            for (int i = 0; i < Noise.MAX_SOURCES; ++i)
             {
                 minvalue *= -1.0 * expArray[i] + 1.0;
                 maxvalue *= 1.0 * expArray[i] + 1.0;
 
                 const Double a = -1.0;
                 const Double b = 1.0;
-                var scale = (b - a) / (maxvalue - minvalue);
-                var bias = a - minvalue * scale;
+                double scale = (b - a) / (maxvalue - minvalue);
+                double bias = a - minvalue * scale;
                 correct[i, 0] = scale;
                 correct[i, 1] = bias;
             }
@@ -363,7 +363,7 @@ namespace AccidentalNoise
 
         private void HybridMulti_CalculateWeights()
         {
-            for (var i = 0; i < Noise.MAX_SOURCES; ++i)
+            for (int i = 0; i < Noise.MAX_SOURCES; ++i)
             {
                 expArray[i] = Math.Pow(Lacunarity, -i * H);
             }
@@ -372,23 +372,23 @@ namespace AccidentalNoise
             const double a = -1.0;
             const double b = 1.0;
 
-            var minvalue = Offset - 1.0;
-            var maxvalue = Offset + 1.0;
-            var weightmin = Gain * minvalue;
-            var weightmax = Gain * maxvalue;
+            double minvalue = Offset - 1.0;
+            double maxvalue = Offset + 1.0;
+            double weightmin = Gain * minvalue;
+            double weightmax = Gain * maxvalue;
 
-            var scale = (b - a) / (maxvalue - minvalue);
-            var bias = a - minvalue * scale;
+            double scale = (b - a) / (maxvalue - minvalue);
+            double bias = a - minvalue * scale;
             correct[0, 0] = scale;
             correct[0, 1] = bias;
 
 
-            for (var i = 1; i < Noise.MAX_SOURCES; ++i)
+            for (int i = 1; i < Noise.MAX_SOURCES; ++i)
             {
                 if (weightmin > 1.00) weightmin = 1.00;
                 if (weightmax > 1.00) weightmax = 1.00;
 
-                var signal = (Offset - 1.0) * expArray[i];
+                double signal = (Offset - 1.0) * expArray[i];
                 minvalue += signal * weightmin;
                 weightmin *= Gain * signal;
 
@@ -408,14 +408,14 @@ namespace AccidentalNoise
 
         private Double FractionalBrownianMotion_Get(Double x, Double y)
         {
-            var value = 0.00;
+            double value = 0.00;
             x *= Frequency;
             y *= Frequency;
 
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
-                var signal = sources[i].Get(x, y) * expArray[i];
+                double signal = sources[i].Get(x, y) * expArray[i];
                 value += signal;
                 x *= Lacunarity;
                 y *= Lacunarity;
@@ -426,14 +426,14 @@ namespace AccidentalNoise
 
         private Double FractionalBrownianMotion_Get(Double x, Double y, Double z)
         {
-            var value = 0.00;
+            double value = 0.00;
             x *= Frequency;
             y *= Frequency;
             z *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
-                var signal = sources[i].Get(x, y, z) * expArray[i];
+                double signal = sources[i].Get(x, y, z) * expArray[i];
                 value += signal;
                 x *= Lacunarity;
                 y *= Lacunarity;
@@ -445,15 +445,15 @@ namespace AccidentalNoise
 
         private Double FractionalBrownianMotion_Get(Double x, Double y, Double z, Double w)
         {
-            var value = 0.00;
+            double value = 0.00;
             x *= Frequency;
             y *= Frequency;
             z *= Frequency;
             w *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
-                var signal = sources[i].Get(x, y, z, w) * expArray[i];
+                double signal = sources[i].Get(x, y, z, w) * expArray[i];
                 value += signal;
                 x *= Lacunarity;
                 y *= Lacunarity;
@@ -466,7 +466,7 @@ namespace AccidentalNoise
 
         private Double FractionalBrownianMotion_Get(Double x, Double y, Double z, Double w, Double u, Double v)
         {
-            var value = 0.00;
+            double value = 0.00;
             x *= Frequency;
             y *= Frequency;
             z *= Frequency;
@@ -474,9 +474,9 @@ namespace AccidentalNoise
             u *= Frequency;
             v *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
-                var signal = sources[i].Get(x, y, z, w, u, v) * expArray[i];
+                double signal = sources[i].Get(x, y, z, w, u, v) * expArray[i];
                 value += signal;
                 x *= Lacunarity;
                 y *= Lacunarity;
@@ -492,11 +492,11 @@ namespace AccidentalNoise
 
         private Double Multi_Get(Double x, Double y)
         {
-            var value = 1.00;
+            double value = 1.00;
             x *= Frequency;
             y *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
                 value *= sources[i].Get(x, y) * expArray[i] + 1.0;
                 x *= Lacunarity;
@@ -509,13 +509,13 @@ namespace AccidentalNoise
 
         private Double Multi_Get(Double x, Double y, Double z, Double w)
         {
-            var value = 1.00;
+            double value = 1.00;
             x *= Frequency;
             y *= Frequency;
             z *= Frequency;
             w *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
                 value *= sources[i].Get(x, y, z, w) * expArray[i] + 1.0;
                 x *= Lacunarity;
@@ -529,12 +529,12 @@ namespace AccidentalNoise
 
         private Double Multi_Get(Double x, Double y, Double z)
         {
-            var value = 1.00;
+            double value = 1.00;
             x *= Frequency;
             y *= Frequency;
             z *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
                 value *= sources[i].Get(x, y, z) * expArray[i] + 1.0;
                 x *= Lacunarity;
@@ -547,7 +547,7 @@ namespace AccidentalNoise
 
         private Double Multi_Get(Double x, Double y, Double z, Double w, Double u, Double v)
         {
-            var value = 1.00;
+            double value = 1.00;
             x *= Frequency;
             y *= Frequency;
             z *= Frequency;
@@ -555,7 +555,7 @@ namespace AccidentalNoise
             u *= Frequency;
             v *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
                 value *= sources[i].Get(x, y, z, w, u, v) * expArray[i] + 1.00;
                 x *= Lacunarity;
@@ -572,13 +572,13 @@ namespace AccidentalNoise
 
         private Double Billow_Get(Double x, Double y)
         {
-            var value = 0.00;
+            double value = 0.00;
             x *= Frequency;
             y *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
-                var signal = sources[i].Get(x, y);
+                double signal = sources[i].Get(x, y);
                 signal = 2.0 * Math.Abs(signal) - 1.0;
                 value += signal * expArray[i];
 
@@ -593,15 +593,15 @@ namespace AccidentalNoise
 
         private Double Billow_Get(Double x, Double y, Double z, Double w)
         {
-            var value = 0.00;
+            double value = 0.00;
             x *= Frequency;
             y *= Frequency;
             z *= Frequency;
             w *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
-                var signal = sources[i].Get(x, y, z, w);
+                double signal = sources[i].Get(x, y, z, w);
                 signal = 2.0 * Math.Abs(signal) - 1.0;
                 value += signal * expArray[i];
 
@@ -617,14 +617,14 @@ namespace AccidentalNoise
 
         private Double Billow_Get(Double x, Double y, Double z)
         {
-            var value = 0.00;
+            double value = 0.00;
             x *= Frequency;
             y *= Frequency;
             z *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
-                var signal = sources[i].Get(x, y, z);
+                double signal = sources[i].Get(x, y, z);
                 signal = 2.0 * Math.Abs(signal) - 1.0;
                 value += signal * expArray[i];
 
@@ -639,7 +639,7 @@ namespace AccidentalNoise
 
         private Double Billow_Get(Double x, Double y, Double z, Double w, Double u, Double v)
         {
-            var value = 0.00;
+            double value = 0.00;
             x *= Frequency;
             y *= Frequency;
             z *= Frequency;
@@ -647,9 +647,9 @@ namespace AccidentalNoise
             u *= Frequency;
             v *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
-                var signal = sources[i].Get(x, y, z, w, u, v);
+                double signal = sources[i].Get(x, y, z, w, u, v);
                 signal = 2.0 * Math.Abs(signal) - 1.0;
                 value += signal * expArray[i];
 
@@ -668,13 +668,13 @@ namespace AccidentalNoise
 
         private Double RidgedMulti_Get(Double x, Double y)
         {
-            var result = 0.00;
+            double result = 0.00;
             x *= Frequency;
             y *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
-                var signal = sources[i].Get(x, y);
+                double signal = sources[i].Get(x, y);
                 signal = Offset - Math.Abs(signal);
                 signal *= signal;
                 result += signal * expArray[i];
@@ -689,15 +689,15 @@ namespace AccidentalNoise
 
         private Double RidgedMulti_Get(Double x, Double y, Double z, Double w)
         {
-            var result = 0.00;
+            double result = 0.00;
             x *= Frequency;
             y *= Frequency;
             z *= Frequency;
             w *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
-                var signal = sources[i].Get(x, y, z, w);
+                double signal = sources[i].Get(x, y, z, w);
                 signal = Offset - Math.Abs(signal);
                 signal *= signal;
                 result += signal * expArray[i];
@@ -713,14 +713,14 @@ namespace AccidentalNoise
 
         private Double RidgedMulti_Get(Double x, Double y, Double z)
         {
-            var result = 0.00;
+            double result = 0.00;
             x *= Frequency;
             y *= Frequency;
             z *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
-                var signal = sources[i].Get(x, y, z);
+                double signal = sources[i].Get(x, y, z);
                 signal = Offset - Math.Abs(signal);
                 signal *= signal;
                 result += signal * expArray[i];
@@ -735,7 +735,7 @@ namespace AccidentalNoise
 
         private Double RidgedMulti_Get(Double x, Double y, Double z, Double w, Double u, Double v)
         {
-            var result = 0.00;
+            double result = 0.00;
             x *= Frequency;
             y *= Frequency;
             z *= Frequency;
@@ -743,9 +743,9 @@ namespace AccidentalNoise
             u *= Frequency;
             v *= Frequency;
 
-            for (var i = 0; i < octaves; ++i)
+            for (int i = 0; i < octaves; ++i)
             {
-                var signal = sources[i].Get(x, y, z, w, u, v);
+                double signal = sources[i].Get(x, y, z, w, u, v);
                 signal = Offset - Math.Abs(signal);
                 signal *= signal;
                 result += signal * expArray[i];
@@ -767,15 +767,15 @@ namespace AccidentalNoise
             x *= Frequency;
             y *= Frequency;
 
-            var value = sources[0].Get(x, y) + Offset;
-            var weight = Gain * value;
+            double value = sources[0].Get(x, y) + Offset;
+            double weight = Gain * value;
             x *= Lacunarity;
             y *= Lacunarity;
 
-            for (var i = 1; i < octaves; ++i)
+            for (int i = 1; i < octaves; ++i)
             {
                 if (weight > 1.0) weight = 1.0;
-                var signal = (sources[i].Get(x, y) + Offset) * expArray[i];
+                double signal = (sources[i].Get(x, y) + Offset) * expArray[i];
                 value += weight * signal;
                 weight *= Gain * signal;
                 x *= Lacunarity;
@@ -792,16 +792,16 @@ namespace AccidentalNoise
             y *= Frequency;
             z *= Frequency;
 
-            var value = sources[0].Get(x, y, z) + Offset;
-            var weight = Gain * value;
+            double value = sources[0].Get(x, y, z) + Offset;
+            double weight = Gain * value;
             x *= Lacunarity;
             y *= Lacunarity;
             z *= Lacunarity;
 
-            for (var i = 1; i < octaves; ++i)
+            for (int i = 1; i < octaves; ++i)
             {
                 if (weight > 1.0) weight = 1.0;
-                var signal = (sources[i].Get(x, y, z) + Offset) * expArray[i];
+                double signal = (sources[i].Get(x, y, z) + Offset) * expArray[i];
                 value += weight * signal;
                 weight *= Gain * signal;
                 x *= Lacunarity;
@@ -819,17 +819,17 @@ namespace AccidentalNoise
             z *= Frequency;
             w *= Frequency;
 
-            var value = sources[0].Get(x, y, z, w) + Offset;
-            var weight = Gain * value;
+            double value = sources[0].Get(x, y, z, w) + Offset;
+            double weight = Gain * value;
             x *= Lacunarity;
             y *= Lacunarity;
             z *= Lacunarity;
             w *= Lacunarity;
 
-            for (var i = 1; i < octaves; ++i)
+            for (int i = 1; i < octaves; ++i)
             {
                 if (weight > 1.0) weight = 1.0;
-                var signal = (sources[i].Get(x, y, z, w) + Offset) * expArray[i];
+                double signal = (sources[i].Get(x, y, z, w) + Offset) * expArray[i];
                 value += weight * signal;
                 weight *= Gain * signal;
                 x *= Lacunarity;
@@ -850,8 +850,8 @@ namespace AccidentalNoise
             u *= Frequency;
             v *= Frequency;
 
-            var value = sources[0].Get(x, y, z, w, u, v) + Offset;
-            var weight = Gain * value;
+            double value = sources[0].Get(x, y, z, w, u, v) + Offset;
+            double weight = Gain * value;
             x *= Lacunarity;
             y *= Lacunarity;
             z *= Lacunarity;
@@ -859,10 +859,10 @@ namespace AccidentalNoise
             u *= Lacunarity;
             v *= Lacunarity;
 
-            for (var i = 1; i < octaves; ++i)
+            for (int i = 1; i < octaves; ++i)
             {
                 if (weight > 1.0) weight = 1.0;
-                var signal = (sources[i].Get(x, y, z, w, u, v) + Offset) * expArray[i];
+                double signal = (sources[i].Get(x, y, z, w, u, v) + Offset) * expArray[i];
                 value += weight * signal;
                 weight *= Gain * signal;
                 x *= Lacunarity;

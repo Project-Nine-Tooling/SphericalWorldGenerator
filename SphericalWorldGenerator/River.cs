@@ -33,5 +33,5 @@ public class River  {
 
 public class RiverGroup
 {
-	public List<River> Rivers = new List<River>();
+	public List<River> Rivers = new();
 }

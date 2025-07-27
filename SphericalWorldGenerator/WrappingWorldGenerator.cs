@@ -19,8 +19,8 @@ public class WrappingWorldGenerator : Generator  {
 		                                 Seed);
 				
         // Heat Map
-		ImplicitGradient gradient  = new ImplicitGradient (1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-		ImplicitFractal heatFractal = new ImplicitFractal(FractalType.MULTI, 
+		ImplicitGradient gradient  = new(1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+		ImplicitFractal heatFractal = new(FractalType.MULTI, 
 		                                                  BasisType.SIMPLEX, 
 		                                                  InterpolationType.QUINTIC, 
 		                                                  HeatOctaves, 
@@ -47,8 +47,8 @@ public class WrappingWorldGenerator : Generator  {
 		MoistureData = new MapData (Width, Height);
 		
 		// loop through each x,y point - get height value
-		for (var x = 0; x < Width; x++) {
-			for (var y = 0; y < Height; y++) {
+		for (int x = 0; x < Width; x++) {
+			for (int y = 0; y < Height; y++) {
 				
 				// WRAP ON BOTH AXIS
 				// Noise range

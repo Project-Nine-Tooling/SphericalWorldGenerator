@@ -24,7 +24,7 @@ namespace SphericalWorldGenerator.Gameplay
             if (!Console.KeyAvailable)
                 return false;
 
-            var info = Console.ReadKey(intercept: true);
+            ConsoleKeyInfo info = Console.ReadKey(intercept: true);
             // note: ConsoleKey and our KeyCode share the same numeric values
             return info.Key == (ConsoleKey)key;
         }

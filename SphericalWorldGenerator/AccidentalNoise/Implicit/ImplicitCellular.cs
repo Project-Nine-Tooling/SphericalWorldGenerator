@@ -27,7 +27,7 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y)
         {
-            var c = this.generator.Get(x, y);
+            CellularCache c = this.generator.Get(x, y);
 
             return
                 c.F[0] * Coefficients[0] +
@@ -38,7 +38,7 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y, Double z)
         {
-            var c = this.generator.Get(x, y, z);
+            CellularCache c = this.generator.Get(x, y, z);
 
             return
                 c.F[0] * Coefficients[0] +
@@ -49,7 +49,7 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y, Double z, Double w)
         {
-            var c = this.generator.Get(x, y, z, w);
+            CellularCache c = this.generator.Get(x, y, z, w);
 
             return
                 c.F[0] * Coefficients[0] +
@@ -60,7 +60,7 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
         {
-            var c = this.generator.Get(x, y, z, w, u, v);
+            CellularCache c = this.generator.Get(x, y, z, w, u, v);
 
             return
                 c.F[0] * Coefficients[0] +

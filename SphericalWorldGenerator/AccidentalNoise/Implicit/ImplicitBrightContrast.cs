@@ -22,12 +22,12 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y)
         {
-            var value = this.Source.Get(x, y);
+            double value = this.Source.Get(x, y);
             // Apply brightness
             value += this.Brightness.Get(x, y);
 
             // Subtract contrastThreshold, scale by contrastFactor, add contrastThreshold
-            var threshold = this.ContrastThreshold.Get(x, y);
+            double threshold = this.ContrastThreshold.Get(x, y);
             value -= threshold;
             value *= this.ContrastFactor.Get(x, y);
             value += threshold;
@@ -36,12 +36,12 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y, Double z)
         {
-            var value = this.Source.Get(x, y, z);
+            double value = this.Source.Get(x, y, z);
             // Apply brightness
             value += this.Brightness.Get(x, y, z);
 
             // Subtract contrastThreshold, scale by contrastFactor, add contrastThreshold
-            var threshold = this.ContrastThreshold.Get(x, y, z);
+            double threshold = this.ContrastThreshold.Get(x, y, z);
             value -= threshold;
             value *= this.ContrastFactor.Get(x, y, z);
             value += threshold;
@@ -50,12 +50,12 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y, Double z, Double w)
         {
-            var value = this.Source.Get(x, y, z, w);
+            double value = this.Source.Get(x, y, z, w);
             // Apply brightness
             value += this.Brightness.Get(x, y, z, w);
 
             // Subtract contrastThreshold, scale by contrastFactor, add contrastThreshold
-            var threshold = this.ContrastThreshold.Get(x, y, z, w);
+            double threshold = this.ContrastThreshold.Get(x, y, z, w);
             value -= threshold;
             value *= this.ContrastFactor.Get(x, y, z, w);
             value += threshold;
@@ -64,12 +64,12 @@ namespace AccidentalNoise
 
         public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
         {
-            var value = this.Source.Get(x, y, z, w, u, v);
+            double value = this.Source.Get(x, y, z, w, u, v);
             // Apply brightness
             value += this.Brightness.Get(x, y, z, w, u, v);
 
             // Subtract contrastThreshold, scale by contrastFactor, add contrastThreshold
-            var threshold = this.ContrastThreshold.Get(x, y, z, w, u, v);
+            double threshold = this.ContrastThreshold.Get(x, y, z, w, u, v);
             value -= threshold;
             value *= this.ContrastFactor.Get(x, y, z, w, u, v);
             value += threshold;

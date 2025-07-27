@@ -66,17 +66,17 @@ namespace AccidentalNoise
 
         private void Calculate()
         {
-            var random = new Random();
+            Random random = new();
 
             // Calculate 2D
-            var mn = 10000.0;
-            var mx = -10000.0;
-            for (var c = 0; c < 10000; ++c)
+            double mn = 10000.0;
+            double mx = -10000.0;
+            for (int c = 0; c < 10000; ++c)
             {
-                var nx = random.NextDouble() * 4.0 - 2.0;
-                var ny = random.NextDouble() * 4.0 - 2.0;
+                double nx = random.NextDouble() * 4.0 - 2.0;
+                double ny = random.NextDouble() * 4.0 - 2.0;
 
-                var value = this.Source.Get(nx, ny);
+                double value = this.Source.Get(nx, ny);
                 if (value < mn) mn = value;
                 if (value > mx) mx = value;
             }
@@ -86,13 +86,13 @@ namespace AccidentalNoise
             // Calculate 3D
             mn = 10000.0;
             mx = -10000.0;
-            for (var c = 0; c < 10000; ++c)
+            for (int c = 0; c < 10000; ++c)
             {
-                var nx = random.NextDouble() * 4.0 - 2.0;
-                var ny = random.NextDouble() * 4.0 - 2.0;
-                var nz = random.NextDouble() * 4.0 - 2.0;
+                double nx = random.NextDouble() * 4.0 - 2.0;
+                double ny = random.NextDouble() * 4.0 - 2.0;
+                double nz = random.NextDouble() * 4.0 - 2.0;
 
-                var value = this.Source.Get(nx, ny, nz);
+                double value = this.Source.Get(nx, ny, nz);
                 if (value < mn) mn = value;
                 if (value > mx) mx = value;
             }
@@ -102,14 +102,14 @@ namespace AccidentalNoise
             // Calculate 4D
             mn = 10000.0;
             mx = -10000.0;
-            for (var c = 0; c < 10000; ++c)
+            for (int c = 0; c < 10000; ++c)
             {
-                var nx = random.NextDouble() * 4.0 - 2.0;
-                var ny = random.NextDouble() * 4.0 - 2.0;
-                var nz = random.NextDouble() * 4.0 - 2.0;
-                var nw = random.NextDouble() * 4.0 - 2.0;
+                double nx = random.NextDouble() * 4.0 - 2.0;
+                double ny = random.NextDouble() * 4.0 - 2.0;
+                double nz = random.NextDouble() * 4.0 - 2.0;
+                double nw = random.NextDouble() * 4.0 - 2.0;
 
-                var value = this.Source.Get(nx, ny, nz, nw);
+                double value = this.Source.Get(nx, ny, nz, nw);
                 if (value < mn) mn = value;
                 if (value > mx) mx = value;
             }
@@ -119,16 +119,16 @@ namespace AccidentalNoise
             // Calculate 6D
             mn = 10000.0;
             mx = -10000.0;
-            for (var c = 0; c < 10000; ++c)
+            for (int c = 0; c < 10000; ++c)
             {
-                var nx = random.NextDouble() * 4.0 - 2.0;
-                var ny = random.NextDouble() * 4.0 - 2.0;
-                var nz = random.NextDouble() * 4.0 - 2.0;
-                var nw = random.NextDouble() * 4.0 - 2.0;
-                var nu = random.NextDouble() * 4.0 - 2.0;
-                var nv = random.NextDouble() * 4.0 - 2.0;
+                double nx = random.NextDouble() * 4.0 - 2.0;
+                double ny = random.NextDouble() * 4.0 - 2.0;
+                double nz = random.NextDouble() * 4.0 - 2.0;
+                double nw = random.NextDouble() * 4.0 - 2.0;
+                double nu = random.NextDouble() * 4.0 - 2.0;
+                double nv = random.NextDouble() * 4.0 - 2.0;
 
-                var value = this.Source.Get(nx, ny, nz, nw, nu, nv);
+                double value = this.Source.Get(nx, ny, nz, nw, nu, nv);
                 if (value < mn) mn = value;
                 if (value > mx) mx = value;
             }

@@ -48,7 +48,7 @@ namespace SphericalWorldGenerator
                 }
             }
 
-            Mesh mesh = new Mesh();
+            Mesh mesh = new();
             // TODO
             //mesh.name = "Octahedron Sphere";
             //mesh.vertices = vertices;
