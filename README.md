@@ -22,4 +22,10 @@ Technical notes:
 
 ## Resources
 
+Assets:
+
 * Sphere mesh taken from: https://www.binpress.com/creating-octahedron-sphere-unity/
+
+Additional algorithms:
+
+* This cloud gen has erosion: https://github.com/search?q=repo%3ASebLague%2FClouds++language%3AC%23&type=code
