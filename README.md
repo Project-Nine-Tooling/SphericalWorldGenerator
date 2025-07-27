@@ -6,6 +6,10 @@ Based on Jon's [WorldGeneratorFinal](https://github.com/jongallant/WorldGenerato
 
 Notice his algorithm is very similar to how Minecraft works, especially for the climate part.
 
+Technical notes:
+
+* (20250727) Per the computer science of terrain generation - looks like this implementation uses agent based approach?
+
 ## Mapings
 
 ### Spherical

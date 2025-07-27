@@ -10,7 +10,7 @@ namespace SphericalWorldGenerator.Maths
     {
         // ──── Internal state ────────────────────────────────────────────────────
         private static int _seed = Environment.TickCount;
-        private static System.Random _rng = new System.Random(_seed);
+        private static System.Random _rng = new(_seed);
 
         /// <summary>
         /// (Write‑only) seed for reproducible sequences. Calls InitState().
