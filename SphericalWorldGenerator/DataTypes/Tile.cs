@@ -84,7 +84,13 @@ namespace SphericalWorldGenerator.DataTypes
         public Tile Top;
         public Tile Bottom;
 
+        /// <remarks>
+        /// Anything that is not a water tile, will have Collidable set to true.
+        /// </remarks>
         public bool Collidable;
+        /// <remarks>
+        /// Keep track of which tiles have already been processed by the flood filling algorithm.
+        /// </remarks>
         public bool FloodFilled;
 
         public Color Color = Colors.Black;

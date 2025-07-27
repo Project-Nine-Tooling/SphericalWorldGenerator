@@ -14,8 +14,8 @@ namespace SphericalWorldGenerator.Framework
         #endregion
 
         #region Generator Values
-        protected int Width = 512;
-        protected int Height = 512;
+        protected int Width = 16000;
+        protected int Height = 16000;
         #endregion
 
         #region Height Map
@@ -72,10 +72,24 @@ namespace SphericalWorldGenerator.Framework
         #endregion
 
         #region Data Groups
+        /// <remarks>
+        /// Break down connected pieces of water into TileGroup collections.
+        /// Remark-cz-20250727: Doesn't seem to be used in current algorithm.
+        /// </remarks>
         protected List<TileGroup> Waters = [];
+        /// <remarks>
+        /// Break down connected pieces of land into TileGroup collections.
+        /// Remark-cz-20250727: Doesn't seem to be used in current algorithm.
+        /// </remarks>
         protected List<TileGroup> Lands = [];
 
+        /// <summary>
+        /// Paths on land leading to water.
+        /// </summary>
         protected List<River> Rivers = [];
+        /// <summary>
+        /// Groups of rivers, that intersect and leads to water.
+        /// </summary>
         protected List<RiverGroup> RiverGroups = [];
         #endregion
 
@@ -87,6 +101,9 @@ namespace SphericalWorldGenerator.Framework
         #endregion
 
         #region Configurations
+        /// <summary>
+        /// Per Whittaker’s model.
+        /// </summary>
         protected BiomeType[,] BiomeTable = new BiomeType[6, 6] {   
 		    //COLDEST        //COLDER          //COLD                  //HOT                          //HOTTER                       //HOTTEST
 		    { BiomeType.Ice, BiomeType.Tundra, BiomeType.Grassland,    BiomeType.Desert,              BiomeType.Desert,              BiomeType.Desert },              //DRYEST
@@ -235,6 +252,9 @@ namespace SphericalWorldGenerator.Framework
             else if (t.MoistureValue < WettestValue) t.MoistureType = MoistureType.Wetter;
             else t.MoistureType = MoistureType.Wettest;
         }
+        /// <summary>
+        /// Adjusts moisture map to incorporate rivers.
+        /// </summary>
         private void AdjustMoistureMap()
         {
             for (int x = 0; x < Width; x++)
@@ -273,9 +293,7 @@ namespace SphericalWorldGenerator.Framework
                     {
                         River river = group.Rivers[j];
                         if (river != longest)
-                        {
                             DigRiver(river, longest);
-                        }
                     }
                 }
             }
@@ -291,7 +309,7 @@ namespace SphericalWorldGenerator.Framework
 
                     if (t.Rivers.Count > 1)
                     {
-                        // multiple rivers == intersection
+                        // Multiple rivers == intersection
                         RiverGroup group = null;
 
                         // Does a rivergroup already exist for this group?
@@ -304,14 +322,15 @@ namespace SphericalWorldGenerator.Framework
                                 {
                                     River river = RiverGroups[i].Rivers[j];
                                     if (river.ID == tileriver.ID)
-                                    {
                                         group = RiverGroups[i];
-                                    }
-                                    if (group != null) break;
+                                    if (group != null) 
+                                        break;
                                 }
-                                if (group != null) break;
+                                if (group != null) 
+                                    break;
                             }
-                            if (group != null) break;
+                            if (group != null) 
+                                break;
                         }
 
                         // existing group found -- add to it
@@ -327,15 +346,16 @@ namespace SphericalWorldGenerator.Framework
                         {
                             group = new RiverGroup();
                             for (int n = 0; n < t.Rivers.Count; n++)
-                            {
                                 group.Rivers.Add(t.Rivers[n]);
-                            }
                             RiverGroups.Add(group);
                         }
                     }
                 }
             }
         }
+        /// <remarks>
+        /// This is an agent based approach. The first step of the algorithm, is to select a random tile on the map. The selected tile must be land, and must also have a height value that is over a specified threshold. From this tile, we determine which neighboring tile is the lowest, and navigate towards it. We create a path in this fashion, until a water tile is reached.
+        /// </remarks>
         private void GenerateRivers()
         {
             int attempts = 0;
@@ -378,7 +398,7 @@ namespace SphericalWorldGenerator.Framework
                     }
                     else if (river.Tiles.Count >= MinRiverLength)
                     {
-                        //Validation passed - Add river to list
+                        // Validation passed - Add river to list
                         Rivers.Add(river);
                         tile.Rivers.Add(river);
                         rivercount--;
@@ -841,20 +861,22 @@ namespace SphericalWorldGenerator.Framework
                 for (int y = 0; y < Height; y++)
                     Tiles[x, y].UpdateBitmask();
         }
+        /// <summary>
+        /// Find lands vs water bodies.
+        /// </summary>
         private void FloodFill()
         {
-            // Use a stack instead of recursion
+            // Use a stack instead of recursion for performance with large maps
             Stack<Tile> stack = new();
-
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-
                     Tile t = Tiles[x, y];
 
-                    //Tile already flood filled, skip
-                    if (t.FloodFilled) continue;
+                    // Tile already flood filled, skip
+                    if (t.FloodFilled)
+                        continue;
 
                     // Land
                     if (t.Collidable)
@@ -864,9 +886,7 @@ namespace SphericalWorldGenerator.Framework
                         stack.Push(t);
 
                         while (stack.Count > 0)
-                        {
                             FloodFill(stack.Pop(), ref group, ref stack);
-                        }
 
                         if (group.Tiles.Count > 0)
                             Lands.Add(group);
@@ -879,9 +899,7 @@ namespace SphericalWorldGenerator.Framework
                         stack.Push(t);
 
                         while (stack.Count > 0)
-                        {
                             FloodFill(stack.Pop(), ref group, ref stack);
-                        }
 
                         if (group.Tiles.Count > 0)
                             Waters.Add(group);

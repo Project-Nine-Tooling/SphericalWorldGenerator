@@ -8,11 +8,14 @@ namespace SphericalWorldGenerator.DataTypes
         Land
     }
 
+    /// <summary>
+    /// Represents connected "strips" of lands.
+    /// </summary>
     public class TileGroup
     {
-
         public TileGroupType Type;
         public List<Tile> Tiles;
+        public int Size => Tiles.Count;
 
         public TileGroup()
         {
