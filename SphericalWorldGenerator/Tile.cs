@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using SphericalWorldGenerator;
+using SphericalWorldGenerator.Maths;
+using SphericalWorldGenerator.Media;
 using System.Collections.Generic;
-using SphericalWorldGenerator.MathHelper;
 
 public enum HeightType
 {
@@ -73,9 +74,9 @@ public class Tile
 	public bool Collidable;
 	public bool FloodFilled;
 
-	public Color Color = Colors.black;
+	public Color Color = Colors.Black;
 
-	public List<River> Rivers = new List<River>();
+    public List<River> Rivers = [];
 
 	public int RiverSize { get ;set; }
 		

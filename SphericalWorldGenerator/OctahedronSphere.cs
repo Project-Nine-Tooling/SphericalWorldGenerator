@@ -1,4 +1,5 @@
-﻿using SphericalWorldGenerator.MathHelper;
+﻿using SphericalWorldGenerator.Maths;
+using SphericalWorldGenerator.Media;
 using SphericalWorldGenerator.Placeholders;
 
 namespace SphericalWorldGenerator
@@ -48,12 +49,13 @@ namespace SphericalWorldGenerator
             }
 
             Mesh mesh = new Mesh();
-            mesh.name = "Octahedron Sphere";
-            mesh.vertices = vertices;
-            mesh.normals = normals;
-            mesh.uv = uv;
-            mesh.tangents = tangents;
-            mesh.triangles = triangles;
+            // TODO
+            //mesh.name = "Octahedron Sphere";
+            //mesh.vertices = vertices;
+            //mesh.normals = normals;
+            //mesh.uv = uv;
+            //mesh.tangents = tangents;
+            //mesh.triangles = triangles;
             return mesh;
         }
 
@@ -211,6 +213,4 @@ namespace SphericalWorldGenerator
             }
         }
     }
-
-
 }

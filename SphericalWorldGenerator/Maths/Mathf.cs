@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SphericalWorldGenerator.MathHelper
+namespace SphericalWorldGenerator.Maths
 {
     public static class Mathf
     {
@@ -132,7 +128,7 @@ namespace SphericalWorldGenerator.MathHelper
             float output = target + (change + temp) * exp;
 
             // ensure no overshoot
-            if ((origTgt - current > 0f) == (output > origTgt))
+            if (origTgt - current > 0f == output > origTgt)
             {
                 output = origTgt;
                 currentVelocity = (output - origTgt) / deltaTime;
@@ -174,7 +170,7 @@ namespace SphericalWorldGenerator.MathHelper
         // shortest difference between two angles (in degrees)
         public static float DeltaAngle(float current, float target)
         {
-            float delta = Repeat((target - current), 360f);
+            float delta = Repeat(target - current, 360f);
             if (delta > 180f) delta -= 360f;
             return delta;
         }

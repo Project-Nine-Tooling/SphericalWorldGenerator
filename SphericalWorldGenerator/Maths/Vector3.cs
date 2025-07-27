@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SphericalWorldGenerator.MathHelper
+namespace SphericalWorldGenerator.Maths
 {
     /// <summary>
     /// A 3D vector with float precision.
@@ -19,7 +19,7 @@ namespace SphericalWorldGenerator.MathHelper
         }
 
         /// <summary>Length of the vector.</summary>
-        public float magnitude => (float)global::System.Math.Sqrt(x * x + y * y + z * z);
+        public float magnitude => (float)Math.Sqrt(x * x + y * y + z * z);
 
         /// <summary>Squared length of the vector (avoids a sqrt).</summary>
         public float sqrMagnitude => x * x + y * y + z * z;
@@ -60,7 +60,7 @@ namespace SphericalWorldGenerator.MathHelper
         /// <summary>Linearly interpolates between a and b by t (clamped 0–1).</summary>
         public static Vector3 Lerp(Vector3 a, Vector3 b, float t)
         {
-            t = global::System.Math.Clamp(t, 0f, 1f);
+            t = Math.Clamp(t, 0f, 1f);
             return new Vector3(
                 a.x + (b.x - a.x) * t,
                 a.y + (b.y - a.y) * t,
@@ -100,9 +100,9 @@ namespace SphericalWorldGenerator.MathHelper
             => obj is Vector3 other && Equals(other);
 
         public bool Equals(Vector3 other)
-            => global::System.Math.Abs(x - other.x) < 1e-5f
-            && global::System.Math.Abs(y - other.y) < 1e-5f
-            && global::System.Math.Abs(z - other.z) < 1e-5f;
+            => Math.Abs(x - other.x) < 1e-5f
+            && Math.Abs(y - other.y) < 1e-5f
+            && Math.Abs(z - other.z) < 1e-5f;
 
         public override int GetHashCode()
             => HashCode.Combine(x, y, z);

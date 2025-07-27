@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 
-namespace SphericalWorldGenerator.MathHelper
+namespace SphericalWorldGenerator.Maths
 {
     /// <summary>
     /// Drop‑in replacement for Random.

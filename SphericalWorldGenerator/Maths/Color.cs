@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SphericalWorldGenerator.MathHelper
+namespace SphericalWorldGenerator.Maths
 {
     /// <summary>
     /// RGBA color with float precision (0–1).

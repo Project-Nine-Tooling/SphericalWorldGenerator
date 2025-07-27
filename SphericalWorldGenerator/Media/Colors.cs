@@ -1,4 +1,6 @@
-﻿namespace SphericalWorldGenerator.Media
+﻿using SphericalWorldGenerator.Maths;
+
+namespace SphericalWorldGenerator.Media
 {
     /// <summary>
     /// Common RGBA color presets (0–1 range).

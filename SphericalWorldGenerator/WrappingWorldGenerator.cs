@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using AccidentalNoise;
+﻿using AccidentalNoise;
+using SphericalWorldGenerator;
+using SphericalWorldGenerator.Maths;
 
 public class WrappingWorldGenerator : Generator  {
 		
@@ -59,9 +60,9 @@ public class WrappingWorldGenerator : Generator  {
 				// Sample noise at smaller intervals
 				float s = x / (float)Width;
 				float t = y / (float)Height;
-				
-				// Calculate our 4D coordinates
-				float nx = x1 + Mathf.Cos (s*2*Mathf.PI) * dx/(2*Mathf.PI);
+
+                // Calculate our 4D coordinates
+                float nx = x1 + Mathf.Cos(s * 2 * Mathf.PI) * dx / (2 * Mathf.PI);
 				float ny = y1 + Mathf.Cos (t*2*Mathf.PI) * dy/(2*Mathf.PI);
 				float nz = x1 + Mathf.Sin (s*2*Mathf.PI) * dx/(2*Mathf.PI);
 				float nw = y1 + Mathf.Sin (t*2*Mathf.PI) * dy/(2*Mathf.PI);				
@@ -79,8 +80,8 @@ public class WrappingWorldGenerator : Generator  {
 				
 				if (moistureValue > MoistureData.Max) MoistureData.Max = moistureValue;
 				if (moistureValue < MoistureData.Min) MoistureData.Min = moistureValue;
-				
-				HeightData.Data[x,y] = heightValue;
+
+                HeightData.Data[x, y] = heightValue;
 				HeatData.Data[x,y] = heatValue;
 				MoistureData.Data[x,y] = moistureValue;		
 			}

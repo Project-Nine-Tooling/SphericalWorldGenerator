@@ -1,18 +1,22 @@
 ﻿using System.Collections.Generic;
 
-public enum TileGroupType
+namespace SphericalWorldGenerator
 {
-	Water, 
-	Land
-}
+    public enum TileGroupType
+    {
+        Water,
+        Land
+    }
 
-public class TileGroup  {
-	
-	public TileGroupType Type;
-	public List<Tile> Tiles;
+    public class TileGroup
+    {
 
-	public TileGroup()
-	{
-		Tiles = new List<Tile> ();
-	}
+        public TileGroupType Type;
+        public List<Tile> Tiles;
+
+        public TileGroup()
+        {
+            Tiles = new List<Tile>();
+        }
+    }
 }

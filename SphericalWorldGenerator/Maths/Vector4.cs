@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
-namespace SphericalWorldGenerator.MathHelper
+namespace SphericalWorldGenerator.Maths
 {
     /// <summary>
     /// A 4D vector with float precision.
@@ -86,6 +87,16 @@ namespace SphericalWorldGenerator.MathHelper
                 a.z + (b.z - a.z) * t,
                 a.w + (b.w - a.w) * t
             );
+        }
+
+        /// <summary>
+        /// Converts a Vector3 to a Vector4.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator Vector4(Vector3 v)
+        {
+            // Take the x, y, z from the Vector3 and set w to 0
+            return new Vector4(v.x, v.y, v.z, 0.0F);
         }
 
         // Arithmetic operators
