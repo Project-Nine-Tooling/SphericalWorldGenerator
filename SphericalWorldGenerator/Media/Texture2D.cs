@@ -110,7 +110,7 @@ namespace SphericalWorldGenerator.Media
                 y = System.Math.Clamp(y, 0, Height - 1);
             }
 
-            var p = Data.Pixels![y][x];
+            Pixel p = Data.Pixels![y][x];
             // Convert backend Pixel → Maths.Color (floats [0..1])
             return new SphericalWorldGenerator.Maths.Color(
                 p.Red / 255f,

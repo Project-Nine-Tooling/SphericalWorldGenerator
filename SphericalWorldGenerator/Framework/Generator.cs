@@ -65,6 +65,9 @@ namespace SphericalWorldGenerator.Framework
         protected MapData Clouds1;
         protected MapData Clouds2;
 
+        /// <remarks>
+        /// TODO: Replace with jagged array instead of 2D array, and in all enumerators, change enumeration order to be row-first (row-major) for access locality.
+        /// </remarks>
         protected Tile[,] Tiles;
         #endregion
 
@@ -77,7 +80,7 @@ namespace SphericalWorldGenerator.Framework
         #endregion
 
         #region Texture Outputs
-        public Texture2D HeightMapRenderer;
+        public Texture2D TerrainTypeMapRenderer;
         public Texture2D HeatMapRenderer;
         public Texture2D MoistureMapRenderer;
         public Texture2D BiomeMapRenderer;
@@ -125,7 +128,7 @@ namespace SphericalWorldGenerator.Framework
             GenerateBiomeMap();
             UpdateBiomeBitmask();
 
-            HeightMapRenderer = TextureGenerator.GetHeightMapTexture(Width, Height, Tiles);
+            TerrainTypeMapRenderer = TextureGenerator.GetTerrainTypeTexture(Width, Height, Tiles);
             HeatMapRenderer = TextureGenerator.GetHeatMapTexture(Width, Height, Tiles);
             MoistureMapRenderer = TextureGenerator.GetMoistureMapTexture(Width, Height, Tiles);
             BiomeMapRenderer = TextureGenerator.GetBiomeMapTexture(Width, Height, Tiles, ColdestValue, ColderValue, ColdValue);
@@ -138,15 +141,20 @@ namespace SphericalWorldGenerator.Framework
         protected abstract Tile GetLeft(Tile tile);
         protected abstract Tile GetRight(Tile tile);
         public BiomeType GetBiomeType(Tile tile)
-        {
-            return BiomeTable[(int)tile.MoistureType, (int)tile.HeatType];
-        }
-        public float GetHeightValue(Tile tile)
+            => BiomeTable[(int)tile.MoistureType, (int)tile.HeatType];
+        public float GetHeightScale(Tile tile)
         {
             if (tile == null)
                 return int.MaxValue;
             else
-                return tile.HeightValue;
+                return tile.HeightRatio;
+        }
+        public Texture2D GetHeightMap(bool normalizeHeights = false)
+        {
+            if (normalizeHeights)
+                throw new System.NotImplementedException();
+            else
+                return TextureGenerator.GetHeightMapTexture(Width, Height, Tiles);
         }
         #endregion
 
@@ -234,7 +242,7 @@ namespace SphericalWorldGenerator.Framework
                 for (int y = 0; y < Height; y++)
                 {
                     Tile t = Tiles[x, y];
-                    if (t.HeightType == HeightType.River)
+                    if (t.TerrainType == TerrainType.River)
                         AddMoisture(t, 60);
                 }
             }
@@ -347,7 +355,7 @@ namespace SphericalWorldGenerator.Framework
                 if (!tile.Collidable) continue;
                 if (tile.Rivers.Count > 0) continue;
 
-                if (tile.HeightValue > MinRiverHeight)
+                if (tile.HeightRatio > MinRiverHeight)
                 {
                     // Tile is good to start river from
                     River river = new(rivercount);
@@ -601,13 +609,13 @@ namespace SphericalWorldGenerator.Framework
 
             // Query height values of neighbors
             if (left != null && left.GetRiverNeighborCount(river) < 2 && !river.Tiles.Contains(left))
-                leftValue = left.HeightValue;
+                leftValue = left.HeightRatio;
             if (right != null && right.GetRiverNeighborCount(river) < 2 && !river.Tiles.Contains(right))
-                rightValue = right.HeightValue;
+                rightValue = right.HeightRatio;
             if (top != null && top.GetRiverNeighborCount(river) < 2 && !river.Tiles.Contains(top))
-                topValue = top.HeightValue;
+                topValue = top.HeightRatio;
             if (bottom != null && bottom.GetRiverNeighborCount(river) < 2 && !river.Tiles.Contains(bottom))
-                bottomValue = bottom.HeightValue;
+                bottomValue = bottom.HeightRatio;
 
             // If neighbor is existing river that is not this one, flow into it
             if (bottom != null && bottom.Rivers.Count == 0 && !bottom.Collidable)
@@ -707,56 +715,58 @@ namespace SphericalWorldGenerator.Framework
                         Y = y
                     };
 
-                    // Set heightmap value
-                    float heightValue = HeightData.Data[x, y];
-                    heightValue = (heightValue - HeightData.Min) / (HeightData.Max - HeightData.Min);
-                    t.HeightValue = heightValue;
+                    // Set heightmap value (normalized)
+                    float physicalHeight = HeightData.Data[x, y];
+                    float normalizedHeight = (physicalHeight - HeightData.Min) / (HeightData.Max - HeightData.Min);
+                    t.HeightRatio = normalizedHeight;
+                    t.PhysicalHeight = physicalHeight;
 
-                    if (heightValue < DeepWater)
+                    // Decide terrain type
+                    if (normalizedHeight < DeepWater)
                     {
-                        t.HeightType = HeightType.DeepWater;
+                        t.TerrainType = TerrainType.DeepWater;
                         t.Collidable = false;
                     }
-                    else if (heightValue < ShallowWater)
+                    else if (normalizedHeight < ShallowWater)
                     {
-                        t.HeightType = HeightType.ShallowWater;
+                        t.TerrainType = TerrainType.ShallowWater;
                         t.Collidable = false;
                     }
-                    else if (heightValue < Sand)
+                    else if (normalizedHeight < Sand)
                     {
-                        t.HeightType = HeightType.Sand;
+                        t.TerrainType = TerrainType.Sand;
                         t.Collidable = true;
                     }
-                    else if (heightValue < Grass)
+                    else if (normalizedHeight < Grass)
                     {
-                        t.HeightType = HeightType.Grass;
+                        t.TerrainType = TerrainType.Grass;
                         t.Collidable = true;
                     }
-                    else if (heightValue < Forest)
+                    else if (normalizedHeight < Forest)
                     {
-                        t.HeightType = HeightType.Forest;
+                        t.TerrainType = TerrainType.Forest;
                         t.Collidable = true;
                     }
-                    else if (heightValue < Rock)
+                    else if (normalizedHeight < Rock)
                     {
-                        t.HeightType = HeightType.Rock;
+                        t.TerrainType = TerrainType.Rock;
                         t.Collidable = true;
                     }
                     else
                     {
-                        t.HeightType = HeightType.Snow;
+                        t.TerrainType = TerrainType.Snow;
                         t.Collidable = true;
                     }
 
                     // Adjust moisture based on height
-                    if (t.HeightType == HeightType.DeepWater)
-                        MoistureData.Data[t.X, t.Y] += 8f * t.HeightValue;
-                    else if (t.HeightType == HeightType.ShallowWater)
-                        MoistureData.Data[t.X, t.Y] += 3f * t.HeightValue;
-                    else if (t.HeightType == HeightType.Shore)
-                        MoistureData.Data[t.X, t.Y] += 1f * t.HeightValue;
-                    else if (t.HeightType == HeightType.Sand)
-                        MoistureData.Data[t.X, t.Y] += 0.2f * t.HeightValue;
+                    if (t.TerrainType == TerrainType.DeepWater)
+                        MoistureData.Data[t.X, t.Y] += 8f * t.HeightRatio;
+                    else if (t.TerrainType == TerrainType.ShallowWater)
+                        MoistureData.Data[t.X, t.Y] += 3f * t.HeightRatio;
+                    else if (t.TerrainType == TerrainType.Shore)
+                        MoistureData.Data[t.X, t.Y] += 1f * t.HeightRatio;
+                    else if (t.TerrainType == TerrainType.Sand)
+                        MoistureData.Data[t.X, t.Y] += 0.2f * t.HeightRatio;
 
                     // Moisture Map Analyze	
                     float moistureValue = MoistureData.Data[x, y];
@@ -772,14 +782,14 @@ namespace SphericalWorldGenerator.Framework
                     else t.MoistureType = MoistureType.Wettest;
 
                     // Adjust Heat Map based on Height - Higher == colder
-                    if (t.HeightType == HeightType.Forest)
-                        HeatData.Data[t.X, t.Y] -= 0.1f * t.HeightValue;
-                    else if (t.HeightType == HeightType.Rock)
-                        HeatData.Data[t.X, t.Y] -= 0.25f * t.HeightValue;
-                    else if (t.HeightType == HeightType.Snow)
-                        HeatData.Data[t.X, t.Y] -= 0.4f * t.HeightValue;
+                    if (t.TerrainType == TerrainType.Forest)
+                        HeatData.Data[t.X, t.Y] -= 0.1f * t.HeightRatio;
+                    else if (t.TerrainType == TerrainType.Rock)
+                        HeatData.Data[t.X, t.Y] -= 0.25f * t.HeightRatio;
+                    else if (t.TerrainType == TerrainType.Snow)
+                        HeatData.Data[t.X, t.Y] -= 0.4f * t.HeightRatio;
                     else
-                        HeatData.Data[t.X, t.Y] += 0.01f * t.HeightValue;
+                        HeatData.Data[t.X, t.Y] += 0.01f * t.HeightRatio;
 
                     // Set heat value
                     float heatValue = HeatData.Data[x, y];

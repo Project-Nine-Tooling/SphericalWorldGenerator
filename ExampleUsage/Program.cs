@@ -8,7 +8,7 @@ namespace ExampleUsage
         {
             WrappingWorldGenerator generator = new();
             generator.Start();
-            generator.HeightMapRenderer.Data.Save("Output.png");
+            generator.GetHeightMap().Data.Save("Output.png");
         }
     }
 }

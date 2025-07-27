@@ -11,6 +11,7 @@ namespace SphericalWorldGenerator.Generators
 {
     public class TheSphericalWorldGenerator : Generator
     {
+        #region Properties
         MeshRenderer Sphere;
         MeshRenderer Atmosphere1;
         MeshRenderer Atmosphere2;
@@ -22,7 +23,9 @@ namespace SphericalWorldGenerator.Generators
         protected ImplicitFractal MoistureMap;
         protected ImplicitFractal Cloud1Map;
         protected ImplicitFractal Cloud2Map;
+        #endregion
 
+        #region Framework
         protected override void Instantiate()
         {
             base.Instantiate();
@@ -57,45 +60,14 @@ namespace SphericalWorldGenerator.Generators
             //BumpTexture.materials[0].mainTexture = Atmosphere1.materials[0].mainTexture;
             //PaletteTexture.materials[0].mainTexture = Atmosphere2.materials[0].mainTexture;
         }
-
         protected override void Initialize()
         {
-            HeightMap = new ImplicitFractal(FractalType.MULTI,
-                                             BasisType.SIMPLEX,
-                                             InterpolationType.QUINTIC,
-                                             TerrainOctaves,
-                                             TerrainFrequency,
-                                             Seed);
-
-            HeatMap = new ImplicitFractal(FractalType.MULTI,
-                                          BasisType.SIMPLEX,
-                                          InterpolationType.QUINTIC,
-                                          HeatOctaves,
-                                          HeatFrequency,
-                                          Seed);
-
-            MoistureMap = new ImplicitFractal(FractalType.MULTI,
-                                               BasisType.SIMPLEX,
-                                               InterpolationType.QUINTIC,
-                                               MoistureOctaves,
-                                               MoistureFrequency,
-                                               Seed);
-
-            Cloud1Map = new ImplicitFractal(FractalType.BILLOW,
-                                            BasisType.SIMPLEX,
-                                            InterpolationType.QUINTIC,
-                                            4,
-                                            1.55f,
-                                            Seed);
-
-            Cloud2Map = new ImplicitFractal(FractalType.BILLOW,
-                                            BasisType.SIMPLEX,
-                                            InterpolationType.QUINTIC,
-                                            5,
-                                            1.75f,
-                                            Seed);
+            HeightMap = new ImplicitFractal(FractalType.MULTI, BasisType.SIMPLEX, InterpolationType.QUINTIC, TerrainOctaves, TerrainFrequency, Seed);
+            HeatMap = new ImplicitFractal(FractalType.MULTI, BasisType.SIMPLEX, InterpolationType.QUINTIC, HeatOctaves, HeatFrequency, Seed);
+            MoistureMap = new ImplicitFractal(FractalType.MULTI, BasisType.SIMPLEX, InterpolationType.QUINTIC, MoistureOctaves, MoistureFrequency, Seed);
+            Cloud1Map = new ImplicitFractal(FractalType.BILLOW, BasisType.SIMPLEX, InterpolationType.QUINTIC, 4, 1.55f, Seed);
+            Cloud2Map = new ImplicitFractal(FractalType.BILLOW, BasisType.SIMPLEX, InterpolationType.QUINTIC, 5, 1.75f, Seed);
         }
-
         protected override void PopulateData()
         {
             HeightData = new MapData(Width, Height);
@@ -122,12 +94,9 @@ namespace SphericalWorldGenerator.Generators
             // Loop through each tile using its lat/long coordinates
             for (int x = 0; x < Width; x++)
             {
-
                 curLon = westLonBound;
-
                 for (int y = 0; y < Height; y++)
                 {
-
                     float x1 = 0, y1 = 0, z1 = 0;
 
                     // Convert this lat/lon to x/y/z
@@ -180,16 +149,6 @@ namespace SphericalWorldGenerator.Generators
                 curLat += yDelta;
             }
         }
-
-        // Convert Lat/Long coordinates to x/y/z for spherical mapping
-        void LatLonToXYZ(float lat, float lon, ref float x, ref float y, ref float z)
-        {
-            float r = Mathf.Cos(Mathf.Deg2Rad * lon);
-            x = r * Mathf.Cos(Mathf.Deg2Rad * lat);
-            y = Mathf.Sin(Mathf.Deg2Rad * lon);
-            z = r * Mathf.Sin(Mathf.Deg2Rad * lat);
-        }
-
         protected override Tile GetTop(Tile t)
         {
             if (t.Y - 1 > 0)
@@ -205,14 +164,22 @@ namespace SphericalWorldGenerator.Generators
                 return null;
         }
         protected override Tile GetLeft(Tile t)
-        {
-            return Tiles[MathHelper.Mod(t.X - 1, Width), t.Y];
-        }
+            => Tiles[MathHelper.Mod(t.X - 1, Width), t.Y];
         protected override Tile GetRight(Tile t)
+            => Tiles[MathHelper.Mod(t.X + 1, Width), t.Y];
+        #endregion
+
+        #region Helpers
+        /// <summary>
+        /// Convert Lat/Long coordinates to x/y/z for spherical mapping
+        /// </summary>
+        void LatLonToXYZ(float lat, float lon, ref float x, ref float y, ref float z)
         {
-            return Tiles[MathHelper.Mod(t.X + 1, Width), t.Y];
+            float r = Mathf.Cos(Mathf.Deg2Rad * lon);
+            x = r * Mathf.Cos(Mathf.Deg2Rad * lat);
+            y = Mathf.Sin(Mathf.Deg2Rad * lon);
+            z = r * Mathf.Sin(Mathf.Deg2Rad * lat);
         }
-
+        #endregion
     }
-
 }

@@ -1,6 +1,7 @@
 ﻿using SphericalWorldGenerator.DataTypes;
 using SphericalWorldGenerator.Maths;
 using SphericalWorldGenerator.Media;
+using System;
 
 namespace SphericalWorldGenerator.Texturing
 {
@@ -174,37 +175,37 @@ namespace SphericalWorldGenerator.Texturing
             {
                 for (int y = 0; y < height; y++)
                 {
-                    switch (tiles[x, y].HeightType)
+                    switch (tiles[x, y].TerrainType)
                     {
-                        case HeightType.DeepWater:
+                        case TerrainType.DeepWater:
                             pixels[x + y * width] = new Color(0, 0, 0, 1);
                             break;
-                        case HeightType.ShallowWater:
+                        case TerrainType.ShallowWater:
                             pixels[x + y * width] = new Color(0, 0, 0, 1);
                             break;
-                        case HeightType.Sand:
+                        case TerrainType.Sand:
                             pixels[x + y * width] = new Color(0.3f, 0.3f, 0.3f, 1);
                             break;
-                        case HeightType.Grass:
+                        case TerrainType.Grass:
                             pixels[x + y * width] = new Color(0.45f, 0.45f, 0.45f, 1);
                             break;
-                        case HeightType.Forest:
+                        case TerrainType.Forest:
                             pixels[x + y * width] = new Color(0.6f, 0.6f, 0.6f, 1);
                             break;
-                        case HeightType.Rock:
+                        case TerrainType.Rock:
                             pixels[x + y * width] = new Color(0.75f, 0.75f, 0.75f, 1);
                             break;
-                        case HeightType.Snow:
+                        case TerrainType.Snow:
                             pixels[x + y * width] = new Color(1, 1, 1, 1);
                             break;
-                        case HeightType.River:
+                        case TerrainType.River:
                             pixels[x + y * width] = new Color(0, 0, 0, 1);
                             break;
                     }
 
                     if (!tiles[x, y].Collidable)
                     {
-                        pixels[x + y * width] = Color.Lerp(Color.white, Color.black, tiles[x, y].HeightValue * 2);
+                        pixels[x + y * width] = Color.Lerp(Color.white, Color.black, tiles[x, y].HeightRatio * 2);
                     }
                 }
             }
@@ -214,7 +215,6 @@ namespace SphericalWorldGenerator.Texturing
             texture.Apply();
             return texture;
         }
-
         public static Texture2D GetHeightMapTexture(int width, int height, Tile[,] tiles)
         {
             Texture2D texture = new(width, height);
@@ -224,30 +224,49 @@ namespace SphericalWorldGenerator.Texturing
             {
                 for (int y = 0; y < height; y++)
                 {
-                    switch (tiles[x, y].HeightType)
+                    float grayScale = tiles[x, y].HeightRatio;
+                    pixels[x + y * width] = new Color(grayScale, grayScale, grayScale, 1);
+                }
+            }
+
+            texture.SetPixels(pixels);
+            texture.WrapMode = TextureWrapMode.Clamp;
+            texture.Apply();
+            return texture;
+        }
+        public static Texture2D GetTerrainTypeTexture(int width, int height, Tile[,] tiles)
+        {
+            Texture2D texture = new(width, height);
+            Color[] pixels = new Color[width * height];
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    switch (tiles[x, y].TerrainType)
                     {
-                        case HeightType.DeepWater:
+                        case TerrainType.DeepWater:
                             pixels[x + y * width] = new Color(0, 0, 0, 1);
                             break;
-                        case HeightType.ShallowWater:
+                        case TerrainType.ShallowWater:
                             pixels[x + y * width] = new Color(0, 0, 0, 1);
                             break;
-                        case HeightType.Sand:
+                        case TerrainType.Sand:
                             pixels[x + y * width] = new Color(0.3f, 0.3f, 0.3f, 1);
                             break;
-                        case HeightType.Grass:
+                        case TerrainType.Grass:
                             pixels[x + y * width] = new Color(0.45f, 0.45f, 0.45f, 1);
                             break;
-                        case HeightType.Forest:
+                        case TerrainType.Forest:
                             pixels[x + y * width] = new Color(0.6f, 0.6f, 0.6f, 1);
                             break;
-                        case HeightType.Rock:
+                        case TerrainType.Rock:
                             pixels[x + y * width] = new Color(0.75f, 0.75f, 0.75f, 1);
                             break;
-                        case HeightType.Snow:
+                        case TerrainType.Snow:
                             pixels[x + y * width] = new Color(1, 1, 1, 1);
                             break;
-                        case HeightType.River:
+                        case TerrainType.River:
                             pixels[x + y * width] = new Color(0, 0, 0, 1);
                             break;
                     }
@@ -304,7 +323,7 @@ namespace SphericalWorldGenerator.Texturing
                     }
 
                     // Darken the color if a edge tile
-                    if ((int)tiles[x, y].HeightType > 2 && tiles[x, y].Bitmask != 15)
+                    if ((int)tiles[x, y].TerrainType > 2 && tiles[x, y].Bitmask != 15)
                         pixels[x + y * width] = Color.Lerp(pixels[x + y * width], Color.black, 0.4f);
                 }
             }
@@ -391,17 +410,17 @@ namespace SphericalWorldGenerator.Texturing
                     }
 
                     // Water tiles
-                    if (tiles[x, y].HeightType == HeightType.DeepWater)
+                    if (tiles[x, y].TerrainType == TerrainType.DeepWater)
                     {
                         pixels[x + y * width] = DeepColor;
                     }
-                    else if (tiles[x, y].HeightType == HeightType.ShallowWater)
+                    else if (tiles[x, y].TerrainType == TerrainType.ShallowWater)
                     {
                         pixels[x + y * width] = ShallowColor;
                     }
 
                     // Draw rivers
-                    if (tiles[x, y].HeightType == HeightType.River)
+                    if (tiles[x, y].TerrainType == TerrainType.River)
                     {
                         float heatValue = tiles[x, y].HeatValue;
 
@@ -416,7 +435,7 @@ namespace SphericalWorldGenerator.Texturing
                     }
 
                     // Ddd a outline
-                    if (tiles[x, y].HeightType >= HeightType.Shore && tiles[x, y].HeightType != HeightType.River)
+                    if (tiles[x, y].TerrainType >= TerrainType.Shore && tiles[x, y].TerrainType != TerrainType.River)
                     {
                         if (tiles[x, y].BiomeBitmask != 15)
                             pixels[x + y * width] = Color.Lerp(pixels[x + y * width], Color.black, 0.35f);

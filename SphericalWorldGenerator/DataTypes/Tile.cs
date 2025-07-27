@@ -5,7 +5,10 @@ using System.Collections.Generic;
 
 namespace SphericalWorldGenerator.DataTypes
 {
-    public enum HeightType
+    /// <summary>
+    /// Terrain type based on height/altitude
+    /// </summary>
+    public enum TerrainType
     {
         DeepWater = 1,
         ShallowWater = 2,
@@ -17,7 +20,6 @@ namespace SphericalWorldGenerator.DataTypes
         Snow = 8,
         River = 9
     }
-
     public enum HeatType
     {
         Coldest = 0,
@@ -27,7 +29,6 @@ namespace SphericalWorldGenerator.DataTypes
         Warmer = 4,
         Warmest = 5
     }
-
     public enum MoistureType
     {
         Wettest = 5,
@@ -37,7 +38,6 @@ namespace SphericalWorldGenerator.DataTypes
         Dryer = 1,
         Dryest = 0
     }
-
     public enum BiomeType
     {
         Desert,
@@ -52,17 +52,27 @@ namespace SphericalWorldGenerator.DataTypes
         Ice
     }
 
+    /// <summary>
+    /// Provides structured information for latter generation stages.
+    /// </summary>
     public class Tile
     {
         #region Properties
-        public HeightType HeightType;
+        public TerrainType TerrainType;
         public HeatType HeatType;
         public MoistureType MoistureType;
         public BiomeType BiomeType;
 
         public float Cloud1Value { get; set; }
         public float Cloud2Value { get; set; }
-        public float HeightValue { get; set; }
+        /// <remarks>
+        /// This is normalized height value between [0, 1]
+        /// </remarks>
+        public float HeightRatio { get; set; }
+        /// <summary>
+        /// Raw height from fractal generation
+        /// </summary>
+        public float PhysicalHeight { get; set; }
         public float HeatValue { get; set; }
         public float MoistureValue { get; set; }
         public int X, Y;
@@ -89,6 +99,7 @@ namespace SphericalWorldGenerator.DataTypes
         }
         #endregion
 
+        #region Methods
         public void UpdateBiomeBitmask()
         {
             int count = 0;
@@ -104,23 +115,21 @@ namespace SphericalWorldGenerator.DataTypes
 
             BiomeBitmask = count;
         }
-
         public void UpdateBitmask()
         {
             int count = 0;
 
-            if (Collidable && Top != null && Top.HeightType == HeightType)
+            if (Collidable && Top != null && Top.TerrainType == TerrainType)
                 count += 1;
-            if (Collidable && Right != null && Right.HeightType == HeightType)
+            if (Collidable && Right != null && Right.TerrainType == TerrainType)
                 count += 2;
-            if (Collidable && Bottom != null && Bottom.HeightType == HeightType)
+            if (Collidable && Bottom != null && Bottom.TerrainType == TerrainType)
                 count += 4;
-            if (Collidable && Left != null && Left.HeightType == HeightType)
+            if (Collidable && Left != null && Left.TerrainType == TerrainType)
                 count += 8;
 
             Bitmask = count;
         }
-
         public int GetRiverNeighborCount(River river)
         {
             int count = 0;
@@ -134,13 +143,12 @@ namespace SphericalWorldGenerator.DataTypes
                 count++;
             return count;
         }
-
         public Direction GetLowestNeighbor(Generator generator)
         {
-            float left = generator.GetHeightValue(Left);
-            float right = generator.GetHeightValue(Right);
-            float bottom = generator.GetHeightValue(Bottom);
-            float top = generator.GetHeightValue(Top);
+            float left = generator.GetHeightScale(Left);
+            float right = generator.GetHeightScale(Right);
+            float bottom = generator.GetHeightScale(Bottom);
+            float top = generator.GetHeightScale(Top);
 
             if (left < right && left < top && left < bottom)
                 return Direction.Left;
@@ -153,27 +161,21 @@ namespace SphericalWorldGenerator.DataTypes
             else
                 return Direction.Bottom;
         }
-
         public void SetRiverPath(River river)
         {
             if (!Collidable)
                 return;
 
             if (!Rivers.Contains(river))
-            {
                 Rivers.Add(river);
-            }
         }
-
         private void SetRiverTile(River river)
         {
             SetRiverPath(river);
-            HeightType = HeightType.River;
-            HeightValue = 0;
+            TerrainType = TerrainType.River;
+            HeightRatio = 0;
             Collidable = false;
         }
-
-        // This function got messy.  Sorry.
         public void DigRiver(River river, int size)
         {
             SetRiverTile(river);
@@ -304,5 +306,6 @@ namespace SphericalWorldGenerator.DataTypes
                 }
             }
         }
+        #endregion
     }
 }
