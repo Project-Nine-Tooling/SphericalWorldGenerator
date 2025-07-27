@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using SphericalWorldGenerator.MathHelper;
+using SphericalWorldGenerator.Media;
+using UnityEngine;
 
 public static class TextureGenerator {		
 

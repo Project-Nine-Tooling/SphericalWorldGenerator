@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using SphericalWorldGenerator.MathHelper;
+using SphericalWorldGenerator.Gameplay;
 
 public abstract class Generator : MonoBehaviour {
 
@@ -122,7 +124,7 @@ public abstract class Generator : MonoBehaviour {
 
     protected virtual void Instantiate () {
 
-		Seed = UnityEngine.Random.Range (0, int.MaxValue);
+		Seed = Random.Range (0, int.MaxValue);
 		
 		HeightMapRenderer = transform.Find ("HeightTexture").GetComponent<MeshRenderer> ();
 		HeatMapRenderer = transform.Find ("HeatTexture").GetComponent<MeshRenderer> ();
@@ -159,7 +161,7 @@ public abstract class Generator : MonoBehaviour {
 	{
         // Refresh with inspector values
 		if (Input.GetKeyDown (KeyCode.F5)) {
-            Seed = UnityEngine.Random.Range(0, int.MaxValue);
+            Seed = Random.Range(0, int.MaxValue);
             Initialize();
             Generate();
 		}
@@ -356,8 +358,8 @@ public abstract class Generator : MonoBehaviour {
 		while (rivercount > 0 && attempts < MaxRiverAttempts) {
 
 			// Get a random tile
-			int x = UnityEngine.Random.Range (0, Width);
-			int y = UnityEngine.Random.Range (0, Height);			
+			int x = Random.Range(0, Width);
+			int y = Random.Range(0, Height);			
 			Tile tile = Tiles[x,y];
 
 			// validate the tile
@@ -418,7 +420,7 @@ public abstract class Generator : MonoBehaviour {
 
 		int counter = 0;
 		int intersectionCount = river.Tiles.Count - intersectionID;
-		int size = UnityEngine.Random.Range(intersectionSize, 5);
+		int size = Random.Range(intersectionSize, 5);
 		river.Length = river.Tiles.Count;  
 
 		// randomize size change
@@ -433,22 +435,22 @@ public abstract class Generator : MonoBehaviour {
 		int fivemin = five / 3;
 		
 		// randomize length of each size
-		int count1 = UnityEngine.Random.Range (fivemin, five);  
+		int count1 = Random.Range (fivemin, five);  
 		if (size < 4) {
 			count1 = 0;
 		}
-		int count2 = count1 + UnityEngine.Random.Range(fourmin, four);  
+		int count2 = count1 + Random.Range(fourmin, four);  
 		if (size < 3) {
 			count2 = 0;
 			count1 = 0;
 		}
-		int count3 = count2 + UnityEngine.Random.Range(threemin, three); 
+		int count3 = count2 + Random.Range(threemin, three); 
 		if (size < 2) {
 			count3 = 0;
 			count2 = 0;
 			count1 = 0;
 		}
-		int count4 = count3 + UnityEngine.Random.Range (twomin, two); 
+		int count4 = count3 + Random.Range (twomin, two); 
 
 		// Make sure we are not digging past the river path
 		if (count4 > river.Length) {
@@ -512,7 +514,7 @@ public abstract class Generator : MonoBehaviour {
 		int counter = 0;
 		
 		// How wide are we digging this river?
-		int size = UnityEngine.Random.Range(1,5);
+		int size = Random.Range(1,5);
 		river.Length = river.Tiles.Count;  
 
 		// randomize size change
@@ -527,22 +529,22 @@ public abstract class Generator : MonoBehaviour {
 		int fivemin = five / 3;
 
 		// randomize lenght of each size
-		int count1 = UnityEngine.Random.Range (fivemin, five);             
+		int count1 = Random.Range (fivemin, five);             
 		if (size < 4) {
 			count1 = 0;
 		}
-		int count2 = count1 + UnityEngine.Random.Range(fourmin, four); 
+		int count2 = count1 + Random.Range(fourmin, four); 
 		if (size < 3) {
 			count2 = 0;
 			count1 = 0;
 		}
-		int count3 = count2 + UnityEngine.Random.Range(threemin, three); 
+		int count3 = count2 + Random.Range(threemin, three); 
 		if (size < 2) {
 			count3 = 0;
 			count2 = 0;
 			count1 = 0;
 		}
-		int count4 = count3 + UnityEngine.Random.Range (twomin, two);  
+		int count4 = count3 + Random.Range (twomin, two);  
 		
 		// Make sure we are not digging past the river path
 		if (count4 > river.Length) {
