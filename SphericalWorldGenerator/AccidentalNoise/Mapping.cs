@@ -1,12 +1,13 @@
-﻿using System;
+﻿using AccidentalNoise;
+using System;
 
-namespace AccidentalNoise
+namespace SphericalWorldGenerator.AccidentalNoise
 {
     public class Mapping
     {
-        private const double PI2 = Math.PI * 2.0;
+        private const double PI2 = System.Math.PI * 2.0;
         
-        public static void Map2D(MappingMode mappingMode, Double[,] array, ImplicitModuleBase module, MappingRanges ranges, Double z)
+        public static void Map2D(MappingMode mappingMode, double[,] array, ImplicitModuleBase module, MappingRanges ranges, double z)
         {
             int width = array.GetLength(0);
             int height = array.GetLength(1);
@@ -39,8 +40,8 @@ namespace AccidentalNoise
                             dx = ranges.LoopX1 - ranges.LoopX0;
                             dy = ranges.MapY1 - ranges.MapY0;
                             p = p*(ranges.MapX1 - ranges.MapX0)/(ranges.LoopX1 - ranges.LoopX0);
-                            nx = ranges.LoopX0 + Math.Cos(p*PI2)*dx/PI2;
-                            ny = ranges.LoopX0 + Math.Sin(p*PI2)*dx/PI2;
+                            nx = ranges.LoopX0 + System.Math.Cos(p*PI2)*dx/PI2;
+                            ny = ranges.LoopX0 + System.Math.Sin(p*PI2)*dx/PI2;
                             nz = ranges.MapY0 + q*dy;
                             nw = z;
                             val = module.Get(nx, ny, nz, nw);
@@ -50,8 +51,8 @@ namespace AccidentalNoise
                             dy = ranges.LoopY1 - ranges.LoopY0;
                             q = q*(ranges.MapY1 - ranges.MapY0)/(ranges.LoopY1 - ranges.LoopY0);
                             nx = ranges.MapX0 + p*dx;
-                            ny = ranges.LoopY0 + Math.Cos(q*PI2)*dy/PI2;
-                            nz = ranges.LoopY0 + Math.Sin(q*PI2)*dy/PI2;
+                            ny = ranges.LoopY0 + System.Math.Cos(q*PI2)*dy/PI2;
+                            nz = ranges.LoopY0 + System.Math.Sin(q*PI2)*dy/PI2;
                             nw = z;
                             val = module.Get(nx, ny, nz, nw);
                             break;
@@ -63,8 +64,8 @@ namespace AccidentalNoise
                             ny = ranges.MapY0 + p*dy;
                             r = (z - ranges.MapZ0)/(ranges.MapZ1 - ranges.MapZ0);
                             double zval = r*(ranges.MapZ1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
-                            nz = ranges.LoopZ0 + Math.Cos(zval*PI2)*dz/PI2;
-                            nw = ranges.LoopZ0 + Math.Sin(zval*PI2)*dz/PI2;
+                            nz = ranges.LoopZ0 + System.Math.Cos(zval*PI2)*dz/PI2;
+                            nw = ranges.LoopZ0 + System.Math.Sin(zval*PI2)*dz/PI2;
                             val = module.Get(nx, ny, nz, nw);
                             break;
                         case MappingMode.SeamlessXY:
@@ -72,10 +73,10 @@ namespace AccidentalNoise
                             dy = ranges.LoopY1 - ranges.LoopY0;
                             p = p*(ranges.MapX1 - ranges.MapX0)/(ranges.LoopX1 - ranges.LoopX0);
                             q = q*(ranges.MapY1 - ranges.MapY0)/(ranges.LoopY1 - ranges.LoopY0);
-                            nx = ranges.LoopX0 + Math.Cos(p*PI2)*dx/PI2;
-                            ny = ranges.LoopX0 + Math.Sin(p*PI2)*dx/PI2;
-                            nz = ranges.LoopY0 + Math.Cos(q*PI2)*dy/PI2;
-                            nw = ranges.LoopY0 + Math.Sin(q*PI2)*dy/PI2;
+                            nx = ranges.LoopX0 + System.Math.Cos(p*PI2)*dx/PI2;
+                            ny = ranges.LoopX0 + System.Math.Sin(p*PI2)*dx/PI2;
+                            nz = ranges.LoopY0 + System.Math.Cos(q*PI2)*dy/PI2;
+                            nw = ranges.LoopY0 + System.Math.Sin(q*PI2)*dy/PI2;
                             nu = z;
                             val = module.Get(nx, ny, nz, nw, nu, 0);
                             break;
@@ -86,11 +87,11 @@ namespace AccidentalNoise
                             r = (z - ranges.MapZ0)/(ranges.MapZ1 - ranges.MapZ0);
                             double xzval = r*(ranges.MapX1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
                             p = p*(ranges.MapX1 - ranges.MapX0)/(ranges.LoopX1 - ranges.LoopX0);
-                            nx = ranges.LoopX0 + Math.Cos(p*PI2)*dx/PI2;
-                            ny = ranges.LoopX0 + Math.Sin(p*PI2)*dx/PI2;
+                            nx = ranges.LoopX0 + System.Math.Cos(p*PI2)*dx/PI2;
+                            ny = ranges.LoopX0 + System.Math.Sin(p*PI2)*dx/PI2;
                             nz = ranges.MapY0 + q*dy;
-                            nw = ranges.LoopZ0 + Math.Cos(xzval*PI2)*dz/PI2;
-                            nu = ranges.LoopZ0 + Math.Sin(xzval*PI2)*dz/PI2;
+                            nw = ranges.LoopZ0 + System.Math.Cos(xzval*PI2)*dz/PI2;
+                            nu = ranges.LoopZ0 + System.Math.Sin(xzval*PI2)*dz/PI2;
                             val = module.Get(nx, ny, nz, nw, nu, 0);
                             break;
                         case MappingMode.SeamlessYZ:
@@ -101,10 +102,10 @@ namespace AccidentalNoise
                             double yzval = r*(ranges.MapZ1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
                             q = q*(ranges.MapY1 - ranges.MapY0)/(ranges.LoopY1 - ranges.LoopY0);
                             nx = ranges.MapX0 + p*dx;
-                            ny = ranges.LoopY0 + Math.Cos(q*PI2)*dy/PI2;
-                            nz = ranges.LoopY0 + Math.Sin(q*PI2)*dy/PI2;
-                            nw = ranges.LoopZ0 + Math.Cos(yzval*PI2)*dz/PI2;
-                            nu = ranges.LoopZ0 + Math.Sin(yzval*PI2)*dz/PI2;
+                            ny = ranges.LoopY0 + System.Math.Cos(q*PI2)*dy/PI2;
+                            nz = ranges.LoopY0 + System.Math.Sin(q*PI2)*dy/PI2;
+                            nw = ranges.LoopZ0 + System.Math.Cos(yzval*PI2)*dz/PI2;
+                            nu = ranges.LoopZ0 + System.Math.Sin(yzval*PI2)*dz/PI2;
                             val = module.Get(nx, ny, nz, nw, nu, 0);
                             break;
                         case MappingMode.SeamlessXYZ:
@@ -115,12 +116,12 @@ namespace AccidentalNoise
                             q = q*(ranges.MapY1 - ranges.MapY0)/(ranges.LoopY1 - ranges.LoopY0);
                             r = (z - ranges.MapZ0)/(ranges.MapZ1 - ranges.MapZ0);
                             double xyzval = r*(ranges.MapZ1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
-                            nx = ranges.LoopX0 + Math.Cos(p*PI2)*dx/PI2;
-                            ny = ranges.LoopX0 + Math.Sin(p*PI2)*dx/PI2;
-                            nz = ranges.LoopY0 + Math.Cos(q*PI2)*dy/PI2;
-                            nw = ranges.LoopY0 + Math.Sin(q*PI2)*dy/PI2;
-                            nu = ranges.LoopZ0 + Math.Cos(xyzval*PI2)*dz/PI2;
-                            double nv = ranges.LoopZ0 + Math.Sin(xyzval*PI2)*dz/PI2;
+                            nx = ranges.LoopX0 + System.Math.Cos(p*PI2)*dx/PI2;
+                            ny = ranges.LoopX0 + System.Math.Sin(p*PI2)*dx/PI2;
+                            nz = ranges.LoopY0 + System.Math.Cos(q*PI2)*dy/PI2;
+                            nw = ranges.LoopY0 + System.Math.Sin(q*PI2)*dy/PI2;
+                            nu = ranges.LoopZ0 + System.Math.Cos(xyzval*PI2)*dz/PI2;
+                            double nv = ranges.LoopZ0 + System.Math.Sin(xyzval*PI2)*dz/PI2;
                             val = module.Get(nx, ny, nz, nw, nu, nv);
                             break;
                     }
@@ -129,7 +130,7 @@ namespace AccidentalNoise
             }
         }
 
-        public static void Map2DNoZ(MappingMode mappingMode, Double[,] array, ImplicitModuleBase module, MappingRanges ranges)
+        public static void Map2DNoZ(MappingMode mappingMode, double[,] array, ImplicitModuleBase module, MappingRanges ranges)
         {
             int width = array.GetLength(0);
             int height = array.GetLength(1);
@@ -157,8 +158,8 @@ namespace AccidentalNoise
                             dx = ranges.LoopX1 - ranges.LoopX0;
                             dy = ranges.MapY1 - ranges.MapY0;
                             p = p*(ranges.MapX1 - ranges.MapX0)/(ranges.LoopX1 - ranges.LoopX0);
-                            nx = ranges.LoopX0 + Math.Cos(p*PI2)*dx/PI2;
-                            ny = ranges.LoopX0 + Math.Sin(p*PI2)*dx/PI2;
+                            nx = ranges.LoopX0 + System.Math.Cos(p*PI2)*dx/PI2;
+                            ny = ranges.LoopX0 + System.Math.Sin(p*PI2)*dx/PI2;
                             nz = ranges.MapY0 + q*dy;
                             val = module.Get(nx, ny, nz);
                             break;
@@ -167,8 +168,8 @@ namespace AccidentalNoise
                             dy = ranges.LoopY1 - ranges.LoopY0;
                             q = q*(ranges.MapY1 - ranges.MapY0)/(ranges.LoopY1 - ranges.LoopY0);
                             nx = ranges.MapX0 + p*dx;
-                            ny = ranges.LoopY0 + Math.Cos(q*PI2)*dy/PI2;
-                            nz = ranges.LoopY0 + Math.Sin(q*PI2)*dy/PI2;
+                            ny = ranges.LoopY0 + System.Math.Cos(q*PI2)*dy/PI2;
+                            nz = ranges.LoopY0 + System.Math.Sin(q*PI2)*dy/PI2;
                             val = module.Get(nx, ny, nz);
                             break;
 
@@ -177,10 +178,10 @@ namespace AccidentalNoise
                             dy = ranges.LoopY1 - ranges.LoopY0;
                             p = p*(ranges.MapX1 - ranges.MapX0)/(ranges.LoopX1 - ranges.LoopX0);
                             q = q*(ranges.MapY1 - ranges.MapY0)/(ranges.LoopY1 - ranges.LoopY0);
-                            nx = ranges.LoopX0 + Math.Cos(p*PI2)*dx/PI2;
-                            ny = ranges.LoopX0 + Math.Sin(p*PI2)*dx/PI2;
-                            nz = ranges.LoopY0 + Math.Cos(q*PI2)*dy/PI2;
-                            double nw = ranges.LoopY0 + Math.Sin(q*PI2)*dy/PI2;
+                            nx = ranges.LoopX0 + System.Math.Cos(p*PI2)*dx/PI2;
+                            ny = ranges.LoopX0 + System.Math.Sin(p*PI2)*dx/PI2;
+                            nz = ranges.LoopY0 + System.Math.Cos(q*PI2)*dy/PI2;
+                            double nw = ranges.LoopY0 + System.Math.Sin(q*PI2)*dy/PI2;
                             val = module.Get(nx, ny, nz, nw);
                             break;
                     }
@@ -189,7 +190,7 @@ namespace AccidentalNoise
             }
         }
 
-        public static void Map3D(MappingMode mappingMode, Double[,,] array, ImplicitModuleBase module, MappingRanges ranges)
+        public static void Map3D(MappingMode mappingMode, double[,,] array, ImplicitModuleBase module, MappingRanges ranges)
         {
             int width = array.GetLength(0);
             int height = array.GetLength(1);
@@ -230,8 +231,8 @@ namespace AccidentalNoise
                                 dy = ranges.MapY1 - ranges.MapY0;
                                 dz = ranges.MapZ1 - ranges.MapZ0;
                                 p = p*(ranges.MapX1 - ranges.MapX0)/(ranges.LoopX1 - ranges.LoopX0);
-                                nx = ranges.LoopX0 + Math.Cos(p*PI2)*dx/PI2;
-                                ny = ranges.LoopX0 + Math.Sin(p*PI2)*dx/PI2;
+                                nx = ranges.LoopX0 + System.Math.Cos(p*PI2)*dx/PI2;
+                                ny = ranges.LoopX0 + System.Math.Sin(p*PI2)*dx/PI2;
                                 nz = ranges.MapY0 + q*dy;
                                 nw = ranges.MapZ0 + depth*dz;
                                 val = module.Get(nx, ny, nz, nw);
@@ -242,8 +243,8 @@ namespace AccidentalNoise
                                 dz = ranges.MapZ1 - ranges.MapZ0;
                                 q = q*(ranges.MapY1 - ranges.MapY0)/(ranges.LoopY1 - ranges.LoopY0);
                                 nx = ranges.MapX0 + p*dx;
-                                ny = ranges.LoopY0 + Math.Cos(q*PI2)*dy/PI2;
-                                nz = ranges.LoopY0 + Math.Sin(q*PI2)*dy/PI2;
+                                ny = ranges.LoopY0 + System.Math.Cos(q*PI2)*dy/PI2;
+                                nz = ranges.LoopY0 + System.Math.Sin(q*PI2)*dy/PI2;
                                 nw = ranges.MapZ0 + r*dz;
                                 val = module.Get(nx, ny, nz, nw);
                                 break;
@@ -254,8 +255,8 @@ namespace AccidentalNoise
                                 r = r*(ranges.MapZ1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
                                 nx = ranges.MapX0 + p*dx;
                                 ny = ranges.MapY0 + q*dy;
-                                nz = ranges.LoopZ0 + Math.Cos(r*PI2)*dz/PI2;
-                                nw = ranges.LoopZ0 + Math.Sin(r*PI2)*dz/PI2;
+                                nz = ranges.LoopZ0 + System.Math.Cos(r*PI2)*dz/PI2;
+                                nw = ranges.LoopZ0 + System.Math.Sin(r*PI2)*dz/PI2;
                                 val = module.Get(nx, ny, nz, nw);
                                 break;
                             case MappingMode.SeamlessXY:
@@ -264,10 +265,10 @@ namespace AccidentalNoise
                                 dz = ranges.MapZ1 - ranges.MapZ0;
                                 p = p*(ranges.MapX1 - ranges.MapX0)/(ranges.LoopX1 - ranges.LoopX0);
                                 q = q*(ranges.MapY1 - ranges.MapY0)/(ranges.LoopY1 - ranges.LoopY0);
-                                nx = ranges.LoopX0 + Math.Cos(p*PI2)*dx/PI2;
-                                ny = ranges.LoopX0 + Math.Sin(p*PI2)*dx/PI2;
-                                nz = ranges.LoopY0 + Math.Cos(q*PI2)*dy/PI2;
-                                nw = ranges.LoopY0 + Math.Sin(q*PI2)*dy/PI2;
+                                nx = ranges.LoopX0 + System.Math.Cos(p*PI2)*dx/PI2;
+                                ny = ranges.LoopX0 + System.Math.Sin(p*PI2)*dx/PI2;
+                                nz = ranges.LoopY0 + System.Math.Cos(q*PI2)*dy/PI2;
+                                nw = ranges.LoopY0 + System.Math.Sin(q*PI2)*dy/PI2;
                                 nu = ranges.MapZ0 + r*dz;
                                 val = module.Get(nx, ny, nz, nw, nu, 0);
                                 break;
@@ -277,11 +278,11 @@ namespace AccidentalNoise
                                 dz = ranges.LoopZ1 - ranges.LoopZ0;
                                 p = p*(ranges.MapX1 - ranges.MapX0)/(ranges.LoopX1 - ranges.LoopX0);
                                 r = r*(ranges.MapZ1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
-                                nx = ranges.LoopX0 + Math.Cos(p*PI2)*dx/PI2;
-                                ny = ranges.LoopX0 + Math.Sin(p*PI2)*dx/PI2;
+                                nx = ranges.LoopX0 + System.Math.Cos(p*PI2)*dx/PI2;
+                                ny = ranges.LoopX0 + System.Math.Sin(p*PI2)*dx/PI2;
                                 nz = ranges.MapY0 + q*dy;
-                                nw = ranges.LoopZ0 + Math.Cos(r*PI2)*dz/PI2;
-                                nu = ranges.LoopZ0 + Math.Sin(r*PI2)*dz/PI2;
+                                nw = ranges.LoopZ0 + System.Math.Cos(r*PI2)*dz/PI2;
+                                nu = ranges.LoopZ0 + System.Math.Sin(r*PI2)*dz/PI2;
                                 val = module.Get(nx, ny, nz, nw, nu, 0);
                                 break;
                             case MappingMode.SeamlessYZ:
@@ -291,10 +292,10 @@ namespace AccidentalNoise
                                 q = q*(ranges.MapY1 - ranges.MapY0)/(ranges.LoopY1 - ranges.LoopY0);
                                 r = r*(ranges.MapZ1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
                                 nx = ranges.MapX0 + p*dx;
-                                ny = ranges.LoopY0 + Math.Cos(q*PI2)*dy/PI2;
-                                nz = ranges.LoopY0 + Math.Sin(q*PI2)*dy/PI2;
-                                nw = ranges.LoopZ0 + Math.Cos(r*PI2)*dz/PI2;
-                                nu = ranges.LoopZ0 + Math.Sin(r*PI2)*dz/PI2;
+                                ny = ranges.LoopY0 + System.Math.Cos(q*PI2)*dy/PI2;
+                                nz = ranges.LoopY0 + System.Math.Sin(q*PI2)*dy/PI2;
+                                nw = ranges.LoopZ0 + System.Math.Cos(r*PI2)*dz/PI2;
+                                nu = ranges.LoopZ0 + System.Math.Sin(r*PI2)*dz/PI2;
                                 val = module.Get(nx, ny, nz, nw, nu, 0);
                                 break;
                             case MappingMode.SeamlessXYZ:
@@ -304,12 +305,12 @@ namespace AccidentalNoise
                                 p = p*(ranges.MapX1 - ranges.MapX0)/(ranges.LoopX1 - ranges.LoopX0);
                                 q = q*(ranges.MapY1 - ranges.MapY0)/(ranges.LoopY1 - ranges.LoopY0);
                                 r = r*(ranges.MapZ1 - ranges.MapZ0)/(ranges.LoopZ1 - ranges.LoopZ0);
-                                nx = ranges.LoopX0 + Math.Cos(p*PI2)*dx/PI2;
-                                ny = ranges.LoopX0 + Math.Sin(p*PI2)*dx/PI2;
-                                nz = ranges.LoopY0 + Math.Cos(q*PI2)*dy/PI2;
-                                nw = ranges.LoopY0 + Math.Sin(q*PI2)*dy/PI2;
-                                nu = ranges.LoopZ0 + Math.Cos(r*PI2)*dz/PI2;
-                                double nv = ranges.LoopZ0 + Math.Sin(r*PI2)*dz/PI2;
+                                nx = ranges.LoopX0 + System.Math.Cos(p*PI2)*dx/PI2;
+                                ny = ranges.LoopX0 + System.Math.Sin(p*PI2)*dx/PI2;
+                                nz = ranges.LoopY0 + System.Math.Cos(q*PI2)*dy/PI2;
+                                nw = ranges.LoopY0 + System.Math.Sin(q*PI2)*dy/PI2;
+                                nu = ranges.LoopZ0 + System.Math.Cos(r*PI2)*dz/PI2;
+                                double nv = ranges.LoopZ0 + System.Math.Sin(r*PI2)*dz/PI2;
                                 val = module.Get(nx, ny, nz, nw, nu, nv);
                                 break;
                         }

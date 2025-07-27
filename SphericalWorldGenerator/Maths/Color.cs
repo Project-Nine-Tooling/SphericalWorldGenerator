@@ -7,20 +7,20 @@ namespace SphericalWorldGenerator.Maths
     /// </summary>
     public struct Color : IEquatable<Color>
     {
-        public float r;
-        public float g;
-        public float b;
-        public float a;
+        public float R;
+        public float G;
+        public float B;
+        public float A;
 
         /// <summary>
         /// Create a color. Alpha defaults to 1.
         /// </summary>
         public Color(float r, float g, float b, float a = 1f)
         {
-            this.r = r;
-            this.g = g;
-            this.b = b;
-            this.a = a;
+            this.R = r;
+            this.G = g;
+            this.B = b;
+            this.A = a;
         }
 
         /// <summary>
@@ -32,10 +32,10 @@ namespace SphericalWorldGenerator.Maths
             {
                 return index switch
                 {
-                    0 => r,
-                    1 => g,
-                    2 => b,
-                    3 => a,
+                    0 => R,
+                    1 => G,
+                    2 => B,
+                    3 => A,
                     _ => throw new IndexOutOfRangeException("Invalid Color index!")
                 };
             }
@@ -43,10 +43,10 @@ namespace SphericalWorldGenerator.Maths
             {
                 switch (index)
                 {
-                    case 0: r = value; break;
-                    case 1: g = value; break;
-                    case 2: b = value; break;
-                    case 3: a = value; break;
+                    case 0: R = value; break;
+                    case 1: G = value; break;
+                    case 2: B = value; break;
+                    case 3: A = value; break;
                     default: throw new IndexOutOfRangeException("Invalid Color index!");
                 }
             }
@@ -59,10 +59,10 @@ namespace SphericalWorldGenerator.Maths
         {
             t = Math.Clamp(t, 0f, 1f);
             return new Color(
-                a.r + (b.r - a.r) * t,
-                a.g + (b.g - a.g) * t,
-                a.b + (b.b - a.b) * t,
-                a.a + (b.a - a.a) * t
+                a.R + (b.R - a.R) * t,
+                a.G + (b.G - a.G) * t,
+                a.B + (b.B - a.B) * t,
+                a.A + (b.A - a.A) * t
             );
         }
 
@@ -72,10 +72,10 @@ namespace SphericalWorldGenerator.Maths
         public static Color LerpUnclamped(Color a, Color b, float t)
         {
             return new Color(
-                a.r + (b.r - a.r) * t,
-                a.g + (b.g - a.g) * t,
-                a.b + (b.b - a.b) * t,
-                a.a + (b.a - a.a) * t
+                a.R + (b.R - a.R) * t,
+                a.G + (b.G - a.G) * t,
+                a.B + (b.B - a.B) * t,
+                a.A + (b.A - a.A) * t
             );
         }
 
@@ -83,19 +83,19 @@ namespace SphericalWorldGenerator.Maths
         /// Multiply RGB channels by a scalar; alpha unchanged.
         /// </summary>
         public Color RGBMultiplied(float multiplier)
-            => new(r * multiplier, g * multiplier, b * multiplier, a);
+            => new(R * multiplier, G * multiplier, B * multiplier, A);
 
         /// <summary>
         /// Brightness approximation: 0.299*r + 0.587*g + 0.114*b.
         /// </summary>
         public float grayscale
-            => r * 0.299f + g * 0.587f + b * 0.114f;
+            => R * 0.299f + G * 0.587f + B * 0.114f;
 
         /// <summary>
         /// The largest of r, g, b, a.
         /// </summary>
         public float maxColorComponent
-            => Math.Max(Math.Max(r, g), Math.Max(b, a));
+            => Math.Max(Math.Max(R, G), Math.Max(B, A));
 
         // Common presets
         public static Color red => new(1f, 0f, 0f, 1f);
@@ -112,24 +112,24 @@ namespace SphericalWorldGenerator.Maths
 
         // Operator overloads
         public static Color operator +(Color a, Color b)
-            => new(a.r + b.r, a.g + b.g, a.b + b.b, a.a + b.a);
+            => new(a.R + b.R, a.G + b.G, a.B + b.B, a.A + b.A);
 
         public static Color operator -(Color a, Color b)
-            => new(a.r - b.r, a.g - b.g, a.b - b.b, a.a - b.a);
+            => new(a.R - b.R, a.G - b.G, a.B - b.B, a.A - b.A);
 
         public static Color operator *(Color a, float b)
-            => new(a.r * b, a.g * b, a.b * b, a.a * b);
+            => new(a.R * b, a.G * b, a.B * b, a.A * b);
 
         public static Color operator *(float b, Color a)
             => a * b;
 
         public static Color operator *(Color a, Color b)
-            => new(a.r * b.r, a.g * b.g, a.b * b.b, a.a * b.a);
+            => new(a.R * b.R, a.G * b.G, a.B * b.B, a.A * b.A);
 
         public static Color operator /(Color a, float b)
         {
             if (b == 0f) throw new DivideByZeroException("Divide Color by zero.");
-            return new Color(a.r / b, a.g / b, a.b / b, a.a / b);
+            return new Color(a.R / b, a.G / b, a.B / b, a.A / b);
         }
 
         public static bool operator ==(Color a, Color b)
@@ -142,15 +142,15 @@ namespace SphericalWorldGenerator.Maths
             => obj is Color other && Equals(other);
 
         public bool Equals(Color other)
-            => Math.Abs(r - other.r) < 1e-5f
-            && Math.Abs(g - other.g) < 1e-5f
-            && Math.Abs(b - other.b) < 1e-5f
-            && Math.Abs(a - other.a) < 1e-5f;
+            => Math.Abs(R - other.R) < 1e-5f
+            && Math.Abs(G - other.G) < 1e-5f
+            && Math.Abs(B - other.B) < 1e-5f
+            && Math.Abs(A - other.A) < 1e-5f;
 
         public override int GetHashCode()
-            => HashCode.Combine(r, g, b, a);
+            => HashCode.Combine(R, G, B, A);
 
         public override string ToString()
-            => $"RGBA({r:F3}, {g:F3}, {b:F3}, {a:F3})";
+            => $"RGBA({R:F3}, {G:F3}, {B:F3}, {A:F3})";
     }
 }

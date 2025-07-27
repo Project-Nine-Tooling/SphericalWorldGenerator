@@ -8,4 +8,8 @@
     <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Parcel_NExT\TheMatrix\Libraries\TheMatrix.Core\TheMatrix.Core.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -56,13 +56,13 @@ namespace SphericalWorldGenerator
             float xLeft, xRight;
             float yUp, yDown;
             float yDelta, xDelta;
-            Color[] pixels = new Color[source.width * source.height];
+            Color[] pixels = new Color[source.Width * source.Height];
             strength = Mathf.Clamp(strength, 0.0F, 10.0F);
-            result = new Texture2D(source.width, source.height, TextureFormat.ARGB32, true);
+            result = new Texture2D(source.Width, source.Height, TextureFormat.ARGB32, true);
 
-            for (int by = 0; by < result.height; by++)
+            for (int by = 0; by < result.Height; by++)
             {
-                for (int bx = 0; bx < result.width; bx++)
+                for (int bx = 0; bx < result.Width; bx++)
                 {
                     xLeft = source.GetPixel(bx - 1, by).grayscale * strength;
                     xRight = source.GetPixel(bx + 1, by).grayscale * strength;
@@ -71,12 +71,12 @@ namespace SphericalWorldGenerator
                     xDelta = ((xLeft - xRight) + 1) * 0.5f;
                     yDelta = ((yUp - yDown) + 1) * 0.5f;
 
-                    pixels[bx + by * source.width] = new Color(xDelta, yDelta, 1.0f, yDelta);
+                    pixels[bx + by * source.Width] = new Color(xDelta, yDelta, 1.0f, yDelta);
                 }
             }
 
             result.SetPixels(pixels);
-            result.wrapMode = TextureWrapMode.Clamp;
+            result.WrapMode = TextureWrapMode.Clamp;
             result.Apply();
             return result;
         }
@@ -100,7 +100,7 @@ namespace SphericalWorldGenerator
             }
 
             texture.SetPixels(pixels);
-            texture.wrapMode = TextureWrapMode.Clamp;
+            texture.WrapMode = TextureWrapMode.Clamp;
             texture.Apply();
             return texture;
         }
@@ -122,7 +122,7 @@ namespace SphericalWorldGenerator
             }
 
             texture.SetPixels(pixels);
-            texture.wrapMode = TextureWrapMode.Clamp;
+            texture.WrapMode = TextureWrapMode.Clamp;
             texture.Apply();
             return texture;
         }
@@ -161,7 +161,7 @@ namespace SphericalWorldGenerator
             }
 
             texture.SetPixels(pixels);
-            texture.wrapMode = TextureWrapMode.Clamp;
+            texture.WrapMode = TextureWrapMode.Clamp;
             texture.Apply();
             return texture;
 
@@ -212,7 +212,7 @@ namespace SphericalWorldGenerator
             }
 
             texture.SetPixels(pixels);
-            texture.wrapMode = TextureWrapMode.Clamp;
+            texture.WrapMode = TextureWrapMode.Clamp;
             texture.Apply();
             return texture;
         }
@@ -270,7 +270,7 @@ namespace SphericalWorldGenerator
             }
 
             texture.SetPixels(pixels);
-            texture.wrapMode = TextureWrapMode.Clamp;
+            texture.WrapMode = TextureWrapMode.Clamp;
             texture.Apply();
             return texture;
         }
@@ -313,7 +313,7 @@ namespace SphericalWorldGenerator
             }
 
             texture.SetPixels(pixels);
-            texture.wrapMode = TextureWrapMode.Clamp;
+            texture.WrapMode = TextureWrapMode.Clamp;
             texture.Apply();
             return texture;
         }
@@ -345,7 +345,7 @@ namespace SphericalWorldGenerator
             }
 
             texture.SetPixels(pixels);
-            texture.wrapMode = TextureWrapMode.Clamp;
+            texture.WrapMode = TextureWrapMode.Clamp;
             texture.Apply();
             return texture;
         }
@@ -431,7 +431,7 @@ namespace SphericalWorldGenerator
             }
 
             texture.SetPixels(pixels);
-            texture.wrapMode = TextureWrapMode.Clamp;
+            texture.WrapMode = TextureWrapMode.Clamp;
             texture.Apply();
             return texture;
         }

@@ -1,34 +1,35 @@
-﻿using System;
+﻿using AccidentalNoise;
+using System;
 
-namespace AccidentalNoise
+namespace SphericalWorldGenerator.AccidentalNoise.Implicit
 {
     public sealed class ImplicitTan : ImplicitModuleBase
     {
         public ImplicitTan(ImplicitModuleBase source)
         {
-            this.Source = source;
+            Source = source;
         }
 
         public ImplicitModuleBase Source { get; set; }
 
-        public override Double Get(Double x, Double y)
+        public override double Get(double x, double y)
         {
-            return Math.Tan(this.Source.Get(x, y));
+            return System.Math.Tan(Source.Get(x, y));
         }
 
-        public override Double Get(Double x, Double y, Double z)
+        public override double Get(double x, double y, double z)
         {
-            return Math.Tan(this.Source.Get(x, y, z));
+            return System.Math.Tan(Source.Get(x, y, z));
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w)
+        public override double Get(double x, double y, double z, double w)
         {
-            return Math.Tan(this.Source.Get(x, y, z, w));
+            return System.Math.Tan(Source.Get(x, y, z, w));
         }
 
-        public override Double Get(Double x, Double y, Double z, Double w, Double u, Double v)
+        public override double Get(double x, double y, double z, double w, double u, double v)
         {
-            return Math.Tan(this.Source.Get(x, y, z, w, u, v));
+            return System.Math.Tan(Source.Get(x, y, z, w, u, v));
         }
     }
 }

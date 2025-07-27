@@ -49,7 +49,7 @@ namespace SphericalWorldGenerator.Maths
         }
 
         /// <summary>Length of the vector.</summary>
-        public float magnitude => (float)Math.Sqrt(x * x + y * y + z * z + w * w);
+        public float magnitude => (float)System.Math.Sqrt(x * x + y * y + z * z + w * w);
 
         /// <summary>Squared length of the vector (avoids a sqrt).</summary>
         public float sqrMagnitude => x * x + y * y + z * z + w * w;
@@ -80,7 +80,7 @@ namespace SphericalWorldGenerator.Maths
         /// <summary>Linearly interpolates between a and b by t (clamped 0–1).</summary>
         public static Vector4 Lerp(Vector4 a, Vector4 b, float t)
         {
-            t = Math.Clamp(t, 0f, 1f);
+            t = System.Math.Clamp(t, 0f, 1f);
             return new Vector4(
                 a.x + (b.x - a.x) * t,
                 a.y + (b.y - a.y) * t,
@@ -132,10 +132,10 @@ namespace SphericalWorldGenerator.Maths
             => obj is Vector4 other && Equals(other);
 
         public bool Equals(Vector4 other)
-            => Math.Abs(x - other.x) < 1e-5f
-            && Math.Abs(y - other.y) < 1e-5f
-            && Math.Abs(z - other.z) < 1e-5f
-            && Math.Abs(w - other.w) < 1e-5f;
+            => System.Math.Abs(x - other.x) < 1e-5f
+            && System.Math.Abs(y - other.y) < 1e-5f
+            && System.Math.Abs(z - other.z) < 1e-5f
+            && System.Math.Abs(w - other.w) < 1e-5f;
 
         public override int GetHashCode()
             => HashCode.Combine(x, y, z, w);
