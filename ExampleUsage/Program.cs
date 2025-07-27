@@ -1,10 +1,14 @@
-﻿namespace ExampleUsage
+﻿using SphericalWorldGenerator;
+
+namespace ExampleUsage
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            WrappingWorldGenerator generator = new();
+            generator.Start();
+            generator.HeightMapRenderer.Data.Save("Output.png");
         }
     }
 }

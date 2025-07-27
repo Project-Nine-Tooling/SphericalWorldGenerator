@@ -93,7 +93,7 @@ namespace SphericalWorldGenerator
                                             Seed);
         }
 
-        protected override void GetData()
+        protected override void PopulateData()
         {
             HeightData = new MapData(Width, Height);
             HeatData = new MapData(Width, Height);

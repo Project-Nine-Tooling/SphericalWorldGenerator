@@ -1,5 +1,4 @@
 using AccidentalNoise;
-using SphericalWorldGenerator.Gameplay;
 using SphericalWorldGenerator.Maths;
 using SphericalWorldGenerator.Media;
 using System.Collections.Generic;
@@ -8,9 +7,10 @@ namespace SphericalWorldGenerator
 {
     public abstract class Generator
     {
+        #region Configuration
         protected int Seed;
+        #endregion
 
-        // Adjustable variables for Unity Inspector
         #region Generator Values
         protected int Width = 512;
         protected int Height = 512;
@@ -56,6 +56,7 @@ namespace SphericalWorldGenerator
         protected int MaxRiverIntersections = 2;
         #endregion
 
+        #region Data
         protected MapData HeightData;
         protected MapData HeatData;
         protected MapData MoistureData;
@@ -63,21 +64,24 @@ namespace SphericalWorldGenerator
         protected MapData Clouds2;
 
         protected Tile[,] Tiles;
+        #endregion
 
+        #region Data Groups
         protected List<TileGroup> Waters = [];
         protected List<TileGroup> Lands = [];
 
         protected List<River> Rivers = [];
         protected List<RiverGroup> RiverGroups = [];
-
-        #region Outputs
-        // Our texture output gameobject
-        protected MeshRenderer HeightMapRenderer;
-        protected MeshRenderer HeatMapRenderer;
-        protected MeshRenderer MoistureMapRenderer;
-        protected MeshRenderer BiomeMapRenderer;
         #endregion
 
+        #region Texture Outputs
+        public Texture2D HeightMapRenderer;
+        public Texture2D HeatMapRenderer;
+        public Texture2D MoistureMapRenderer;
+        public Texture2D BiomeMapRenderer;
+        #endregion
+
+        #region Configurations
         protected BiomeType[,] BiomeTable = new BiomeType[6, 6] {   
 		    //COLDEST        //COLDER          //COLD                  //HOT                          //HOTTER                       //HOTTEST
 		    { BiomeType.Ice, BiomeType.Tundra, BiomeType.Grassland,    BiomeType.Desert,              BiomeType.Desert,              BiomeType.Desert },              //DRYEST
@@ -87,9 +91,10 @@ namespace SphericalWorldGenerator
 		    { BiomeType.Ice, BiomeType.Tundra, BiomeType.BorealForest, BiomeType.SeasonalForest,      BiomeType.TropicalRainforest,  BiomeType.TropicalRainforest },  //WETTER
 		    { BiomeType.Ice, BiomeType.Tundra, BiomeType.BorealForest, BiomeType.TemperateRainforest, BiomeType.TropicalRainforest,  BiomeType.TropicalRainforest }   //WETTEST
 	    };
+        #endregion
 
         #region Framework
-        void Start()
+        public void Start()
         {
             Instantiate();
             Generate();
@@ -97,17 +102,32 @@ namespace SphericalWorldGenerator
         protected virtual void Instantiate()
         {
             Seed = Random.Range(0, int.MaxValue);
-
-            // TODO
-            //HeightMapRenderer = transform.Find("HeightTexture").GetComponent<MeshRenderer>();
-            //HeatMapRenderer = transform.Find("HeatTexture").GetComponent<MeshRenderer>();
-            //MoistureMapRenderer = transform.Find("MoistureTexture").GetComponent<MeshRenderer>();
-            //BiomeMapRenderer = transform.Find("BiomeTexture").GetComponent<MeshRenderer>();
-
             Initialize();
         }
         protected abstract void Initialize();
-        protected abstract void GetData();
+        protected abstract void PopulateData();
+        protected virtual void Generate()
+        {
+            PopulateData();
+            BuildTiles();
+            UpdateNeighbors();
+
+            GenerateRivers();
+            BuildRiverGroups();
+            DigRiverGroups();
+            AdjustMoistureMap();
+
+            UpdateBitmasks();
+            FloodFill();
+
+            GenerateBiomeMap();
+            UpdateBiomeBitmask();
+
+            HeightMapRenderer = TextureGenerator.GetHeightMapTexture(Width, Height, Tiles);
+            HeatMapRenderer = TextureGenerator.GetHeatMapTexture(Width, Height, Tiles);
+            MoistureMapRenderer = TextureGenerator.GetMoistureMapTexture(Width, Height, Tiles);
+            BiomeMapRenderer = TextureGenerator.GetBiomeMapTexture(Width, Height, Tiles, ColdestValue, ColderValue, ColdValue);
+        }
         #endregion
 
         #region Methods
@@ -126,42 +146,16 @@ namespace SphericalWorldGenerator
             else
                 return tile.HeightValue;
         }
-
-        protected virtual void Generate()
-        {
-            GetData();
-            LoadTiles();
-            UpdateNeighbors();
-
-            GenerateRivers();
-            BuildRiverGroups();
-            DigRiverGroups();
-            AdjustMoistureMap();
-
-            UpdateBitmasks();
-            FloodFill();
-
-            GenerateBiomeMap();
-            UpdateBiomeBitmask();
-
-            // TODO
-            //HeightMapRenderer.materials[0].mainTexture = TextureGenerator.GetHeightMapTexture(Width, Height, Tiles);
-            //HeatMapRenderer.materials[0].mainTexture = TextureGenerator.GetHeatMapTexture(Width, Height, Tiles);
-            //MoistureMapRenderer.materials[0].mainTexture = TextureGenerator.GetMoistureMapTexture(Width, Height, Tiles);
-            //BiomeMapRenderer.materials[0].mainTexture = TextureGenerator.GetBiomeMapTexture(Width, Height, Tiles, ColdestValue, ColderValue, ColdValue);
-        }
         #endregion
 
         #region Gameplay
-        void Update()
+        public void Update()
         {
-            // Refresh with inspector values
-            if (Input.GetKeyDown(KeyCode.F5))
-            {
-                Seed = Random.Range(0, int.MaxValue);
-                Initialize();
-                Generate();
-            }
+            // Refresh with new seed value
+            // Remark: This also takes into effect any parameter updates
+            Seed = Random.Range(0, int.MaxValue);
+            Initialize();
+            Generate();
         }
         #endregion
 
@@ -697,7 +691,7 @@ namespace SphericalWorldGenerator
         /// <summary>
         /// Build a Tile array from our data
         /// </summary>
-        private void LoadTiles()
+        private void BuildTiles()
         {
             Tiles = new Tile[Width, Height];
 
@@ -711,7 +705,7 @@ namespace SphericalWorldGenerator
                         Y = y
                     };
 
-                    //set heightmap value
+                    // Set heightmap value
                     float heightValue = HeightData.Data[x, y];
                     heightValue = (heightValue - HeightData.Min) / (HeightData.Max - HeightData.Min);
                     t.HeightValue = heightValue;
@@ -767,7 +761,7 @@ namespace SphericalWorldGenerator
                     moistureValue = (moistureValue - MoistureData.Min) / (MoistureData.Max - MoistureData.Min);
                     t.MoistureValue = moistureValue;
 
-                    //set moisture type
+                    // Set moisture type
                     if (moistureValue < DryerValue) t.MoistureType = MoistureType.Dryest;
                     else if (moistureValue < DryValue) t.MoistureType = MoistureType.Dryer;
                     else if (moistureValue < WetValue) t.MoistureType = MoistureType.Dry;

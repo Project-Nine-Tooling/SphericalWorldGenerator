@@ -39,7 +39,7 @@ namespace SphericalWorldGenerator.Media
         #endregion
 
         #region Data
-        private PixelImage _backend;
+        public PixelImage Data { get; private set; }
         #endregion
 
         #region Construction
@@ -62,7 +62,7 @@ namespace SphericalWorldGenerator.Media
             WrapMode = TextureWrapMode.Clamp;
 
             // Initialize blank image (transparent black)
-            _backend = new PixelImage(width, height, new Divooka.Multimedia.Image.Color(0, 0, 0, 0));
+            Data = new PixelImage(width, height, new Divooka.Multimedia.Image.Color(0, 0, 0, 0));
         }
         #endregion
 
@@ -91,7 +91,7 @@ namespace SphericalWorldGenerator.Media
             }
 
             // re‑create the PixelImage from flat array
-            _backend = new PixelImage(Width, Height, flat);
+            Data = new PixelImage(Width, Height, flat);
         }
         /// <summary>
         /// Read a single pixel, obeying wrapMode (Clamp or Repeat).
@@ -110,7 +110,7 @@ namespace SphericalWorldGenerator.Media
                 y = System.Math.Clamp(y, 0, Height - 1);
             }
 
-            var p = _backend.Pixels![y][x];
+            var p = Data.Pixels![y][x];
             // Convert backend Pixel → Maths.Color (floats [0..1])
             return new SphericalWorldGenerator.Maths.Color(
                 p.Red / 255f,
