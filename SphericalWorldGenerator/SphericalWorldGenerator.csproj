@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <PublishAot>true</PublishAot>
     <IsAotCompatible>true</IsAotCompatible>
+    <Version>1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
