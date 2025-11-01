@@ -1,7 +1,9 @@
 # Spherical World Map Generator
 
-Date: 2025-07-26
+Initial Date: 2025-07-26
+Last update Date: 2025-11-01
 Version: 1.1
+Revisions: 2025-07-26
 
 Based on Jon's [WorldGeneratorFinal](https://github.com/jongallant/WorldGeneratorFinal), as per its article on [procedural world generation](https://www.jgallant.com/procedurally-generating-wrapping-world-maps-in-unity-csharp-part-4/). Organized and stripped Unity related logic. Proceedings from this will likely be used in The Matrix.
 
@@ -28,15 +30,20 @@ Optimization:
 
 - [ ] Memory usage for large maps: 16000*16000
 
+Issues:
+
+- [ ] (20251101) Existing code produce map that's not wrappable (aka. not spherical).
+- [ ] Output height map is incorporating river flow in a very "harsh" manner.
+
 ## Mapings
 
 ### Spherical
 
-![Example](http://www.jgallant.com/wp-content/uploads/2019/05/worldgen1.png "Example")
+![Example](http://www.jgallant.com/wp-content/uploads/2019/05/worldgen1.png)
 
 ### Wrapping
 
-![Example](http://www.jgallant.com/wp-content/uploads/2019/05/worldgenwrap.png "Example")
+![Example](http://www.jgallant.com/wp-content/uploads/2019/05/worldgenwrap.png)
 
 ## Resources
 
